@@ -1,0 +1,53 @@
+set -u
+set -e
+
+if ls $OUTDIR/files/libjpeg-turbo-[0-9]*.dmg >/dev/null 2>&1; then
+	if [ $FORCEBINARY = 0 ]; then
+		echo
+		echo Binary already exists!
+		echo Run $SCRIPT -fb to rebuild it.
+		echo
+		exit 1
+	else
+		rm -f $OUTDIR/files/libjpeg-turbo.dmg
+	fi
+fi
+
+exec > $OUTDIR/log-$PLATFORM.txt 2>&1
+
+pushd libjpeg-turbo-[0-9]*
+
+autoreconf -fiv
+
+mkdir osxx86
+pushd osxx86
+sh ../configure --host i686-apple-darwin CFLAGS='-I/usr/lib/gcc/i686-apple-darwin10/4.2.1/include -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -O3 -m32' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -m32' --with-java --with-pic
+make test
+popd
+
+mkdir iosarmv6
+pushd iosarmv6
+export IOS_PLATFORMDIR="/Developer/Platforms/iPhoneOS.platform"
+export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS4.3.sdk"
+export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
+export IOS_CFLAGS="-march=armv6 -mcpu=arm1176jzf-s -mfpu=vfp"
+sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
+make
+popd
+
+mkdir iosarmv7
+pushd iosarmv7
+export IOS_CFLAGS="-march=armv7 -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon"
+sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
+make
+popd
+
+mkdir osxx8664
+pushd osxx8664
+sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CFLAGS='-I/usr/lib/gcc/i686-apple-darwin10/4.2.1/include -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -O3' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4' --with-java --with-pic JAVA='java -d64'
+make test
+make iosdmg
+mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
+popd
+
+popd

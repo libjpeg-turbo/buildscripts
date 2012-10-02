@@ -1,0 +1,219 @@
+#!/bin/bash
+
+TMPDIR=
+PREVDIR=`pwd`
+export SCRIPT=$0
+SCRIPTDIR=`dirname $0`
+
+pushd $SCRIPTDIR >/dev/null
+SCRIPTDIR=`pwd`
+popd >/dev/null
+
+set -u
+set -e
+trap onexit INT
+trap onexit TERM
+trap onexit EXIT
+
+PLATFORM=
+
+case "`uname -s`" in
+Linux)  export PLATFORM=linux ;;
+Darwin) export PLATFORM=osx ;;
+MINGW*) export PLATFORM=windows ;;
+CYGWIN*) export PLATFORM=cygwin ;;
+*)      echo "Unsupported platform";  exit 1 ;;
+esac
+
+onexit()
+{
+	cd $PREVDIR
+	if [ ! "$TMPDIR" = "" ]; then
+		if [ "$PLATFORM" = "windows" -o "$PLATFORM" = "cygwin" ]; then
+			rm -rf $TMPDIR
+		else
+			sudo rm -rf $TMPDIR
+		fi
+	fi
+}
+
+usage()
+{
+	echo
+	echo "USAGE: $SCRIPT [-f | -s | -e ] <repository path, e.g. \"trunk\">"
+	echo
+	echo "-e = Use existing source tarball in the build directory for today's date"
+	echo "-f = Force new build (deletes all existing build files for today's date)"
+	echo "-fb = Use existing source tarball in the build directory for today's date,"
+	echo "      but force new binaries to be built for this platform"
+	echo "-s = Build source tarball only"
+	echo "-l = Generate file list and HTML index"
+	echo
+	exit 1
+}
+
+update_list()
+{
+	if [ ! -d $OUTDIR/files ]; then
+		echo
+		echo Build does not exist!
+		echo
+		exit 1
+	fi
+	cd $OUTDIR/files
+	if [ -f files.txt ]; then rm files.txt; fi
+	if [ -f ../files.txt ]; then rm ../files.txt; fi
+	if [ -f index.html ]; then rm index.html; fi
+	if [ -f ../index.html ]; then rm ../index.html; fi
+	echo "<html><body><table border=1 cellpadding=5>" >../index.html
+	echo "<tr><th>File</th><th>Size</th><th>Date</th><th>MD5 sum</th></tr>" >>../index.html
+	for i in *; do
+		LSL=`ls -l $i`
+		SIZE=`echo $LSL | awk '{print $5}'`
+		DATE=`echo $LSL | awk '{print $6" "$7}'`
+		MD5=`md5sum -b $i | awk '{print $1}'`
+		echo -e "$i\t$SIZE\t\t$DATE\t$MD5" >>../files.txt
+		echo -e "<tr><td><a href=\"$i\">$i</a></td><td>$SIZE</td><td>$DATE</td><td>$MD5</td></tr>" >>../index.html
+	done
+	echo "</html></body>" >>../index.html
+	mv ../files.txt .
+	mv ../index.html .
+}
+
+if [ ! -d $HOME/src/ljt.nightly ]; then
+	mkdir -p $HOME/src/ljt.nightly
+fi
+
+BUILD=`date +%Y%m%d`
+export OUTDIR=$HOME/src/ljt.nightly/$BUILD
+
+FORCE=0
+export FORCEBINARY=0
+SRCONLY=0
+NOSRC=0
+
+if [ $# -gt 0 ]; then
+	if [ "$1" = "-f" ]; then
+		FORCE=1
+		shift
+	elif [ "$1" = "-fb" ]; then
+		export FORCEBINARY=1
+		NOSRC=1
+		shift
+	elif [ "$1" = "-s" ]; then
+		SRCONLY=1
+		shift
+	elif [ "$1" = "-e" ]; then
+		if [ $SRCONLY = 1 ]; then
+			echo Cannot specify both -s and -e
+			exit 1
+		fi
+		NOSRC=1
+		shift
+	elif [ "$1" = "-l" ]; then
+		update_list
+		exit 0
+	elif [ "$1" = "-h" -o "$1" = "-?" ]; then
+		usage
+	fi
+fi
+
+if [ $# -lt 1 ]; then
+	TAG=trunk
+else
+	TAG=$1
+fi
+
+if [ ! -d $OUTDIR ]; then
+	mkdir -p $OUTDIR/files
+else
+	if [ $FORCE = 0 -a $NOSRC = 0 ]; then
+		if [ $SRCONLY = 0 ]; then
+			echo
+			echo Build already exists!
+			echo "Run $SCRIPT -f to force a full rebuild"
+			echo " or $SCRIPT -e to use existing source"
+			echo
+			exit 1
+		fi
+	else
+		if [ $NOSRC = 0 ]; then
+			if [ -d $OUTDIR/files ]; then
+				rm -f $OUTDIR/files/*
+				rmdir $OUTDIR/files
+			fi
+			rm -f $OUTDIR/*
+			rmdir $OUTDIR
+			mkdir -p $OUTDIR/files
+		fi
+	fi
+fi
+
+umask 022
+if [ "$PLATFORM" = "windows" ]; then
+	# /tmp maps to a directory in c:\Documents and Settings, which causes
+	# barfage in the MinGW resource compiler because of the pathname
+	# spaces.
+	export TMPDIR=`mktemp -d /c/temp/ljtbuild.XXXXXX`
+else
+	export TMPDIR=`mktemp -d /tmp/ljtbuild.XXXXXX`
+fi
+cd $TMPDIR
+if [ $NOSRC = 0 ]; then
+	echo Checking out libjpeg-turbo ...
+	svn export https://libjpeg-turbo.svn.sourceforge.net/svnroot/libjpeg-turbo/$TAG libjpeg-turbo
+	echo Creating source tarball and SRPM ...
+	pushd libjpeg-turbo
+	autoreconf -fiv
+	rm -rf autom4te.cache
+	popd
+	cp -R libjpeg-turbo libjpeg-turbo.pristine
+	pushd libjpeg-turbo
+	./configure --with-java
+	make dist
+	popd
+	mv libjpeg-turbo/*.tar.gz $OUTDIR/files/
+	tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
+	diff -r libjpeg-turbo.pristine libjpeg-turbo-*
+	if [ "$PLATFORM" = "linux" ]; then
+		pushd libjpeg-turbo
+		make srpm
+		popd
+		mv libjpeg-turbo/*.src.rpm $OUTDIR/files/
+	fi
+	rm -rf libjpeg-turbo*
+else
+	if [ "$PLATFORM" = "linux" ]; then
+		if ! ls $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz >/dev/null 2>&1
+			-o ! ls $OUTDIR/files/libjpeg-turbo-[0-9]*.src.rpm >/dev/null 2>&1; then
+			echo Source files do not exist!
+			exit 1
+		fi
+	else
+		if [ ! -f $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz ]; then
+			echo Source tarball does not exist!
+			exit 1
+		fi
+	fi
+fi
+
+if [ $SRCONLY = 1 ]; then
+	exit 0
+fi
+
+echo Untarring libjpeg-turbo ...
+tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
+echo   done.
+echo Building libjpeg-turbo for $PLATFORM...
+sh $SCRIPTDIR/buildljt.$PLATFORM
+echo   done.
+
+update_list
+
+if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" ]; then
+	# sym links aren't implemented properly in MinGW or Cygwin
+	if [ -h $OUTDIR/../latest ]; then rm $OUTDIR/../latest; fi
+	ln -fs $BUILD $OUTDIR/../latest
+fi
+
+exit 0

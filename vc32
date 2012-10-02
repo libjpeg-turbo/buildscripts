@@ -1,0 +1,9 @@
+export PATH=${PATH//bin\/amd64/bin}
+export PATH=${PATH//bin\/x64/bin}
+export PATH=${PATH//Program\ Files\/Hummingbird/Program Files\ \(x86\)\/Hummingbird}
+export LIB=${LIB//lib\\amd64/lib}
+export LIB=${LIB//lib\\x64/lib}
+export LIB=${LIB//libjpeg-turbo64\\lib/libjpeg-turbo\\lib}
+export LIB=${LIB//XDK\\libx64/XDK\\lib}
+echo PATH = $PATH
+echo LIB = $LIB
