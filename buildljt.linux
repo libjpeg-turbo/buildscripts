@@ -44,7 +44,6 @@ rm -rf rpmbuild
 
 echo Creating 32-bit binary RPM ...
 
-tar xvfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
 pushd libjpeg-turbo*
 mkdir linux.rpm
 pushd linux.rpm
