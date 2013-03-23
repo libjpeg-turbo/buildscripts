@@ -161,7 +161,7 @@ fi
 cd $TMPDIR
 if [ $NOSRC = 0 ]; then
 	echo Checking out libjpeg-turbo ...
-	svn export https://libjpeg-turbo.svn.sourceforge.net/svnroot/libjpeg-turbo/$TAG libjpeg-turbo
+	svn export svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG libjpeg-turbo
 	echo Creating source tarball and SRPM ...
 	pushd libjpeg-turbo
 	autoreconf -fiv
