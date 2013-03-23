@@ -28,7 +28,7 @@ Recommended version:  OS X 10.6 (Snow Leopard)
 
 Xcode 3.2.6 and iOS SDK 4.3 for Snow Leopard (available at
 https://developer.apple.com/downloads -- Apple ID required.)  The build scripts
-need this in order to produce libjpeg-turbo binaries that are backward-
+need this in order to produce libjpeg-turbo binaries that are backward
 compatible with OS X 10.4/10.5 and the iPhone 3G.  The Xcode tools should be
 installed under /Developer, and the "Mac OS X 10.4 SDK" and "iOS SDK" options
 should be installed.
