@@ -30,7 +30,8 @@ Xcode 3.2.6 and iOS SDK 4.3 for Snow Leopard (available at
 https://developer.apple.com/downloads -- Apple ID required.)  The build scripts
 need this in order to produce libjpeg-turbo binaries that are backward-
 compatible with OS X 10.4/10.5 and the iPhone 3G.  The Xcode tools should be
-installed under /Developer.
+installed under /Developer, and the "Mac OS X 10.4 SDK" and "iOS SDK" options
+should be installed.
 
 Xcode 4.5.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
@@ -38,6 +39,22 @@ libjpeg-turbo binaries that are compatible with the iPhone 5 and iPad 4.
 Xcode should be installed under /Applications/Xcode.app.  NOTE:  Although
 Xcode.app can't be run on Snow Leopard, the build scripts can still use the
 SDKs contained within it.
+
+NOTE: It is possible to use OS X 10.7 and later as a build platform, but
+installing Xcode 3.2.6 on OS X 10.7 and later is a bit tricky.  You must invoke
+the Xcode installer from the command line as follows:
+
+  export COMMAND_LINE_INSTALL=1
+  open "/Volumes/Xcode and iOS SDK/Xcode and iOS SDK.mpkg"
+
+Do not install the "System Tools" option, because installing the Xcode 3.2.6
+system tools on OS X 10.7 and later will render the system unbootable,
+requiring you to boot into Safe Mode to fix the issue.  It is also recommended
+that you uncheck "Unix Development", because this option copies the
+command-line tools under /Developer/usr into /usr and may interfere with the
+command-line tools from later versions of Xcode.  Also, not all of the
+Xcode 3.2.6 command-line tools are compatible with OS X 10.7 and later, so
+it's just cleaner to access them from /Developer/usr when needed.
 
 
 Build Environment: Windows
