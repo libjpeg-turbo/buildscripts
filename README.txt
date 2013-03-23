@@ -26,8 +26,18 @@ Build Environment: OS X
 
 Recommended version:  OS X 10.6 (Snow Leopard)
 
-Xcode 3.2.x (available at https://developer.apple.com/downloads -- Apple ID
-required)
+Xcode 3.2.6 and iOS SDK 4.3 for Snow Leopard (available at
+https://developer.apple.com/downloads -- Apple ID required.)  The build scripts
+need this in order to produce libjpeg-turbo binaries that are backward-
+compatible with OS X 10.4/10.5 and the iPhone 3G.  The Xcode tools should be
+installed under /Developer.
+
+Xcode 4.5.x (available at https://developer.apple.com/downloads --
+Apple ID required.)  The build scripts need this in order to produce
+libjpeg-turbo binaries that are compatible with the iPhone 5 and iPad 4.
+Xcode should be installed under /Applications/Xcode.app.  NOTE:  Although
+Xcode.app can't be run on Snow Leopard, the build scripts can still use the
+SDKs contained within it.
 
 
 Build Environment: Windows
@@ -45,7 +55,7 @@ Build Procedure
 
 Executing
 
-  buildljt <repository path>
+  buildljt [repository path]
 
 (where repository path is, for instance, "branches/1.2.x", and defaults to
 "trunk") will generate both a pristine source tarball and binaries for the

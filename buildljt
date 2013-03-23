@@ -40,7 +40,7 @@ onexit()
 usage()
 {
 	echo
-	echo "USAGE: $SCRIPT [-f | -s | -e ] <repository path, e.g. \"trunk\">"
+	echo "USAGE: $SCRIPT [-f | -s | -e ] [repository path (default = trunk)]"
 	echo
 	echo "-e = Use existing source tarball in the build directory for today's date"
 	echo "-f = Force new build (deletes all existing build files for today's date)"
