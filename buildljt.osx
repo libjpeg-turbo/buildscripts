@@ -42,6 +42,16 @@ sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$
 make
 popd
 
+mkdir iosarmv7s
+pushd iosarmv7s
+export IOS_PLATFORMDIR="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform"
+export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.0.sdk"
+export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
+export IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon"
+sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
+make
+popd
+
 mkdir osxx8664
 pushd osxx8664
 sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CFLAGS='-I/usr/lib/gcc/i686-apple-darwin10/4.2.1/include -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -O3' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4' --with-java --with-pic JAVA='java -d64'
