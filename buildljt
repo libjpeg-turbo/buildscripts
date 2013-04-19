@@ -169,7 +169,7 @@ if [ $NOSRC = 0 ]; then
 	popd
 	cp -R libjpeg-turbo libjpeg-turbo.pristine
 	pushd libjpeg-turbo
-	./configure --with-java
+	./configure --with-java PKGNAME=libjpeg-turbo-official
 	make dist
 	popd
 	mv libjpeg-turbo/*.tar.gz $OUTDIR/files/

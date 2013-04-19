@@ -1,10 +1,10 @@
 set -u
 set -e
 
-if ls $OUTDIR/files/libjpeg-turbo-[0-9]*.i386.rpm >/dev/null 2>&1 \
-	|| ls $OUTDIR/files/libjpeg-turbo-[0-9]*.x86_64.rpm >/dev/null 2>&1 \
-	|| ls $OUTDIR/files/libjpeg-turbo*_[0-9]*_amd64.deb >/dev/null 2>&1 \
-	|| ls $OUTDIR/files/libjpeg-turbo*_[0-9]*_i386.deb >/dev/null 2>&1; then
+if ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.i386.rpm >/dev/null 2>&1 \
+	|| ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.x86_64.rpm >/dev/null 2>&1 \
+	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_amd64.deb >/dev/null 2>&1 \
+	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_i386.deb >/dev/null 2>&1; then
 	if [ $FORCEBINARY = 0 ]; then
 		echo
 		echo Binary already exists!
@@ -31,11 +31,11 @@ export JAVACFLAGS='-target 1.5 -source 1.5'
 export JAVA=java
 export host_alias=
 rpm -i --define "_topdir $TMPDIR/rpmbuild" \
-	$OUTDIR/files/libjpeg-turbo-[0-9]*.src.rpm
+	$OUTDIR/files/libjpeg-turbo-official-[0-9]*.src.rpm
 rpmbuild -ba --buildroot $TMPDIR/rpmbuild/buildroot \
 	--define "_topdir $TMPDIR/rpmbuild" rpmbuild/SPECS/libjpeg-turbo.spec
-VERSION=`rpm -q -p rpmbuild/RPMS/x86_64/libjpeg-turbo-[0-9]*.x86_64.rpm | cut -f3 -d-`
-mv rpmbuild/RPMS/x86_64/libjpeg-turbo-[0-9]*.x86_64.rpm $OUTDIR/files/libjpeg-turbo-$VERSION.x86_64.rpm
+VERSION=`rpm -q -p rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm | cut -f4 -d-`
+mv rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
 # This bit of uniqueness is necessary to ensure that the JAR file is bitwise
 # identical between the x86_64 and i386 RPM, so they can be co-installed on
 # RHEL 6.
@@ -50,7 +50,7 @@ pushd linux.rpm
 export CFLAGS='-m32 -O3 -I /usr/lib/x86_64-redhat-linux3E/include -B /usr/lib/i386-redhat-linux3E/lib/'
 export JAVA=/usr/java/jdk1.6.0_24/bin/java
 export host_alias=i686-pc-linux-gnu
-sh ../configure --with-java --with-pic
+sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic
 make
 MD5JAR1=`md5sum ../../turbojpeg.jar | cut -f1 -d' '`
 rm java/turbojpeg.jar
@@ -62,8 +62,8 @@ if [ ! "$MD5JAR1" = "$MD5JAR2" ]; then
 	echo ERROR: JARs are not bitwise identical.
 	exit 1
 fi
-VERSION=`rpm -q -p libjpeg-turbo-[0-9]*.i386.rpm | cut -f3 -d-`
-mv libjpeg-turbo-[0-9]*.i386.rpm $OUTDIR/files/libjpeg-turbo-$VERSION.i386.rpm
+VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.i386.rpm | cut -f4 -d-`
+mv libjpeg-turbo-official-[0-9]*.i386.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
 popd
 
 echo Creating 64-bit binary DEB ...
@@ -73,11 +73,11 @@ pushd linux64
 export CFLAGS='-O3 -I /usr/lib/x86_64-redhat-linux3E/include -B /usr/lib/x86_64-redhat-linux3E/lib64/'
 export JAVA=java
 export host_alias=
-sh ../configure libdir=/opt/libjpeg-turbo/lib --with-java --with-pic
+sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic
 make deb
 make test
 #make tjtest
-mv libjpeg-turbo_[0-9]*_amd64.deb $OUTDIR/files/
+mv libjpeg-turbo-official_[0-9]*_amd64.deb $OUTDIR/files/
 popd
 
 echo Creating 32-bit binary DEB ...
@@ -87,12 +87,12 @@ pushd linux
 export CFLAGS='-m32 -O3 -I /usr/lib/x86_64-redhat-linux3E/include -B /usr/lib/i386-redhat-linux3E/lib/'
 export JAVA=/usr/java/jdk1.6.0_24/bin/java
 export host_alias=i686-pc-linux-gnu
-sh ../configure libdir=/opt/libjpeg-turbo/lib32 --with-java --with-pic
+sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic
 make deb
 make test
 #make tjtest
-mv libjpeg-turbo_[0-9]*_i386.deb $OUTDIR/files/
-mv libjpeg-turbo32_[0-9]*_amd64.deb $OUTDIR/files/
+mv libjpeg-turbo-official_[0-9]*_i386.deb $OUTDIR/files/
+mv libjpeg-turbo-official32_[0-9]*_amd64.deb $OUTDIR/files/
 popd
 
 popd
