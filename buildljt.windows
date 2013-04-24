@@ -30,8 +30,8 @@ mkdir mingw64
 pushd mingw64
 CC=/mingw/mingw64/bin/x86_64-w64-mingw32-gcc cmake -G "MSYS Makefiles" -DCMAKE_AR=/mingw/mingw64/bin/x86_64-w64-mingw32-ar -DCMAKE_RANLIB=/mingw/mingw64/bin/x86_64-w64-mingw32-ranlib -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
 make
-make test
 make installer
+make test
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
 popd
 
@@ -49,8 +49,8 @@ mkdir win32
 pushd win32
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
 nmake
-nmake test
 nmake installer
+nmake test
 mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
 popd
 
