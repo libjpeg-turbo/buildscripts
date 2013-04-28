@@ -16,9 +16,10 @@ fi
 
 PROJWEB=/home/project-web/libjpeg-turbo/htdocs/
 SSHSERVER=$1,libjpeg-turbo@shell.sourceforge.net
+DIR=`echo $TAG | sed s@\/@_@g`
 
 echo Synchronizing documentation from repository to project web ...
 ssh $SSHSERVER create
-ssh $SSHSERVER "cd $PROJWEB && svn co svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG/doc/html ljtdoc.$TAG/turbojpeg-c && svn co svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG/java/doc ljtdoc.$TAG/turbojpeg-java"
+ssh $SSHSERVER "cd $PROJWEB && svn co svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG/doc/html ljtdoc.$DIR/turbojpeg-c && svn co svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG/java/doc ljtdoc.$DIR/turbojpeg-java"
 
 exit 0
