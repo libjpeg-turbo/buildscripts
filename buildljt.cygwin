@@ -1,7 +1,7 @@
 set -u
 set -e
 
-if ls $OUTDIR/files/libjpeg-turbo-*-cygwin.tar.bz2 >/dev/null 2>&1; then
+if ls $OUTDIR/files/libjpeg-turbo-official-*-cygwin.tar.bz2 >/dev/null 2>&1; then
 	if [ $FORCEBINARY = 0 ]; then
 		echo
 		echo Binary already exists!
@@ -9,7 +9,7 @@ if ls $OUTDIR/files/libjpeg-turbo-*-cygwin.tar.bz2 >/dev/null 2>&1; then
 		echo
 		exit 1
 	else
-		rm -f $OUTDIR/files/libjpeg-turbo-*-cygwin.tar.bz2
+		rm -f $OUTDIR/files/libjpeg-turbo-official-*-cygwin.tar.bz2
 	fi
 fi
 
@@ -17,9 +17,9 @@ exec > $OUTDIR/log-$PLATFORM.txt 2>&1
 
 pushd libjpeg-turbo*
 
-sh ./configure
+sh ./configure PKGNAME=libjpeg-turbo-official
 make cygwinpkg
 make test
-mv libjpeg-turbo-*.tar.bz2 $OUTDIR/files
+mv libjpeg-turbo-official-*.tar.bz2 $OUTDIR/files
 
 popd
