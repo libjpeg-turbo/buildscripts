@@ -42,6 +42,7 @@ nmake
 nmake test
 nmake installer
 mv libjpeg-turbo-[0-9]*-vc64.exe $OUTDIR/files/
+jar cvf $OUTDIR/files/jni/ljtwin64.jar -C . turbojpeg.dll
 popd
 
 . `dirname $0`/vc32
@@ -52,6 +53,7 @@ nmake
 nmake installer
 nmake test
 mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
+jar cvf $OUTDIR/files/jni/ljtwin32.jar -C . turbojpeg.dll
 popd
 
 popd

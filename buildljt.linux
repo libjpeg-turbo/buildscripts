@@ -40,6 +40,7 @@ mv rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm $OUTDIR/files/l
 # identical between the x86_64 and i386 RPM, so they can be co-installed on
 # RHEL 6.
 cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
+jar cvf $OUTDIR/files/jni/ljtlinux64.jar -C rpmbuild/BUILD/libjpeg-turbo-$VERSION/.libs libturbojpeg.so
 rm -rf rpmbuild
 
 echo Creating 32-bit binary RPM ...
@@ -64,6 +65,7 @@ if [ ! "$MD5JAR1" = "$MD5JAR2" ]; then
 fi
 VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.i386.rpm | cut -f4 -d-`
 mv libjpeg-turbo-official-[0-9]*.i386.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
+jar cvf $OUTDIR/files/jni/ljtlinux32.jar -C .libs libturbojpeg.so
 popd
 
 echo Creating 64-bit binary DEB ...

@@ -58,6 +58,8 @@ sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CC=/Develope
 make test
 make iosdmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
+lipo -create -arch i386 ../osxx86/.libs/libturbojpeg.dylib -arch x86_64 .libs/libturbojpeg.dylib -output libturbojpeg.jnilib
+jar cvf $OUTDIR/files/jni/ljtosx.jar -C . libturbojpeg.jnilib
 popd
 
 popd

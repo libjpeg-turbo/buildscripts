@@ -48,6 +48,7 @@ usage()
 	echo "      but force new binaries to be built for this platform"
 	echo "-s = Build source tarball only"
 	echo "-l = Generate file list and HTML index"
+	echo "-j = Generate .zip file containing JNI JARs from all platforms"
 	echo
 	exit 1
 }
@@ -68,6 +69,7 @@ update_list()
 	echo "<html><body><table border=1 cellpadding=5>" >../index.html
 	echo "<tr><th>File</th><th>Size</th><th>Date</th><th>MD5 sum</th></tr>" >>../index.html
 	for i in *; do
+		if [ -d $i ]; then continue; fi
 		LSL=`ls -l $i`
 		SIZE=`echo $LSL | awk '{print $5}'`
 		DATE=`echo $LSL | awk '{print $6" "$7}'`
@@ -78,6 +80,17 @@ update_list()
 	echo "</html></body>" >>../index.html
 	mv ../files.txt .
 	mv ../index.html .
+}
+
+update_jni()
+{
+	if [ ! -d $OUTDIR/files/jni ]; then
+		echo
+		echo Build does not exist!
+		echo
+		exit 1
+	fi
+	zip -j $OUTDIR/files/jwslibs.zip $OUTDIR/files/jni/*.jar
 }
 
 if [ ! -d $HOME/src/ljt.nightly ]; then
@@ -113,6 +126,9 @@ if [ $# -gt 0 ]; then
 	elif [ "$1" = "-l" ]; then
 		update_list
 		exit 0
+	elif [ "$1" = "-j" ]; then
+		update_jni
+		exit 0
 	elif [ "$1" = "-h" -o "$1" = "-?" ]; then
 		usage
 	fi
@@ -125,7 +141,7 @@ else
 fi
 
 if [ ! -d $OUTDIR ]; then
-	mkdir -p $OUTDIR/files
+	mkdir -p $OUTDIR/files/jni
 else
 	if [ $FORCE = 0 -a $NOSRC = 0 ]; then
 		if [ $SRCONLY = 0 ]; then
@@ -139,12 +155,16 @@ else
 	else
 		if [ $NOSRC = 0 ]; then
 			if [ -d $OUTDIR/files ]; then
+				if [ -d $OUTDIR/files/jni ]; then
+					rm -f $OUTDIR/files/jni/*
+					rmdir $OUTDIR/files/jni
+				fi
 				rm -f $OUTDIR/files/*
 				rmdir $OUTDIR/files
 			fi
 			rm -f $OUTDIR/*
 			rmdir $OUTDIR
-			mkdir -p $OUTDIR/files
+			mkdir -p $OUTDIR/files/jni
 		fi
 	fi
 fi
@@ -209,6 +229,7 @@ sh $SCRIPTDIR/buildljt.$PLATFORM
 echo   done.
 
 update_list
+update_jni
 
 if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" ]; then
 	# sym links aren't implemented properly in MinGW or Cygwin
