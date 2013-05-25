@@ -90,7 +90,11 @@ update_jni()
 		echo
 		exit 1
 	fi
-	zip -j $OUTDIR/files/jwslibs.zip $OUTDIR/files/jni/*.jar
+	if ls $OUTDIR/files/*.zip >/dev/null 2>&1; then
+		rm $OUTDIR/files/*.zip
+	fi
+	VERSION=`basename $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz .tar.gz | cut -d- -f3`
+	zip -j $OUTDIR/files/libjpeg-turbo-$VERSION-jws.zip $OUTDIR/files/jni/*.jar
 }
 
 if [ ! -d $HOME/src/ljt.nightly ]; then
