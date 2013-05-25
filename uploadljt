@@ -19,6 +19,7 @@ fi
 
 echo Uploading build ...
 chmod 644 $BUILDDIR/*
+chmod 755 $BUILDDIR/jni
 ssh $SSHSERVER create
 ssh $SSHSERVER mkdir $PROJWEB/ljt.nightly || true
 ssh $SSHSERVER rm $PROJWEB/ljt.nightly/* || true
