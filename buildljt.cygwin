@@ -17,7 +17,7 @@ exec > $OUTDIR/log-$PLATFORM.txt 2>&1
 
 pushd libjpeg-turbo*
 
-sh ./configure PKGNAME=libjpeg-turbo-official
+sh ./configure PKGNAME=libjpeg-turbo-official --with-simd
 make cygwinpkg
 make test
 mv libjpeg-turbo-official-*.tar.bz2 $OUTDIR/files
