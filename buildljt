@@ -21,7 +21,12 @@ case "`uname -s`" in
 Linux)  export PLATFORM=linux ;;
 Darwin) export PLATFORM=osx ;;
 MINGW*) export PLATFORM=windows ;;
-CYGWIN*) export PLATFORM=cygwin ;;
+CYGWIN*)
+	case "`uname -m`" in
+	x86_64) export PLATFORM=cygwin64 ;;
+	*)      export PLATFORM=cygwin ;;
+	esac
+	;;
 *)      echo "Unsupported platform";  exit 1 ;;
 esac
 
@@ -29,7 +34,7 @@ onexit()
 {
 	cd $PREVDIR
 	if [ ! "$TMPDIR" = "" ]; then
-		if [ "$PLATFORM" = "windows" -o "$PLATFORM" = "cygwin" ]; then
+		if [ "$PLATFORM" = "windows" -o "$PLATFORM" = "cygwin" -o "$PLATFORM" = "cygwin64" ]; then
 			rm -rf $TMPDIR
 		else
 			sudo rm -rf $TMPDIR

@@ -1,0 +1,28 @@
+set -u
+set -e
+
+if ls $OUTDIR/files/libjpeg-turbo-official-*-cygwin64.tar.bz2 >/dev/null 2>&1; then
+	if [ $FORCEBINARY = 0 ]; then
+		echo
+		echo Binary already exists!
+		echo Run $SCRIPT -fb to rebuild it.
+		echo
+		exit 1
+	else
+		rm -f $OUTDIR/files/libjpeg-turbo-official-*-cygwin64.tar.bz2
+	fi
+fi
+
+exec > $OUTDIR/log-$PLATFORM.txt 2>&1
+
+pushd libjpeg-turbo*
+
+autoreconf -fiv
+sh ./configure PKGNAME=libjpeg-turbo-official --with-simd
+make cygwinpkg
+make test
+for i in libjpeg-turbo-official-*.tar.bz2; do
+	mv $i $OUTDIR/files/`basename $i -cygwin.tar.bz2`-cygwin64.tar.bz2
+done
+
+popd
