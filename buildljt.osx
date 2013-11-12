@@ -44,7 +44,7 @@ popd
 
 mkdir iosarmv7s
 pushd iosarmv7s
-export IOS_PLATFORMDIR="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform"
+export IOS_PLATFORMDIR="/Applications/Xcode45.app/Contents/Developer/Platforms/iPhoneOS.platform"
 export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.0.sdk"
 export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 export IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon"

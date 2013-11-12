@@ -36,7 +36,7 @@ should be installed.
 Xcode 4.5.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
 libjpeg-turbo binaries that are compatible with the iPhone 5 and iPad 4.
-Xcode should be installed under /Applications/Xcode.app.  NOTE:  Although
+Xcode should be installed under /Applications/Xcode45.app.  NOTE:  Although
 Xcode.app can't be run on Snow Leopard, the build scripts can still use the
 SDKs contained within it.
 
