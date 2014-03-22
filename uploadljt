@@ -4,8 +4,13 @@ set -u
 set -e
 
 if [ $# -lt 1 ]; then
-	echo USAGE: $0 \<SourceForge user name\>
+	echo USAGE: $0 \<SourceForge user name\> [tag]
 	exit -1
+fi
+
+TAG=
+if [ $# -gt 1 ]; then
+	TAG=.$2
 fi
 
 BUILDDIR=$HOME/src/ljt.nightly/latest/files
@@ -21,8 +26,8 @@ echo Uploading build ...
 chmod 644 $BUILDDIR/*
 chmod 755 $BUILDDIR/jni
 ssh $SSHSERVER create
-ssh $SSHSERVER mkdir $PROJWEB/ljt.nightly || true
-ssh $SSHSERVER rm $PROJWEB/ljt.nightly/* || true
-scp $BUILDDIR/* $SSHSERVER:$PROJWEB/ljt.nightly
+ssh $SSHSERVER mkdir $PROJWEB/ljt.nightly$TAG || true
+ssh $SSHSERVER rm $PROJWEB/ljt.nightly$TAG/* || true
+scp $BUILDDIR/* $SSHSERVER:$PROJWEB/ljt.nightly$TAG
 
 exit 0
