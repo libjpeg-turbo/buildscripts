@@ -17,7 +17,6 @@ for ARCH in $ARCHES; do
 		cat <<EOF >$DIR/cygwin/$ARCH/setup.ini
 release: cygwin
 arch: $ARCH
-
 EOF
 		for i in $DIR/cygwin/$ARCH/*.tar.bz2; do
 			BUILD=`basename $i .tar.bz2 | sed 's/.*-//g'`
@@ -26,14 +25,15 @@ EOF
 			SIZE=`ls -l $i | awk '{print $5}'`
 			MD5SUM=`md5sum -b $i | awk '{print $1}'`
 			echo Found $PACKAGE version $VERSION build $BUILD
-			echo @ $PACKAGE >>$DIR/cygwin/$ARCH/setup.ini
 			cat <<EOF >>$DIR/cygwin/$ARCH/setup.ini
+
+@ $PACKAGE
 sdesc: "Official libjpeg-turbo SDK"
 ldesc: "Official libjpeg-turbo SDK"
-category: Graphics
+category: libjpeg-turbo
+version: $VERSION-$BUILD
+install: $ARCH/$PACKAGE-$VERSION-$BUILD.tar.bz2 $SIZE $MD5SUM
 EOF
-			echo version: $VERSION-$BUILD >>$DIR/cygwin/$ARCH/setup.ini
-			echo install: $ARCH/$PACKAGE-$VERSION-$BUILD.tar.bz2 $SIZE $MD5SUM >>$DIR/cygwin/$ARCH/setup.ini
 		done
 	fi
 done
