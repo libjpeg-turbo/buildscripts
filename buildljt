@@ -47,13 +47,14 @@ usage()
 	echo
 	echo "USAGE: $SCRIPT [-f | -s | -e ] [repository path (default = trunk)]"
 	echo
-	echo "-e = Use existing source tarball in the build directory for today's date"
-	echo "-f = Force new build (deletes all existing build files for today's date)"
-	echo "-fb = Use existing source tarball in the build directory for today's date,"
-	echo "      but force new binaries to be built for this platform"
+	echo "-e = Use existing source tarball in the build directory"
+	echo "-f = Force new build (deletes all existing build files in the build directory)"
+	echo "-fb = Use existing source tarball in the build directory, but force new"
+	echo "      binaries to be built for this platform"
 	echo "-s = Build source tarball only"
 	echo "-l = Generate file list and HTML index"
 	echo "-j = Generate .zip file containing JNI JARs from all platforms"
+	echo "-b <b> = Specify build directory (default = ~/src/ljt.nightly/$BUILD)"
 	echo
 	exit 1
 }
@@ -62,7 +63,7 @@ update_list()
 {
 	if [ ! -d $OUTDIR/files ]; then
 		echo
-		echo Build does not exist!
+		echo Build does not exist in $OUTDIR/files!
 		echo
 		exit 1
 	fi
@@ -74,11 +75,16 @@ update_list()
 	echo "<html><body><table border=1 cellpadding=5>" >../index.html
 	echo "<tr><th>File</th><th>Size</th><th>Date</th><th>MD5 sum</th></tr>" >>../index.html
 	for i in *; do
-		if [ -d $i ]; then continue; fi
+		if [ -d $i -a "$i" != "cygwin" ]; then continue; fi
 		LSL=`ls -l $i`
-		SIZE=`echo $LSL | awk '{print $5}'`
-		DATE=`echo $LSL | awk '{print $6" "$7}'`
-		MD5=`md5sum -b $i | awk '{print $1}'`
+		SIZE=
+		DATE=
+		MD5=
+		if [ ! -d $i ]; then
+			SIZE=`echo $LSL | awk '{print $5}'`
+			DATE=`echo $LSL | awk '{print $6" "$7}'`
+			MD5=`md5sum -b $i | awk '{print $1}'`
+		fi
 		echo -e "$i\t$SIZE\t\t$DATE\t$MD5" >>../files.txt
 		echo -e "<tr><td><a href=\"$i\">$i</a></td><td>$SIZE</td><td>$DATE</td><td>$MD5</td></tr>" >>../index.html
 	done
@@ -91,7 +97,7 @@ update_jni()
 {
 	if [ ! -d $OUTDIR/files/jni ]; then
 		echo
-		echo Build does not exist!
+		echo Build does not exist in $OUTDIR/files!
 		echo
 		exit 1
 	fi
@@ -102,51 +108,57 @@ update_jni()
 	zip -j $OUTDIR/files/libjpeg-turbo-$VERSION-jws.zip $OUTDIR/files/jni/*.jar
 }
 
-if [ ! -d $HOME/src/ljt.nightly ]; then
-	mkdir -p $HOME/src/ljt.nightly
-fi
-
 BUILD=`date +%Y%m%d`
 export OUTDIR=$HOME/src/ljt.nightly/$BUILD
+LATEST=1
 
 FORCE=0
 export FORCEBINARY=0
 SRCONLY=0
 NOSRC=0
+UPDATELIST=0
+UPDATEJNI=0
+TAG=trunk
 
-if [ $# -gt 0 ]; then
+while [ $# -gt 0 ]; do
 	if [ "$1" = "-f" ]; then
 		FORCE=1
-		shift
 	elif [ "$1" = "-fb" ]; then
 		export FORCEBINARY=1
 		NOSRC=1
-		shift
 	elif [ "$1" = "-s" ]; then
 		SRCONLY=1
-		shift
 	elif [ "$1" = "-e" ]; then
-		if [ $SRCONLY = 1 ]; then
-			echo Cannot specify both -s and -e
-			exit 1
-		fi
 		NOSRC=1
+	elif [ "$1" = "-b" ]; then
+		OUTDIR=$2
+		LATEST=0
 		shift
 	elif [ "$1" = "-l" ]; then
-		update_list
-		exit 0
+		UPDATELIST=1
 	elif [ "$1" = "-j" ]; then
-		update_jni
-		exit 0
+		UPDATEJNI=1
 	elif [ "$1" = "-h" -o "$1" = "-?" ]; then
 		usage
+	else
+		TAG=$1
 	fi
+	shift
+done
+
+if [ $SRCONLY = 1 -a $NOSRC = 1 ]; then
+	echo ERROR: Cannot specify -s with -fb or -e
+	exit 1
 fi
 
-if [ $# -lt 1 ]; then
-	TAG=trunk
-else
-	TAG=$1
+if [ $UPDATELIST = 1 ]; then
+	update_list
+	exit 0
+fi
+
+if [ $UPDATEJNI = 1 ]; then
+	update_jni
+	exit 0
 fi
 
 if [ ! -d $OUTDIR ]; then
@@ -155,7 +167,7 @@ else
 	if [ $FORCE = 0 -a $NOSRC = 0 ]; then
 		if [ $SRCONLY = 0 ]; then
 			echo
-			echo Build already exists!
+			echo Build already exists in $OUTDIR/files!
 			echo "Run $SCRIPT -f to force a full rebuild"
 			echo " or $SCRIPT -e to use existing source"
 			echo
@@ -189,7 +201,7 @@ else
 fi
 cd $TMPDIR
 if [ $NOSRC = 0 ]; then
-	echo Checking out libjpeg-turbo ...
+	echo Checking out libjpeg-turbo from $TAG ...
 	svn export svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG libjpeg-turbo
 	echo Creating source tarball and SRPM ...
 	pushd libjpeg-turbo
@@ -240,7 +252,7 @@ echo   done.
 update_list
 update_jni
 
-if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" ]; then
+if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" -a $LATEST = 1 ]; then
 	# sym links aren't implemented properly in MinGW or Cygwin
 	if [ -h $OUTDIR/../latest ]; then rm $OUTDIR/../latest; fi
 	ln -fs $BUILD $OUTDIR/../latest
