@@ -1,0 +1,39 @@
+set -e
+set -u
+
+DIR=.
+ARCHES="x86 x86_64"
+
+if [ $# -gt 0 ]; then
+	DIR=$1
+	if [ $# -gt 1 ]; then
+		ARCHES=$2
+	fi
+fi
+
+for ARCH in $ARCHES; do
+	if [ -d $DIR/cygwin/$ARCH ]; then
+		echo Generating setup.ini for $ARCH packages ...
+		cat <<EOF >$DIR/cygwin/$ARCH/setup.ini
+release: cygwin
+arch: $ARCH
+
+EOF
+		for i in $DIR/cygwin/$ARCH/*.tar.bz2; do
+			BUILD=`basename $i .tar.bz2 | sed 's/.*-//g'`
+			VERSION=`basename $i -$BUILD\.tar.bz2 | sed 's/.*-//g'`
+			PACKAGE=`basename $i -$VERSION\-$BUILD\.tar.bz2`
+			SIZE=`ls -l $i | awk '{print $5}'`
+			MD5SUM=`md5sum -b $i | awk '{print $1}'`
+			echo Found $PACKAGE version $VERSION build $BUILD
+			echo @ $PACKAGE >>$DIR/cygwin/$ARCH/setup.ini
+			cat <<EOF >>$DIR/cygwin/$ARCH/setup.ini
+sdesc: "Official libjpeg-turbo SDK"
+ldesc: "Official libjpeg-turbo SDK"
+category: Graphics
+EOF
+			echo version: $VERSION-$BUILD >>$DIR/cygwin/$ARCH/setup.ini
+			echo install: $ARCH/$PACKAGE-$VERSION-$BUILD.tar.bz2 $SIZE $MD5SUM >>$DIR/cygwin/$ARCH/setup.ini
+		done
+	fi
+done
