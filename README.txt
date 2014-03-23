@@ -60,7 +60,7 @@ it's just cleaner to access them from /Developer/usr when needed.
 Build Environment: Windows
 --------------------------
 
-Recommended O/S:  Windows XP 64-bit
+Windows XP 64-bit or later required
 
 CMake should be installed somewhere in the PATH.
 
