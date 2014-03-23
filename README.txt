@@ -2,7 +2,7 @@ DRC's libjpeg-turbo Build Scripts
 =================================
 
 These scripts are used to build the "official" libjpeg-turbo binaries, which
-work on any Linux platform with GLIB 2.3.2 and later, as well as Windows XP and
+work on any Linux platform with GLIB 2.3.4 and later, as well as Windows XP and
 later and OS X 10.4 and later.
 
 See BUILDING.txt in the libjpeg-turbo source for basic build requirements.
