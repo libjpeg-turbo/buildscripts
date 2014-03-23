@@ -3,7 +3,7 @@ DRC's libjpeg-turbo Build Scripts
 
 These scripts are used to build the "official" libjpeg-turbo binaries, which
 work on any Linux platform with GLIB 2.3.4 and later, as well as Windows XP and
-later and OS X 10.4 and later.
+later and OS X 10.5 and later.
 
 See BUILDING.txt in the libjpeg-turbo source for basic build requirements.
 Additional build requirements for these scripts are listed below.
@@ -24,14 +24,13 @@ Or, you could just create sym links from gcc4 -> gcc and g++4 -> g++.
 Build Environment: OS X
 -----------------------
 
-Recommended version:  OS X 10.6 (Snow Leopard)
+OS X 10.6 (Snow Leopard) or later required
 
 Xcode 3.2.6 and iOS SDK 4.3 for Snow Leopard (available at
 https://developer.apple.com/downloads -- Apple ID required.)  The build scripts
 need this in order to produce libjpeg-turbo binaries that are backward
-compatible with OS X 10.4/10.5 and the iPhone 3G.  The Xcode tools should be
-installed under /Developer, and the "Mac OS X 10.4 SDK" and "iOS SDK" options
-should be installed.
+compatible with OS X 10.5 and the iPhone 3G.  The Xcode tools should be
+installed under /Developer, and the "iOS SDK" option should be installed.
 
 Xcode 4.5.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
@@ -40,9 +39,8 @@ Xcode should be installed under /Applications/Xcode45.app.  NOTE:  Although
 Xcode.app can't be run on Snow Leopard, the build scripts can still use the
 SDKs contained within it.
 
-NOTE: It is possible to use OS X 10.7 and later as a build platform, but
-installing Xcode 3.2.6 on OS X 10.7 and later is a bit tricky.  You must invoke
-the Xcode installer from the command line as follows:
+NOTE: Installing Xcode 3.2.6 on OS X 10.7 and later is a bit tricky.  You must
+invoke the Xcode installer from the command line as follows:
 
   export COMMAND_LINE_INSTALL=1
   open "/Volumes/Xcode and iOS SDK/Xcode and iOS SDK.mpkg"

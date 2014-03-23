@@ -21,7 +21,7 @@ autoreconf -fiv
 
 mkdir osxx86
 pushd osxx86
-sh ../configure --host i686-apple-darwin CC=/Developer/usr/bin/gcc-4.2 CFLAGS='-I/Developer/usr/lib/gcc/i686-apple-darwin10/4.2.1/include -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -O3 -m32' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -m32' --with-java --with-pic JAVA='java -d32' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
+sh ../configure --host i686-apple-darwin CC=/Developer/usr/bin/gcc-4.2 CFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -O3 -m32' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32' --with-java --with-pic JAVA='java -d32' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
 make test
 popd
 
@@ -54,7 +54,7 @@ popd
 
 mkdir osxx8664
 pushd osxx8664
-sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CC=/Developer/usr/bin/gcc-4.2 CFLAGS='-I/Developer/usr/lib/gcc/i686-apple-darwin10/4.2.1/include -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -O3' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4' --with-java --with-pic JAVA='java -d64' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
+sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CC=/Developer/usr/bin/gcc-4.2 CFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -O3' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5' --with-java --with-pic JAVA='java -d64' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
 make test
 make iosdmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/

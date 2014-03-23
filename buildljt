@@ -34,10 +34,11 @@ onexit()
 {
 	cd $PREVDIR
 	if [ ! "$TMPDIR" = "" ]; then
-		if [ "$PLATFORM" = "windows" -o "$PLATFORM" = "cygwin" -o "$PLATFORM" = "cygwin64" ]; then
-			rm -rf $TMPDIR
-		else
+		RESULTS=`find $TMPDIR -uid 0`
+		if [ ! -z $RESULTS ]; then
 			sudo rm -rf $TMPDIR
+		else
+			rm -rf $TMPDIR
 		fi
 	fi
 }
