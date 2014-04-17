@@ -64,6 +64,10 @@ CMake should be installed somewhere in the PATH.
 
 All software necessary to build a 32-bit and a 64-bit version of libjpeg-turbo
 
+NOTE:  The official libjpeg-turbo binaries are generated using the Windows SDK
+for Windows 7 and .NET Framework 3.5 SP1:
+http://www.microsoft.com/en-us/download/details.aspx?id=3138
+
 
 Build Procedure
 ---------------
