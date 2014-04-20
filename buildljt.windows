@@ -28,7 +28,7 @@ popd
 
 mkdir mingw64
 pushd mingw64
-CC=/mingw/mingw64/bin/x86_64-w64-mingw32-gcc cmake -G "MSYS Makefiles" -DCMAKE_AR=/mingw/mingw64/bin/x86_64-w64-mingw32-ar -DCMAKE_RANLIB=/mingw/mingw64/bin/x86_64-w64-mingw32-ranlib -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
+PATH=/mingw64/bin:$PATH cmake -G "MSYS Makefiles" -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
 make
 make installer
 make test

@@ -55,18 +55,45 @@ Xcode 3.2.6 command-line tools are compatible with OS X 10.7 and later, so
 it's just cleaner to access them from /Developer/usr when needed.
 
 
-Build Environment: Windows
---------------------------
+Build Environment: Windows (not Cygwin)
+---------------------------------------
 
 Windows XP 64-bit or later required
 
-CMake should be installed somewhere in the PATH.
+CMake (the Windows native version, not the Cygwin version) should be installed
+somewhere in the PATH.
 
-All software necessary to build a 32-bit and a 64-bit version of libjpeg-turbo
+The directory containing the 64-bit Visual C++ compiler
+(e.g. c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64)
+should be listed in the PATH environment variable.
 
-NOTE:  The official libjpeg-turbo binaries are generated using the Windows SDK
-for Windows 7 and .NET Framework 3.5 SP1:
-http://www.microsoft.com/en-us/download/details.aspx?id=3138
+The directory containing the 64-bit Windows SDK libraries
+(e.g. C:\Program Files\Microsoft SDKs\Windows\v7.0\Lib\x64)
+should be listed in the LIB environment variable.
+
+The directories containing the Visual C++ and Windows SDK header files
+(e.g. c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include and
+C:\Program Files\Microsoft SDKs\Windows\v7.0\include)
+should be listed in the INCLUDE environment variable.
+
+The official libjpeg-turbo binaries for Visual C++ are generated using the
+Windows SDK for Windows 7 and .NET Framework 3.5 SP1
+(http://www.microsoft.com/en-us/download/details.aspx?id=3138),
+which contains Visual C++ 10.0, but any reasonably modern version of Visual
+C++ and the Windows SDK should work.
+
+The Windows native builds (both Visual C++ and MinGW) must be conducted from
+within an MSYS shell.  MSYS can be installed from:
+http://downloads.sourceforge.net/mingw/MSYS-1.0.11.exe
+Edit /etc/fstab in your MSYS installation and assign the /mingw mount point
+to the directory containing a 32-bit MinGW toolchain and the /mingw64 mount
+point to the directory containing a 64-bit MinGW64 toolchain (the
+x32-4.8.1-win32-dwarf and x64-4.8.1-win32-seh toolchains from MinGW-builds are
+used to generate the official libjpeg-turbo binaries for GCC, but TDM-GCC and
+other distributions work as well.)
+
+All other software necessary to build a 32-bit and a 64-bit version of
+libjpeg-turbo
 
 
 Build Procedure
