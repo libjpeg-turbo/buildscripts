@@ -25,6 +25,6 @@ make test
 mkdir -p $OUTDIR/files/cygwin/x86_64
 mv libjpeg-turbo-official-*-*.tar.bz2 $OUTDIR/files/cygwin/x86_64/
 
-sh gencygini $OUTDIR/files/ x86_64
-
 popd
+
+sh `dirname $0`/gencygini $OUTDIR/files/ x86_64

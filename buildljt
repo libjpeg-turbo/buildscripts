@@ -69,10 +69,10 @@ update_list()
 		exit 1
 	fi
 	cd $OUTDIR/files
-	if [ -f files.txt ]; then rm files.txt; fi
-	if [ -f ../files.txt ]; then rm ../files.txt; fi
-	if [ -f index.html ]; then rm index.html; fi
-	if [ -f ../index.html ]; then rm ../index.html; fi
+	if [ -f files.txt ]; then rm -f files.txt; fi
+	if [ -f ../files.txt ]; then rm -f ../files.txt; fi
+	if [ -f index.html ]; then rm -f index.html; fi
+	if [ -f ../index.html ]; then rm -f ../index.html; fi
 	echo "<html><body><table border=1 cellpadding=5>" >../index.html
 	echo "<tr><th>File</th><th>Size</th><th>Date</th><th>MD5 sum</th></tr>" >>../index.html
 	for i in *; do
@@ -253,7 +253,7 @@ echo   done.
 update_list
 update_jni
 
-if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" -a $LATEST = 1 ]; then
+if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" -a $LATEST = 1 ]; then
 	# sym links aren't implemented properly in MinGW or Cygwin
 	if [ -h $OUTDIR/../latest ]; then rm $OUTDIR/../latest; fi
 	ln -fs $BUILD $OUTDIR/../latest
