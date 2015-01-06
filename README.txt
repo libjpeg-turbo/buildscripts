@@ -44,6 +44,13 @@ Xcode should be installed under /Applications/Xcode45.app.  NOTE:  Although
 Xcode.app can't be run on Snow Leopard, the build scripts can still use the
 SDKs contained within it.
 
+Xcode 5.1.x (available at https://developer.apple.com/downloads --
+Apple ID required.)  The build scripts need this in order to produce
+libjpeg-turbo binaries that are compatible with the iPhone 5S.  Xcode should be
+installed under /Applications/Xcode51.app.  NOTE:  Although Xcode.app can't be
+run on Snow Leopard, the build scripts can still use the SDKs contained within
+it.
+
 NOTE: Installing Xcode 3.2.6 on OS X 10.7 and later is a bit tricky.  You must
 invoke the Xcode installer from the command line as follows:
 

@@ -31,14 +31,14 @@ export IOS_PLATFORMDIR="/Developer/Platforms/iPhoneOS.platform"
 export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS4.3.sdk"
 export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 export IOS_CFLAGS="-march=armv6 -mcpu=arm1176jzf-s -mfpu=vfp"
-sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
+sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
 make
 popd
 
 mkdir iosarmv7
 pushd iosarmv7
 export IOS_CFLAGS="-march=armv7 -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon"
-sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
 make
 popd
 
@@ -48,7 +48,17 @@ export IOS_PLATFORMDIR="/Applications/Xcode45.app/Contents/Developer/Platforms/i
 export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.0.sdk"
 export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 export IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon"
-sh ../configure --host arm-apple-darwin10 --enable-static --disable-shared CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+make
+popd
+
+mkdir iosarmv8
+pushd iosarmv8
+export IOS_PLATFORMDIR="/Applications/Xcode51.app/Contents/Developer/Platforms/iPhoneOS.platform"
+export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS7.1.sdk"
+export IOS_GCC="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+export IOS_CFLAGS="-arch arm64 -miphoneos-version-min=7.0"
+sh ../configure --host aarch64-apple-darwin CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
 make
 popd
 
@@ -56,7 +66,7 @@ mkdir osxx8664
 pushd osxx8664
 sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CC=/Developer/usr/bin/gcc-4.2 CFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -O3' LDFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5' --with-java --with-pic JAVA='java -d64' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
 make test
-make iosdmg
+make iosdmg LIPO="xcrun lipo"
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
 lipo -create -arch i386 ../osxx86/.libs/libturbojpeg.dylib -arch x86_64 .libs/libturbojpeg.dylib -output libturbojpeg.jnilib
 jar cvf $OUTDIR/files/jni/ljtosx.jar -C . libturbojpeg.jnilib
