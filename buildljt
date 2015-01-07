@@ -251,7 +251,9 @@ sh $SCRIPTDIR/buildljt.$PLATFORM
 echo   done.
 
 update_list
-update_jni
+if [ "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" ]; then
+	update_jni
+fi
 
 if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" -a $LATEST = 1 ]; then
 	# sym links aren't implemented properly in MinGW or Cygwin
