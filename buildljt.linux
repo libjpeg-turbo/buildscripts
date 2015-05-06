@@ -80,7 +80,7 @@ export JAVAC=javac
 export host_alias=
 sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd
 make deb
-make test
+make test FLOATTEST=sse
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_amd64.deb $OUTDIR/files/
 popd
@@ -95,7 +95,7 @@ export JAVAC=/usr/java/default32/bin/javac
 export host_alias=i686-pc-linux-gnu
 sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd
 make deb
-make test
+make test FLOATTEST=sse
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_i386.deb $OUTDIR/files/
 mv libjpeg-turbo-official32_[0-9]*_amd64.deb $OUTDIR/files/

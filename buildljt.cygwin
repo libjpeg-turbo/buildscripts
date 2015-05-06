@@ -20,7 +20,7 @@ pushd libjpeg-turbo*
 
 sh ./configure PKGNAME=libjpeg-turbo-official --with-simd
 make cygwinpkg
-make test
+make test FLOATTEST=sse
 mkdir -p $OUTDIR/files/cygwin/x86
 mv libjpeg-turbo-official-*-*.tar.bz2 $OUTDIR/files/cygwin/x86/
 
