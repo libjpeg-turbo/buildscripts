@@ -58,7 +58,7 @@ export IOS_PLATFORMDIR="/Applications/Xcode51.app/Contents/Developer/Platforms/i
 export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS7.1.sdk"
 export IOS_GCC="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
 export IOS_CFLAGS="-arch arm64 -miphoneos-version-min=7.0"
-sh ../configure --host aarch64-apple-darwin CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+sh ../configure --host aarch64-apple-darwin CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS -funwind-tables" LDFLAGS="-isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
 make
 popd
 
