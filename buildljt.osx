@@ -31,14 +31,14 @@ export IOS_PLATFORMDIR="/Developer/Platforms/iPhoneOS.platform"
 export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS4.3.sdk"
 export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 export IOS_CFLAGS="-march=armv6 -mcpu=arm1176jzf-s -mfpu=vfp"
-sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
+CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
 make
 popd
 
 mkdir iosarmv7
 pushd iosarmv7
 export IOS_CFLAGS="-march=armv7 -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon"
-sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
 make
 popd
 
@@ -48,7 +48,7 @@ export IOS_PLATFORMDIR="/Applications/Xcode45.app/Contents/Developer/Platforms/i
 export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.0.sdk"
 export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 export IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon"
-sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
 make
 popd
 
