@@ -18,7 +18,6 @@ exec > $OUTDIR/log-$PLATFORM.txt 2>&1
 
 pushd libjpeg-turbo*
 
-autoreconf -fiv
 sh ./configure PKGNAME=libjpeg-turbo-official --with-simd
 make cygwinpkg
 make test FLOATTEST=sse

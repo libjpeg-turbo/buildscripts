@@ -25,6 +25,13 @@ NOTE:  If building on a distro that already has GCC 4, you should edit
 buildljt.linux and remove the lines that say "CC=gcc4" and "CXX=g++4".
 Or, you could just create sym links from gcc4 -> gcc and g++4 -> g++.
 
+It is strongly recommended that you install the following from source, as the
+autotools environment on RHEL 4 is quite old:
+-- autoconf 2.69:  http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+-- automake 1.15:  http://ftp.gnu.org/gnu/automake/automake-1.15.tar.gz
+-- libtool 2.4.6:  http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
+-- m4 1.4.17:      http://ftp.gnu.org/gnu/m4/m4-1.4.17.tar.gz
+
 
 Build Environment: OS X
 -----------------------
