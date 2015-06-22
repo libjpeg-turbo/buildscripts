@@ -12,10 +12,7 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 5 64-bit
-
-The compat-glibc-2.3.4 packages (both i386 and x86_64) and the
-compat-glibc-2.3.4-headers package should be installed.
+Recommended distro:  Red Hat or CentOS Enterprise Linux 4 64-bit
 
 Both 64-bit and 32-bit JDKs should be installed.  The 64-bit version should be
 in your PATH, and the directory containing the 32-bit version should be
@@ -23,6 +20,10 @@ symlinked to /usr/java/default32.
 
 Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to BUILDING.txt.)
+
+NOTE:  If building on a distro that already has GCC 4, you should edit
+buildljt.linux and remove the lines that say "CC=gcc4" and "CXX=g++4".
+Or, you could just create sym links from gcc4 -> gcc and g++4 -> g++.
 
 To reproduce the official libjpeg-turbo distribution, you will need to install
 newer versions of m4, libtool, autoconf, and automake from source.  The
