@@ -12,7 +12,10 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 4 64-bit
+Recommended distro:  Red Hat or CentOS Enterprise Linux 5 64-bit
+
+The compat-glibc-2.3.4 packages (both i386 and x86_64) and the
+compat-glibc-2.3.4-headers package should be installed.
 
 Both 64-bit and 32-bit JDKs should be installed.  The 64-bit version should be
 in your PATH, and the directory containing the 32-bit version should be
@@ -21,16 +24,12 @@ symlinked to /usr/java/default32.
 Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to BUILDING.txt.)
 
-NOTE:  If building on a distro that already has GCC 4, you should edit
-buildljt.linux and remove the lines that say "CC=gcc4" and "CXX=g++4".
-Or, you could just create sym links from gcc4 -> gcc and g++4 -> g++.
-
-It is strongly recommended that you install the following from source, as the
-autotools environment on RHEL 4 is quite old:
--- autoconf 2.69:  http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
--- automake 1.15:  http://ftp.gnu.org/gnu/automake/automake-1.15.tar.gz
--- libtool 2.4.6:  http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
--- m4 1.4.17:      http://ftp.gnu.org/gnu/m4/m4-1.4.17.tar.gz
+To reproduce the official libjpeg-turbo distribution, you will need to install
+newer versions of m4, libtool, autoconf, and automake from source.  The
+autotools.install script, located in the same directory as this README file,
+will download and build the necessary packages and install them under
+/opt/autotools.  You will need to add /opt/autotools/bin to the PATH prior to
+invoking buildljt.
 
 
 Build Environment: OS X

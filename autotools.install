@@ -1,0 +1,56 @@
+set -u
+set -e
+trap onexit INT
+trap onexit TERM
+trap onexit EXIT
+
+TMPDIR=
+PREVDIR=`pwd`
+
+onexit()
+{
+	cd $PREVDIR
+	if [ ! "$TMPDIR" = "" ]; then
+		rm -rf $TMPDIR
+	fi
+}
+
+if [ ! `id -u` -eq 0 ]; then
+	echo This script should be run as root.
+	exit 1
+fi
+
+if [ -x /opt/autotools/bin/m4 -a -x /opt/autotools/bin/libtool \
+	-a -x /opt/autotools/bin/autoconf -a -x /opt/autotools/bin/automake ]; then
+	echo Autotools already installed!
+	exit 1
+fi
+
+export TMPDIR=`mktemp -d /tmp/autotools.XXXXXX`
+cd $TMPDIR
+
+wget http://ftp.gnu.org/gnu/m4/m4-1.4.17.tar.gz
+tar xfz m4-1.4.17.tar.gz -o
+cd m4-1.4.17
+./configure --prefix=/opt/autotools
+make install
+
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+tar xvfz autoconf-2.69.tar.gz -o
+cd autoconf-2.69
+./configure --prefix=/opt/autotools M4=/opt/autotools/bin/m4
+make install
+
+wget http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
+tar xfz libtool-2.4.6.tar.gz -o
+cd libtool-2.4.6
+./configure --prefix=/opt/autotools M4=/opt/autotools/bin/m4
+make install
+
+wget http://ftp.gnu.org/gnu/automake/automake-1.15.tar.gz
+tar xvfz automake-1.15.tar.gz -o
+cd automake-1.15
+./configure --prefix=/opt/autotools AUTOCONF=/opt/autotools/bin/autoconf
+make install
+
+echo GREAT SUCCESS!
