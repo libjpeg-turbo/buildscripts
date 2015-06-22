@@ -40,26 +40,25 @@ OS X 10.6 (Snow Leopard) or later required
 
 GCC 5 (installed through MacPorts)
 
-Xcode 4.4.x (available at https://developer.apple.com/downloads --
+Xcode 4.3.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
 libjpeg-turbo binaries that are backward compatible with the iPhone 3G.
-Xcode should be installed under /Applications/Xcode44.app.  NOTE:  Although
-Xcode44.app can't be run on Snow Leopard, the build scripts can still use the
-SDKs contained within it.
+Xcode should be installed under /Applications/Xcode43.app.
 
-Xcode 4.5.x (available at https://developer.apple.com/downloads --
+Xcode 4.6.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
 libjpeg-turbo binaries that are compatible with the iPhone 5 and iPad 4.
-Xcode should be installed under /Applications/Xcode45.app.  NOTE:  Although
-Xcode45.app can't be run on Snow Leopard, the build scripts can still use the
-SDKs contained within it.
+Xcode should be installed under /Applications/Xcode46.app.  NOTE: we could use
+Xcode 5.1.x, as below, but Xcode 4.6.x was the last version to include
+LLVM-GCC, which performs better with libjpeg-turbo than clang.
 
 Xcode 5.1.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
 libjpeg-turbo binaries that are compatible with the iPhone 5S.  Xcode should be
-installed under /Applications/Xcode51.app.  NOTE:  Although Xcode51.app can't
-be run on Snow Leopard, the build scripts can still use the SDKs contained
-within it.
+installed under /Applications/Xcode51.app.
+
+NOTE: Although the Xcode apps can't be run on Snow Leopard, the build scripts
+can still use the SDKs contained within them.
 
 
 Build Environment: Windows (not Cygwin)
