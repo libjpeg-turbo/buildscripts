@@ -36,7 +36,7 @@ invoking buildljt.
 Build Environment: OS X
 -----------------------
 
-OS X 10.6 (Snow Leopard) or later required
+OS X 10.8 (Mountain Lion) or later required
 
 GCC 5 (installed through MacPorts)
 
@@ -56,9 +56,6 @@ Xcode 5.1.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
 libjpeg-turbo binaries that are compatible with the iPhone 5S.  Xcode should be
 installed under /Applications/Xcode51.app.
-
-NOTE: Although the Xcode apps can't be run on Snow Leopard, the build scripts
-can still use the SDKs contained within them.
 
 
 Build Environment: Windows (not Cygwin)
