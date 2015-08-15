@@ -1,6 +1,8 @@
 set -u
 set -e
 
+SCRIPTDIR=`dirname $0`
+
 if ls $OUTDIR/files/libjpeg-turbo*.exe >/dev/null 2>&1; then \
 	if [ $FORCEBINARY = 0 ]; then
 		echo
@@ -24,6 +26,11 @@ make
 make test
 make installer
 mv libjpeg-turbo-[0-9]*-gcc.exe $OUTDIR/files/
+if [ -f $SCRIPTDIR/mssign ]; then
+	. $SCRIPTDIR/mssign
+	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
+fi
 popd
 
 mkdir mingw64
@@ -33,6 +40,10 @@ make
 make installer
 make test
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
+if [ -f $SCRIPTDIR/mssign ]; then
+	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
+fi
 popd
 
 mkdir win64
@@ -42,6 +53,10 @@ nmake
 nmake test
 nmake installer
 mv libjpeg-turbo-[0-9]*-vc64.exe $OUTDIR/files/
+if [ -f $SCRIPTDIR/mssign ]; then
+	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
+fi
 jar cvf $OUTDIR/files/jni/ljtwin64.jar -C . turbojpeg.dll
 popd
 
@@ -53,6 +68,10 @@ nmake
 nmake installer
 nmake test
 mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
+if [ -f $SCRIPTDIR/mssign ]; then
+	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
+fi
 jar cvf $OUTDIR/files/jni/ljtwin32.jar -C . turbojpeg.dll
 popd
 

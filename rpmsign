@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+set password [lindex $argv 0]
+set key [lindex $argv 1]
+set files [lrange $argv 2 2 ]
+
+spawn rpm --define "%_gpg_name=$key" --addsign $files
+expect "Enter pass phrase:"
+send -- "$password\r"
+
+expect eof

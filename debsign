@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+set password [lindex $argv 0]
+set key [lindex $argv 1]
+set files [lrange $argv 2 2 ]
+
+spawn debsigs --sign=origin --default-key=$key $files
+expect "Enter passphrase:"
+send -- "$password\r"
+
+expect eof

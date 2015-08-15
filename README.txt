@@ -124,6 +124,33 @@ running buildljt.
 Run 'buildljt -h' for usage information.
 
 
+Signing the Linux Packages
+--------------------------
+
+To sign the RPMs and DEBs using a GPG key, create a file called "gpgsign" in
+the same directory as buildljt, and include the following contents in the file:
+
+GPG_KEY_NAME={full name of GPG key to use (as listed in 'gpg --list-keys')}
+GPG_KEY_ID={key ID of GPG key to use (as listed in 'gpg --list-keys')}
+GPG_KEY_PASS={password for GPG key}
+
+debsigs (available at https://gitlab.com/debsigs/debsigs/tags) must be
+installed and in the PATH.
+
+
+Signing the Windows Packages
+----------------------------
+
+To sign the Windows installers using a code signing certificate, create a file
+called "mssign" in the same directory as buildljt, and include the following
+contents in the file:
+
+MS_KEY_FILE={full path to a .pfx file containing the code signing certificate}
+MS_KEY_PASS={password for certificate}
+
+signtool (available in the Windows SDK) must be in the PATH.
+
+
 Distributing a Pre-Release Build
 --------------------------------
 

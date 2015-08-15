@@ -1,6 +1,8 @@
 set -u
 set -e
 
+SCRIPTDIR=`dirname $0`
+
 if ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.i386.rpm >/dev/null 2>&1 \
 	|| ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.x86_64.rpm >/dev/null 2>&1 \
 	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_amd64.deb >/dev/null 2>&1 \
@@ -43,6 +45,12 @@ cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
 jar cvf $OUTDIR/files/jni/ljtlinux64.jar -C rpmbuild/BUILD/libjpeg-turbo-$VERSION/.libs libturbojpeg.so
 rm -rf rpmbuild
 
+if [ -f $SCRIPTDIR/gpgsign ]; then
+	. $SCRIPTDIR/gpgsign
+	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
+	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
+fi
+
 echo Creating 32-bit binary RPM ...
 
 pushd libjpeg-turbo-[0-9]*
@@ -66,6 +74,10 @@ if [ ! "$MD5JAR1" = "$MD5JAR2" ]; then
 fi
 VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.i386.rpm | cut -f4 -d-`
 mv libjpeg-turbo-official-[0-9]*.i386.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
+if [ -f $SCRIPTDIR/gpgsign ]; then
+	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
+	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
+fi
 jar cvf $OUTDIR/files/jni/ljtlinux32.jar -C .libs libturbojpeg.so
 popd
 
@@ -82,6 +94,9 @@ make deb
 make test FLOATTEST=sse
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_amd64.deb $OUTDIR/files/
+if [ -f $SCRIPTDIR/gpgsign ]; then
+	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_amd64.deb
+fi
 popd
 
 echo Creating 32-bit binary DEB ...
@@ -98,6 +113,10 @@ make test FLOATTEST=sse
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_i386.deb $OUTDIR/files/
 mv libjpeg-turbo-official32_[0-9]*_amd64.deb $OUTDIR/files/
+if [ -f $SCRIPTDIR/gpgsign ]; then
+	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_i386.deb
+	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official32_[0-9]*_amd64.deb
+fi
 popd
 
 popd
