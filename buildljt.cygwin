@@ -16,7 +16,7 @@ fi
 
 exec > $OUTDIR/log-$PLATFORM.txt 2>&1
 
-pushd libjpeg-turbo*
+pushd libjpeg-turbo-[0-9]*
 
 sh ./configure PKGNAME=libjpeg-turbo-official --with-simd
 make cygwinpkg

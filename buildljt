@@ -207,6 +207,11 @@ if [ $NOSRC = 0 ]; then
 	rm -rf libjpeg-turbo/.git libjpeg-turbo/.gitignore
 	echo Creating source tarball and SRPM ...
 	pushd libjpeg-turbo
+	VERSION=`grep "set(VERSION" CMakeLists.txt | sed -e s/[^0-9\.]//g`
+	if [ "$VERSION" = "" ]; then
+		echo Could not parse version from CMakeLists.txt!
+		exit 1
+	fi
 	autoreconf -fiv
 	rm -rf autom4te.cache
 	popd
@@ -215,16 +220,17 @@ if [ $NOSRC = 0 ]; then
 	./configure --with-java PKGNAME=libjpeg-turbo-official
 	make dist
 	popd
-	mv libjpeg-turbo/*.tar.gz $OUTDIR/files/
-	tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
-	diff -r libjpeg-turbo.pristine libjpeg-turbo-*
+	mv libjpeg-turbo/libjpeg-turbo-$VERSION.tar.gz $OUTDIR/files/
+	tar xfz $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
+	diff -r libjpeg-turbo.pristine libjpeg-turbo-$VERSION
+	rm -rf libjpeg-turbo.pristine
 	if [ "$PLATFORM" = "linux" ]; then
 		pushd libjpeg-turbo
 		make srpm
 		popd
-		mv libjpeg-turbo/*.src.rpm $OUTDIR/files/
+		mv libjpeg-turbo/libjpeg-turbo-official-$VERSION.src.rpm $OUTDIR/files/
 	fi
-	rm -rf libjpeg-turbo*
+	rm -rf libjpeg-turbo libjpeg-turbo-$VERSION
 else
 	if [ "$PLATFORM" = "linux" ]; then
 		if ! ls $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz >/dev/null 2>&1
