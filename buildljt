@@ -119,7 +119,7 @@ SRCONLY=0
 NOSRC=0
 UPDATELIST=0
 UPDATEJNI=0
-TAG=trunk
+TAG=master
 
 while [ $# -gt 0 ]; do
 	if [ "$1" = "-f" ]; then
@@ -203,7 +203,8 @@ fi
 cd $TMPDIR
 if [ $NOSRC = 0 ]; then
 	echo Checking out libjpeg-turbo from $TAG ...
-	svn export svn://svn.code.sf.net/p/libjpeg-turbo/code/$TAG libjpeg-turbo
+	git clone --depth=1 -b $TAG https://github.com/libjpeg-turbo/libjpeg-turbo.git libjpeg-turbo
+	rm -rf libjpeg-turbo/.git libjpeg-turbo/.gitignore
 	echo Creating source tarball and SRPM ...
 	pushd libjpeg-turbo
 	autoreconf -fiv
