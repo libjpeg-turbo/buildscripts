@@ -19,7 +19,9 @@ pushd libjpeg-turbo-[0-9]*
 
 mkdir osxx86
 pushd osxx86
-sh ../configure --host i686-apple-darwin CC=/opt/local/bin/gcc-mp-5 CFLAGS='-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -O3 -m32' LDFLAGS='-mmacosx-version-min=10.5 -m32' --with-java --with-pic JAVA='java -d32' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
+OSX_PLATFORMDIR=/Applications/Xcode51.app/Contents/Developer/Platforms/MacOSX.platform
+export OSX_SYSROOT="$OSX_PLATFORMDIR/Developer/SDKs/MacOSX10.9.sdk"
+sh ../configure --host i686-apple-darwin CC=/opt/local/bin/gcc-mp-5 CFLAGS="-D_NONSTD_SOURCE -isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3 -m32" LDFLAGS='-m32' --with-java --with-pic JAVA='java -d32' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
 make test FLOATTEST=sse
 popd
 
@@ -43,7 +45,7 @@ popd
 mkdir iosarmv7s
 pushd iosarmv7s
 export IOS_PLATFORMDIR="/Applications/Xcode46.app/Contents/Developer/Platforms/iPhoneOS.platform"
-export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.0.sdk"
+export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.*.sdk"
 export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 export IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon -miphoneos-version-min=6.0"
 CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
@@ -62,7 +64,7 @@ popd
 
 mkdir osxx8664
 pushd osxx8664
-sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm CC=/opt/local/bin/gcc-mp-5 CFLAGS='-mmacosx-version-min=10.5 -O3' LDFLAGS='-mmacosx-version-min=10.5' --with-java --with-pic JAVA='java -d64' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
+sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/yasm CC=/opt/local/bin/gcc-mp-5 CFLAGS="-isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3" --with-java --with-pic JAVA='java -d64' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
 make test FLOATTEST=sse
 make iosdmg LIPO="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo"
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/

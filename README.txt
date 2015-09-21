@@ -50,8 +50,8 @@ LLVM-GCC, which performs better with libjpeg-turbo than clang.
 
 Xcode 5.1.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce
-libjpeg-turbo binaries that are compatible with the iPhone 5S.  Xcode should be
-installed under /Applications/Xcode51.app.
+libjpeg-turbo binaries that are compatible with the iPhone 5S and later and
+OS X 10.5.  Xcode should be installed under /Applications/Xcode51.app.
 
 
 Build Environment: Windows (not Cygwin)
