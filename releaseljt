@@ -30,7 +30,7 @@ ssh $SSHSERVER << EOF
 	rm "$FRSDIR/$2/files.txt" "$FRSDIR/$2/index.html"
 	cd "$FRSDIR"
 	pushd ~/buildscripts/libjpeg-turbo
-	svn update
+	git pull
 	popd
 	~/buildscripts/libjpeg-turbo/gencygini
 EOF
