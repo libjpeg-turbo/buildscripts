@@ -1,0 +1,8 @@
+export JAVACFLAGS='-target 1.5 -source 1.5'
+
+if [ "$1" = "-g" ]; then
+	export CFLAGS="-O3 -g"
+	shift
+fi
+
+sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd ${1+"$@"}

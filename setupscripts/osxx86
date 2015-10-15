@@ -1,0 +1,16 @@
+OSX_PLATFORMDIR=/Applications/Xcode51.app/Contents/Developer/Platforms/MacOSX.platform
+OSX_SYSROOT="$OSX_PLATFORMDIR/Developer/SDKs/MacOSX10.9.sdk"
+
+export host_alias=i686-apple-darwin
+export CC=/opt/local/bin/gcc-mp-5
+export CFLAGS="-D_NONSTD_SOURCE -isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3 -m32"
+export JAVA='java -d32'
+export JAVACFLAGS='-target 1.5 -source 1.5'
+export LDFLAGS=-m32
+
+if [ "$1" = "-g" ]; then
+	export CFLAGS="$CFLAGS -g"
+	shift
+fi
+
+sh ../configure --with-java --with-pic --with-simd ${1+"$@"}

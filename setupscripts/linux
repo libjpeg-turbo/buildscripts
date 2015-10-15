@@ -1,0 +1,12 @@
+export host_alias=i686-pc-linux-gnu
+export CFLAGS='-m32 -O3'
+export JAVA=/usr/java/default32/bin/java
+export JAVAC=/usr/java/default32/bin/javac
+export JAVACFLAGS='-target 1.5 -source 1.5'
+
+if [ "$1" = "-g" ]; then
+	export CFLAGS="$CFLAGS -g"
+	shift
+fi
+
+sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd ${1+"$@"}

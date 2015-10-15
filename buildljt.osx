@@ -1,6 +1,8 @@
 set -u
 set -e
 
+SCRIPTDIR=`dirname $0`
+
 if ls $OUTDIR/files/libjpeg-turbo-[0-9]*.dmg >/dev/null 2>&1; then
 	if [ $FORCEBINARY = 0 ]; then
 		echo
@@ -19,52 +21,36 @@ pushd libjpeg-turbo-[0-9]*
 
 mkdir osxx86
 pushd osxx86
-OSX_PLATFORMDIR=/Applications/Xcode51.app/Contents/Developer/Platforms/MacOSX.platform
-export OSX_SYSROOT="$OSX_PLATFORMDIR/Developer/SDKs/MacOSX10.9.sdk"
-sh ../configure --host i686-apple-darwin CC=/opt/local/bin/gcc-mp-5 CFLAGS="-D_NONSTD_SOURCE -isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3 -m32" LDFLAGS='-m32' --with-java --with-pic JAVA='java -d32' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
+sh $SCRIPTDIR/setupscripts/osxx86
 make test FLOATTEST=sse
 popd
 
 mkdir iosarmv6
 pushd iosarmv6
-export IOS_PLATFORMDIR="/Applications/Xcode43.app/Contents/Developer/Platforms/iPhoneOS.platform"
-export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS5.1.sdk"
-export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
-export IOS_CFLAGS="-march=armv6 -mcpu=arm1176jzf-s -mfpu=vfp -miphoneos-version-min=4.3"
-CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS"
+sh $SCRIPTDIR/setupscripts/iosarmv6
 make
 popd
 
 mkdir iosarmv7
 pushd iosarmv7
-export IOS_CFLAGS="-march=armv7 -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -miphoneos-version-min=4.3"
-CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
-make
+sh $SCRIPTDIR/setupscripts/iosarmv7
 popd
 
 mkdir iosarmv7s
 pushd iosarmv7s
-export IOS_PLATFORMDIR="/Applications/Xcode46.app/Contents/Developer/Platforms/iPhoneOS.platform"
-export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.*.sdk"
-export IOS_GCC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
-export IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon -miphoneos-version-min=6.0"
-CPP=/usr/bin/cpp sh ../configure --host arm-apple-darwin10 CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS" LDFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+sh $SCRIPTDIR/setupscripts/iosarmv7s
 make
 popd
 
 mkdir iosarmv8
 pushd iosarmv8
-export IOS_PLATFORMDIR="/Applications/Xcode51.app/Contents/Developer/Platforms/iPhoneOS.platform"
-export IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS7.1.sdk"
-export IOS_GCC="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-export IOS_CFLAGS="-arch arm64 -miphoneos-version-min=7.0"
-sh ../configure --host aarch64-apple-darwin CC="$IOS_GCC" LD="$IOS_GCC" CFLAGS="-isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS -funwind-tables" LDFLAGS="-isysroot $IOS_SYSROOT $IOS_CFLAGS" --with-simd
+sh $SCRIPTDIR/setupscripts/iosarmv8
 make
 popd
 
 mkdir osxx8664
 pushd osxx8664
-sh ../configure --host x86_64-apple-darwin NASM=/opt/local/bin/yasm CC=/opt/local/bin/gcc-mp-5 CFLAGS="-isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3" --with-java --with-pic JAVA='java -d64' JAVACFLAGS='-target 1.5 -source 1.5' --with-simd
+sh $SCRIPTDIR/setupscripts/osxx8664
 make test FLOATTEST=sse
 make iosdmg LIPO="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo"
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/

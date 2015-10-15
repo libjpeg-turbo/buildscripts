@@ -1,0 +1,15 @@
+IOS_PLATFORMDIR="/Applications/Xcode43.app/Contents/Developer/Platforms/iPhoneOS.platform"
+IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS5.1.sdk"
+IOS_CFLAGS="-march=armv7 -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -miphoneos-version-min=4.3"
+
+export host_alias=arm-apple-darwin10
+export CC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
+export CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS"
+export CPP=/usr/bin/cpp
+
+if [ "$1" = "-g" ]; then
+	export CFLAGS="$CFLAGS -g"
+	shift;
+fi
+
+sh ../configure --with-pic --with-simd ${1+"$@"}

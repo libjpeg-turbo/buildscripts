@@ -38,6 +38,12 @@ rpmbuild -ba --buildroot $TMPDIR/rpmbuild/buildroot \
 	--define "_topdir $TMPDIR/rpmbuild" rpmbuild/SPECS/libjpeg-turbo.spec
 VERSION=`rpm -q -p rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm | cut -f4 -d-`
 mv rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
+unset CFLAGS
+unset JAVACFLAGS
+unset JAVA
+unset JAVAC
+unset host_alias
+
 # This bit of uniqueness is necessary to ensure that the JAR file is bitwise
 # identical between the x86_64 and i386 RPM, so they can be co-installed on
 # RHEL 6.
@@ -56,11 +62,7 @@ echo Creating 32-bit binary RPM ...
 pushd libjpeg-turbo-[0-9]*
 mkdir linux.rpm
 pushd linux.rpm
-export CFLAGS='-m32 -O3'
-export JAVA=/usr/java/default32/bin/java
-export JAVAC=/usr/java/default32/bin/javac
-export host_alias=i686-pc-linux-gnu
-sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd
+sh $SCRIPTDIR/setupscripts/linux
 make
 MD5JAR1=`md5sum ../../turbojpeg.jar | cut -f1 -d' '`
 rm java/turbojpeg.jar
@@ -85,11 +87,7 @@ echo Creating 64-bit binary DEB ...
 
 mkdir linux64
 pushd linux64
-export CFLAGS='-O3'
-export JAVA=java
-export JAVAC=javac
-export host_alias=
-sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd
+sh $SCRIPTDIR/setupscripts/linux64
 make deb
 make test FLOATTEST=sse
 #make tjtest
@@ -103,11 +101,7 @@ echo Creating 32-bit binary DEB ...
 
 mkdir linux
 pushd linux
-export CFLAGS='-m32 -O3'
-export JAVA=/usr/java/default32/bin/java
-export JAVAC=/usr/java/default32/bin/javac
-export host_alias=i686-pc-linux-gnu
-sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd
+sh $SCRIPTDIR/setupscripts/linux
 make deb
 make test FLOATTEST=sse
 #make tjtest

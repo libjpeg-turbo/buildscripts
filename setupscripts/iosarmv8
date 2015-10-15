@@ -1,0 +1,14 @@
+IOS_PLATFORMDIR="/Applications/Xcode51.app/Contents/Developer/Platforms/iPhoneOS.platform"
+IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS7.1.sdk"
+IOS_CFLAGS="-arch arm64 -miphoneos-version-min=7.0"
+
+export host_alias=aarch64-apple-darwin
+export CC="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+export CFLAGS="-isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS -funwind-tables"
+
+if [ "$1" = "-g" ]; then
+	export CFLAGS="$CFLAGS -g"
+	shift
+fi
+
+sh ../configure --with-pic --with-simd ${1+"$@"}
