@@ -53,6 +53,10 @@ Apple ID required.)  The build scripts need this in order to produce
 libjpeg-turbo binaries that are compatible with the iPhone 5S and later and
 OS X 10.5.  Xcode should be installed under /Applications/Xcode51.app.
 
+Apple Java for OS X (needed in order to test the 32-bit x86 build)
+
+Oracle JDK
+
 
 Build Environment: Windows (not Cygwin)
 ---------------------------------------
