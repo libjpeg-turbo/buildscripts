@@ -96,7 +96,12 @@ used to generate the official libjpeg-turbo binaries for GCC, but TDM-GCC and
 other distributions work as well.)
 
 Both 64-bit and 32-bit JDKs should be installed, but they do not need to be
-added to the PATH (CMake should find them automatically.)
+added to the PATH.  You do, however, need to create a symbolic link to the
+32-bit JRE so that the build scripts can find it.
+
+From an Administrator Command Prompt, type:
+
+  mklink /d %ProgramData%\Oracle\Java\Java32 {directory of 32-bit JRE}
 
 Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to BUILDING.txt.)

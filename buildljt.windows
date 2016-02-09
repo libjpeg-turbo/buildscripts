@@ -21,7 +21,7 @@ pushd libjpeg-turbo-[0-9]*
 
 mkdir mingw
 pushd mingw
-cmake -G "MSYS Makefiles" -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
+sh $SCRIPTDIR/setupscripts/mingw
 make
 make test
 make installer
@@ -35,7 +35,7 @@ popd
 
 mkdir mingw64
 pushd mingw64
-PATH=/mingw64/bin:$PATH cmake -G "MSYS Makefiles" -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
+sh $SCRIPTDIR/setupscripts/mingw64
 make
 make installer
 make test
@@ -48,7 +48,7 @@ popd
 
 mkdir win64
 pushd win64
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
+sh $SCRIPTDIR/setupscripts/win64
 nmake
 nmake test
 nmake installer
@@ -60,10 +60,10 @@ fi
 jar cvf $OUTDIR/files/jni/ljtwin64.jar -C . turbojpeg.dll
 popd
 
-. `dirname $0`/vc32
+. $SCRIPTDIR/vc32
 mkdir win32
 pushd win32
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" ..
+sh $SCRIPTDIR/setupscripts/win32
 nmake
 nmake installer
 nmake test

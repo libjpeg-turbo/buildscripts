@@ -1,0 +1,13 @@
+CMAKE_BUILD_TYPE=Release
+
+if [ "$1" = "-g" ]; then
+	CMAKE_BUILD_TYPE=RelWithDebInfo
+	shift
+fi
+
+export CFLAGS=-Wall
+export PATH=/mingw64/bin:$PATH
+
+cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" \
+	.. ${1+"$@"}
