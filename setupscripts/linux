@@ -3,6 +3,7 @@ export CFLAGS='-m32 -O3'
 export JAVA=/usr/java/default32/bin/java
 export JAVAC=/usr/java/default32/bin/javac
 export JAVACFLAGS='-target 1.5 -source 1.5'
+export LDFLAGS=-m32
 
 if [ "$1" = "-g" ]; then
 	export CFLAGS="$CFLAGS -g"
