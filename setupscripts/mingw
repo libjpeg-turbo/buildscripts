@@ -5,19 +5,11 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
-case "`uname -s`" in
-CYGWIN*)
-	JAVA_HOME="${ProgramData/\\//}/Oracle/Java32"
-	export PATH="`cygpath $JAVA_HOME`/bin:$PATH"
-	;;
-*)
-	JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
-	pushd $JAVA_HOME
-	JAVA_HOME=`pwd`
-	popd
-	export PATH="$JAVA_HOME/bin:$PATH"
-	;;
-esac
+JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
+pushd $JAVA_HOME
+JAVA_HOME=`pwd`
+popd
+export PATH="$JAVA_HOME/bin:$PATH"
 
 export CFLAGS=-Wall
 
