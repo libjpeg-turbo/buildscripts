@@ -5,7 +5,7 @@ These scripts are used to build the "official" libjpeg-turbo binaries, which
 work on any Linux platform with GLIB 2.5 and later, as well as Windows XP and
 later and OS X 10.5 and later.
 
-See BUILDING.txt in the libjpeg-turbo source for basic build requirements.
+See BUILDING.md in the libjpeg-turbo source for basic build requirements.
 Additional build requirements for these scripts are listed below.
 
 
@@ -19,7 +19,7 @@ in your PATH, and the directory containing the 32-bit version should be
 symlinked to /usr/java/default32.
 
 Install all other software necessary to build a 32-bit and a 64-bit version of
-libjpeg-turbo (refer to BUILDING.txt.)
+libjpeg-turbo (refer to BUILDING.md.)
 
 To reproduce the official libjpeg-turbo distribution, you will need to install
 newer versions of m4, libtool, autoconf, and automake from source.  The
@@ -83,7 +83,9 @@ The official libjpeg-turbo binaries for Visual C++ are generated using the
 Windows SDK for Windows 7 and .NET Framework 3.5 SP1
 (http://www.microsoft.com/en-us/download/details.aspx?id=3138),
 which contains Visual C++ 10.0, but any reasonably modern version of Visual
-C++ and the Windows SDK should work.
+C++ and the Windows SDK should work.  Note, however, that jpegXX.dll will
+depend on the C run-time DLLs from whichever version of Visual C++ was used to
+build it.
 
 The Windows native builds (both Visual C++ and MinGW) must be conducted from
 within an MSYS shell.  MSYS can be installed from:
@@ -104,7 +106,7 @@ From an Administrator Command Prompt, type:
   mklink /d %ProgramData%\Oracle\Java\Java32 {directory of 32-bit JRE}
 
 Install all other software necessary to build a 32-bit and a 64-bit version of
-libjpeg-turbo (refer to BUILDING.txt.)
+libjpeg-turbo (refer to BUILDING.md.)
 
 
 Build Procedure
@@ -112,11 +114,11 @@ Build Procedure
 
 Executing
 
-  buildljt [repository path]
+  buildljt [branch/tag]
 
-(where repository path is, for instance, "branches/1.2.x", and defaults to
-"trunk") will generate both a pristine source tarball and binaries for the
-platform on which the script is executed.  These are placed under
+(where branch/tag is, for instance, "1.4.x" and defaults to "master") will
+generate both a pristine source tarball and binaries for the platform on which
+the script is executed.  These are placed under
 $HOME/src/ljt.nightly/YYYYMMDD/files, where YYYYMMDD is a build number based
 on today's date.  If the build is successful, then a sym link will be created
 from $HOME/src/ljt.nightly/latest to $HOME/src/ljt.nightly/YYYYMMDD.
@@ -125,7 +127,7 @@ Once a full build is completed on one platform, then you can use the existing
 source tarball to build binaries on other platforms by running 'buildljt -e'
 (assuming that $HOME/src is a shared directory.)
 
-NOTE: On Windows, buildljt should be run from inside a MinGW shell.  If you
+NOTE: On Windows, buildljt should be run from inside an MSYS shell.  If you
 are mounting your home directory as a drive letter (e.g. H:), then set the HOME
 environment variable to the MinGW path for that drive (e.g. /h) prior to
 running buildljt.

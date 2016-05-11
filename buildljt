@@ -46,7 +46,7 @@ onexit()
 usage()
 {
 	echo
-	echo "USAGE: $SCRIPT [-f | -s | -e ] [repository path (default = trunk)]"
+	echo "USAGE: $SCRIPT [-f | -s | -e ] [branch/tag (default = master)]"
 	echo
 	echo "-e = Use existing source tarball in the build directory"
 	echo "-f = Force new build (deletes all existing build files in the build directory)"
