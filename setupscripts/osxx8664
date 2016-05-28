@@ -6,7 +6,7 @@ export CC=/opt/local/bin/gcc-mp-5
 export CFLAGS="-isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3"
 export JAVA='java -d64'
 export JAVACFLAGS='-target 1.5 -source 1.5'
-export NASM=/opt/local/bin/yasm
+export NASM=/opt/local/bin/nasm
 
 if [ "$1" = "-g" ]; then
 	export CFLAGS="$CFLAGS -g"
