@@ -1,9 +1,6 @@
-OSX_PLATFORMDIR=/Applications/Xcode51.app/Contents/Developer/Platforms/MacOSX.platform
-OSX_SYSROOT="$OSX_PLATFORMDIR/Developer/SDKs/MacOSX10.9.sdk"
-
 export host_alias=x86_64-apple-darwin
 export CC=/opt/local/bin/gcc-mp-5
-export CFLAGS="-isysroot $OSX_SYSROOT -mmacosx-version-min=10.5 -O3"
+export CFLAGS="-mmacosx-version-min=10.5 -O3"
 export JAVA='java -d64'
 export JAVACFLAGS='-target 1.5 -source 1.5'
 export NASM=/opt/local/bin/nasm

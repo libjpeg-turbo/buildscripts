@@ -1,9 +1,9 @@
-IOS_PLATFORMDIR="/Applications/Xcode46.app/Contents/Developer/Platforms/iPhoneOS.platform"
-IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS6.*.sdk"
-IOS_CFLAGS="-march=armv7s -mcpu=swift -mtune=swift -mfpu=neon -miphoneos-version-min=6.0"
+IOS_PLATFORMDIR="/Applications/Xcode72.app/Contents/Developer/Platforms/iPhoneOS.platform"
+IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS.sdk"
+IOS_CFLAGS="-arch armv7s -miphoneos-version-min=6.0 -fembed-bitcode"
 
 export host_alias=arm-apple-darwin10
-export CC="$IOS_PLATFORMDIR/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
+export CC="/Applications/Xcode72.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
 export CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS"
 export CPP=/usr/bin/cpp
 

@@ -25,12 +25,6 @@ sh $SCRIPTDIR/setupscripts/osxx86
 make test FLOATTEST=sse
 popd
 
-mkdir iosarmv6
-pushd iosarmv6
-sh $SCRIPTDIR/setupscripts/iosarmv6
-make
-popd
-
 mkdir iosarmv7
 pushd iosarmv7
 sh $SCRIPTDIR/setupscripts/iosarmv7
