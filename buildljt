@@ -224,6 +224,14 @@ if [ $NOSRC = 0 ]; then
 	tar xfz $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
 	diff -r libjpeg-turbo.pristine libjpeg-turbo-$VERSION
 	rm -rf libjpeg-turbo.pristine
+	if [ -f $SCRIPTDIR/gpgsign ]; then
+		. $SCRIPTDIR/gpgsign
+		if [ -f $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig ]; then
+			rm -f $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
+		fi
+		gpg --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
+		gpg --verify $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
+	fi
 	if [ "$PLATFORM" = "linux" ]; then
 		pushd libjpeg-turbo
 		make srpm
