@@ -30,12 +30,17 @@ CYGWIN*)
 *)      echo "Unsupported platform";  exit 1 ;;
 esac
 
+uid()
+{
+  id | cut -f2 -d = | cut -f1 -d \(;
+}
+
 onexit()
 {
 	cd $PREVDIR
 	if [ ! "$TMPDIR" = "" ]; then
 		RESULTS=`find $TMPDIR -uid 0 -print -quit`
-		if [ ! -z $RESULTS ]; then
+		if [ ! -z "$RESULTS" -a ! `uid` -eq 0 ]; then
 			sudo rm -rf $TMPDIR
 		else
 			rm -rf $TMPDIR
