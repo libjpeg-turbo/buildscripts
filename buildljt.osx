@@ -47,7 +47,7 @@ mkdir osxx8664
 pushd osxx8664
 sh $SCRIPTDIR/setupscripts/osxx8664
 make -j test FLOATTEST=sse
-make iosdmg LIPO="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo"
+make iosdmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
 lipo -create -arch i386 ../osxx86/.libs/libturbojpeg.dylib -arch x86_64 .libs/libturbojpeg.dylib -output libturbojpeg.jnilib
 jar cvf $OUTDIR/files/jni/ljtosx.jar -C . libturbojpeg.jnilib
