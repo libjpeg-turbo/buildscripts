@@ -22,30 +22,31 @@ pushd libjpeg-turbo-[0-9]*
 mkdir osxx86
 pushd osxx86
 sh $SCRIPTDIR/setupscripts/osxx86
-make test FLOATTEST=sse
+make -j test FLOATTEST=sse
 popd
 
 mkdir iosarmv7
 pushd iosarmv7
 sh $SCRIPTDIR/setupscripts/iosarmv7
+make -j
 popd
 
 mkdir iosarmv7s
 pushd iosarmv7s
 sh $SCRIPTDIR/setupscripts/iosarmv7s
-make
+make -j
 popd
 
 mkdir iosarmv8
 pushd iosarmv8
 sh $SCRIPTDIR/setupscripts/iosarmv8
-make
+make -j
 popd
 
 mkdir osxx8664
 pushd osxx8664
 sh $SCRIPTDIR/setupscripts/osxx8664
-make test FLOATTEST=sse
+make -j test FLOATTEST=sse
 make iosdmg LIPO="/Applications/Xcode51.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo"
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
 lipo -create -arch i386 ../osxx86/.libs/libturbojpeg.dylib -arch x86_64 .libs/libturbojpeg.dylib -output libturbojpeg.jnilib
