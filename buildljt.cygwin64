@@ -3,10 +3,10 @@ set -e
 
 if ls $OUTDIR/files/cygwin/x86_64/libjpeg-turbo-official-*-*.tar.bz2 >/dev/null 2>&1; then
 	if [ $FORCEBINARY = 0 ]; then
-		echo
-		echo Binary already exists!
-		echo Run $SCRIPT -fb to rebuild it.
-		echo
+		>&2 echo
+		>&2 echo Binary already exists!
+		>&2 echo Run $SCRIPT -fb to rebuild it.
+		>&2 echo
 		exit 1
 	else
 		rm -f $OUTDIR/files/cygwin/x86_64/*
@@ -14,7 +14,7 @@ if ls $OUTDIR/files/cygwin/x86_64/libjpeg-turbo-official-*-*.tar.bz2 >/dev/null 
 	fi
 fi
 
-exec > $OUTDIR/log-$PLATFORM.txt 2>&1
+exec 2>&1
 
 pushd libjpeg-turbo-[0-9]*
 

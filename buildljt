@@ -61,6 +61,7 @@ usage()
 	echo "-l = Generate file list and HTML index"
 	echo "-j = Generate .zip file containing JNI JARs from all platforms"
 	echo "-b <b> = Specify build directory (default = ~/src/ljt.nightly/$BUILD)"
+	echo "-v = Verbose (show the output of the build in real time)"
 	echo
 	exit 1
 }
@@ -124,6 +125,7 @@ SRCONLY=0
 NOSRC=0
 UPDATELIST=0
 UPDATEJNI=0
+VERBOSE=0
 TAG=master
 
 while [ $# -gt 0 ]; do
@@ -144,6 +146,8 @@ while [ $# -gt 0 ]; do
 		UPDATELIST=1
 	elif [ "$1" = "-j" ]; then
 		UPDATEJNI=1
+	elif [ "$1" = "-v" ]; then
+		VERBOSE=1
 	elif [ "$1" = "-h" -o "$1" = "-?" ]; then
 		usage
 	else
@@ -272,7 +276,12 @@ echo Untarring libjpeg-turbo ...
 tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
 echo   done.
 echo Building libjpeg-turbo for $PLATFORM...
-sh $SCRIPTDIR/buildljt.$PLATFORM
+if [ $VERBOSE = 1 ]; then
+	sh $SCRIPTDIR/buildljt.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
+else
+	sh $SCRIPTDIR/buildljt.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
+fi
+
 echo   done.
 
 update_list
