@@ -30,8 +30,6 @@ find $BUILDDIR -type d | while read d; do
 	chmod 755 $d
 done
 ssh $SSHSERVER create
-ssh $SSHSERVER mkdir $PROJWEB/ljt.nightly$TAG || true
-ssh $SSHSERVER rm -r $PROJWEB/ljt.nightly$TAG/* || true
-scp -r $BUILDDIR/* $SSHSERVER:$PROJWEB/ljt.nightly$TAG
+rsync -rltv --delete $BUILDDIR/* $SSHSERVER:$PROJWEB/ljt.nightly$TAG
 
 exit 0
