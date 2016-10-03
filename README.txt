@@ -34,7 +34,7 @@ Build Environment: OS X
 
 OS X 10.8 (Mountain Lion) or later required
 
-GCC 5 (installed through MacPorts)
+GCC 5 (installed through MacPorts or Homebrew)
 
 Xcode 7.2.x (available at https://developer.apple.com/downloads --
 Apple ID required.)  The build scripts need this in order to produce

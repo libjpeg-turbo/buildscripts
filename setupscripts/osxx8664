@@ -1,9 +1,23 @@
 export host_alias=x86_64-apple-darwin
-export CC=/opt/local/bin/gcc-mp-5
+if [ -x /opt/local/bin/gcc-mp-5 ]; then
+	export CC=/opt/local/bin/gcc-mp-5
+elif [ -x /usr/local/bin/gcc-5 ]; then
+	export CC=/usr/local/bin/gcc-5
+else
+	echo GCC v5 not found!
+	exit 1
+fi
 export CFLAGS="-mmacosx-version-min=10.5 -O3"
 export JAVA='java -d64'
 export JAVACFLAGS='-target 1.5 -source 1.5'
-export NASM=/opt/local/bin/nasm
+if [ -x /opt/local/bin/nasm ]; then
+	export NASM=/opt/local/bin/nasm
+elif [ -x /usr/local/bin/nasm ]; then
+	export NASM=/usr/local/bin/nasm
+else
+	echo NASM not found!
+	exit 1
+fi
 
 if [ "$1" = "-g" ]; then
 	export CFLAGS="$CFLAGS -g"
