@@ -284,10 +284,10 @@ fi
 
 echo   done.
 
-update_list
 if [ "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" ]; then
 	update_jni
 fi
+update_list
 
 if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" -a $LATEST = 1 ]; then
 	# sym links aren't implemented properly in MinGW or Cygwin
