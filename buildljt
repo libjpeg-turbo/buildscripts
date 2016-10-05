@@ -62,6 +62,7 @@ usage()
 	echo "-j = Generate .zip file containing JNI JARs from all platforms"
 	echo "-b <b> = Specify build directory (default = ~/src/ljt.nightly/$BUILD)"
 	echo "-v = Verbose (show the output of the build in real time)"
+	echo "-r <r> = Specify repository URL (default = $DEFAULT_REPO)"
 	echo
 	exit 1
 }
@@ -127,6 +128,8 @@ UPDATELIST=0
 UPDATEJNI=0
 VERBOSE=0
 TAG=master
+DEFAULT_REPO=https://github.com/libjpeg-turbo/libjpeg-turbo.git
+REPO=$DEFAULT_REPO
 
 while [ $# -gt 0 ]; do
 	if [ "$1" = "-f" ]; then
@@ -148,6 +151,9 @@ while [ $# -gt 0 ]; do
 		UPDATEJNI=1
 	elif [ "$1" = "-v" ]; then
 		VERBOSE=1
+	elif [ "$1" = "-r" ]; then
+		REPO=$2
+		shift
 	elif [ "$1" = "-h" -o "$1" = "-?" ]; then
 		usage
 	else
@@ -212,7 +218,7 @@ fi
 cd $TMPDIR
 if [ $NOSRC = 0 ]; then
 	echo Checking out libjpeg-turbo from $TAG ...
-	git clone --depth=1 -b $TAG https://github.com/libjpeg-turbo/libjpeg-turbo.git libjpeg-turbo
+	git clone --depth=1 -b $TAG $REPO libjpeg-turbo
 	rm -rf libjpeg-turbo/.git libjpeg-turbo/.gitignore
 	echo Creating source tarball and SRPM ...
 	pushd libjpeg-turbo
