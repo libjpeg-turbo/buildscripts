@@ -51,18 +51,21 @@ onexit()
 usage()
 {
 	echo
-	echo "USAGE: $SCRIPT [-f | -s | -e ] [branch/tag (default = master)]"
+	echo "USAGE: $SCRIPT [options] [branch/tag (default = master)]"
 	echo
+	echo "Options:"
+	echo "-b <dir> = Specify build directory"
+	echo "           (default = ~/src/ljt.nightly/$BUILD)"
 	echo "-e = Use existing source tarball in the build directory"
 	echo "-f = Force new build (deletes all existing build files in the build directory)"
 	echo "-fb = Use existing source tarball in the build directory, but force new"
 	echo "      binaries to be built for this platform"
-	echo "-s = Build source tarball only"
-	echo "-l = Generate file list and HTML index"
+	echo "-s = Generate source package(s) only"
 	echo "-j = Generate .zip file containing JNI JARs from all platforms"
-	echo "-b <b> = Specify build directory (default = ~/src/ljt.nightly/$BUILD)"
+	echo "-l = Generate file list and HTML index"
+	echo "-r <url> = Specify Git repository URL"
+	echo "           (default = $DEFAULT_REPO)"
 	echo "-v = Verbose (show the output of the build in real time)"
-	echo "-r <r> = Specify repository URL (default = $DEFAULT_REPO)"
 	echo
 	exit 1
 }
