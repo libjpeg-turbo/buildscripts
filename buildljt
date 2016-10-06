@@ -231,7 +231,7 @@ if [ $NOSRC = 0 ]; then
 		exit 1
 	fi
 	autoreconf -fiv
-	rm -rf autom4te.cache ci .travis.yml
+	rm -rf autom4te.cache ci .travis.yml appveyor.yml
 	popd
 	cp -R libjpeg-turbo libjpeg-turbo.pristine
 	pushd libjpeg-turbo
