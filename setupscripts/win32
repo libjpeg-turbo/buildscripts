@@ -11,7 +11,14 @@ CYGWIN*)
 	export PATH="`cygpath $JAVA_HOME`/bin:$PATH"
 	;;
 *)
-	JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
+	if [ -n "${PROGRAMDATA}" ]; then
+		JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
+	elif [ -n "${ProgramData}" ]; then
+		JAVA_HOME="${ProgramData/\\//}/Oracle/Java32"
+	else
+		echo ERROR: ProgramData environment variable not set
+		exit 1
+	fi
 	pushd $JAVA_HOME
 	JAVA_HOME=`pwd`
 	popd

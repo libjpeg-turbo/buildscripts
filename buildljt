@@ -235,7 +235,11 @@ if [ $NOSRC = 0 ]; then
 	popd
 	cp -R libjpeg-turbo libjpeg-turbo.pristine
 	pushd libjpeg-turbo
-	./configure --with-java PKGNAME=libjpeg-turbo-official
+	if [ "$PLATFORM" = "windows" ]; then
+		./configure --without-simd PKGNAME=libjpeg-turbo-official
+	else
+		./configure --with-java PKGNAME=libjpeg-turbo-official
+	fi
 	make dist
 	popd
 	mv libjpeg-turbo/libjpeg-turbo-$VERSION.tar.gz $OUTDIR/files/
