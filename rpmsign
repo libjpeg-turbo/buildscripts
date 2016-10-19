@@ -8,4 +8,7 @@ spawn rpm --define "%_gpg_name=$key" --addsign $files
 expect "Enter pass phrase:"
 send -- "$password\r"
 
-expect eof
+expect {
+    "Pass phrase check failed"  { exit 1 }
+    eof
+}
