@@ -21,13 +21,6 @@ symlinked to **/usr/java/default32**.
 Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to **BUILDING.md**.)
 
-To reproduce the official libjpeg-turbo distribution, you will need to install
-newer versions of m4, libtool, autoconf, and automake from source.  The
-**autotools.install** script, located in the same directory as this README
-file, will download and build the necessary packages and install them under
-**/opt/autotools**.  You will need to add **/opt/autotools/bin** to the `PATH`
-prior to invoking `buildljt`.
-
 
 Build Environment: OS X
 -----------------------

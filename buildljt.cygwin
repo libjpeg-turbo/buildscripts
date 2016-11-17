@@ -18,9 +18,9 @@ exec 2>&1
 
 pushd libjpeg-turbo-[0-9]*
 
-sh ./configure PKGNAME=libjpeg-turbo-official --with-simd
+cmake -G"Unix Makefiles" -DPKGNAME=libjpeg-turbo-official -DREQUIRE_SIMD=1 .
 make cygwinpkg
-make test FLOATTEST=sse
+make test
 mkdir -p $OUTDIR/files/cygwin/x86
 mv libjpeg-turbo-official-*-*.tar.bz2 $OUTDIR/files/cygwin/x86/
 

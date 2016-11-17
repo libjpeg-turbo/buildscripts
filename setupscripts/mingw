@@ -6,21 +6,20 @@ if [ "$1" = "-g" ]; then
 fi
 
 if [ -n "${PROGRAMDATA}" ]; then
-	JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
+	export JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
 elif [ -n "${ProgramData}" ]; then
-	JAVA_HOME="${ProgramData/\\//}/Oracle/Java32"
+	export JAVA_HOME="${ProgramData/\\//}/Oracle/Java32"
 else
 	echo ERROR: ProgramData environment variable not set
 	exit 1
 fi
 pushd $JAVA_HOME
-JAVA_HOME=`pwd`
+export JAVA_HOME=`pwd`
 popd
 export PATH="$JAVA_HOME/bin:$PATH"
 
 export CFLAGS=-Wall
 
-cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-	-DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" \
-	-DJAVA_HOME=$JAVA_HOME \
-	.. ${1+"$@"}
+cmake -G"MSYS Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' -DREQUIRE_SIMD=1 \
+	-DWITH_JAVA=1 .. ${1+"$@"}

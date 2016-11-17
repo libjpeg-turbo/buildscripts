@@ -1,8 +1,13 @@
-export JAVACFLAGS='-target 1.5 -source 1.5'
+export CFLAGS=-Wall
+
+CMAKE_BUILD_TYPE=Release
 
 if [ "$1" = "-g" ]; then
-	export CFLAGS="-O3 -g"
+	CMAKE_BUILD_TYPE=RelWithDebInfo
 	shift
 fi
 
-sh ../configure PKGNAME=libjpeg-turbo-official --with-java --with-pic --with-simd ${1+"$@"}
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' \
+	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official \
+	-DREQUIRE_SIMD=1 -DWITH_JAVA=1 .. ${1+"$@"}

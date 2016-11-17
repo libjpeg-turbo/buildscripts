@@ -223,25 +223,28 @@ cd $TMPDIR
 if [ $NOSRC = 0 ]; then
 	echo Checking out libjpeg-turbo from $TAG ...
 	git clone --depth=1 -b $TAG $REPO libjpeg-turbo
-	rm -rf libjpeg-turbo/.git libjpeg-turbo/.gitignore
 	echo Creating source tarball and SRPM ...
+	cp -R libjpeg-turbo libjpeg-turbo.pristine
+	pushd libjpeg-turbo.pristine
+	rm -rf .git .gitattributes .gitignore .travis.yml appveyor.yml ci
+	popd
 	pushd libjpeg-turbo
 	VERSION=`grep "set(VERSION" CMakeLists.txt | sed -e s/[^0-9\.]//g`
 	if [ "$VERSION" = "" ]; then
 		echo Could not parse version from CMakeLists.txt!
 		exit 1
 	fi
-	autoreconf -fiv
-	rm -rf autom4te.cache ci .travis.yml appveyor.yml
-	popd
-	cp -R libjpeg-turbo libjpeg-turbo.pristine
-	pushd libjpeg-turbo
 	if [ "$PLATFORM" = "windows" ]; then
-		./configure --without-simd PKGNAME=libjpeg-turbo-official
+		cmake -G"NMake Makefiles" .
+		nmake dist
+	elif [ "$PLATFORM" = "linux" ]; then
+		# We set these variables here in order to populate the RPM spec file
+		cmake -G"Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official -DREQUIRE_SIMD=1 -DWITH_JAVA=1 .
+		make dist
 	else
-		./configure --with-java PKGNAME=libjpeg-turbo-official
+		cmake -G"Unix Makefiles" .
+		make dist
 	fi
-	make dist
 	popd
 	mv libjpeg-turbo/libjpeg-turbo-$VERSION.tar.gz $OUTDIR/files/
 	tar xfz $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz

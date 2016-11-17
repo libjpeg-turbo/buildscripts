@@ -1,4 +1,3 @@
-export host_alias=x86_64-apple-darwin
 if [ -x /opt/local/bin/gcc-mp-5 ]; then
 	export CC=/opt/local/bin/gcc-mp-5
 elif [ -x /usr/local/bin/gcc-5 ]; then
@@ -7,21 +6,25 @@ else
 	echo GCC v5 not found!
 	exit 1
 fi
-export CFLAGS="-mmacosx-version-min=10.5 -O3"
-export JAVA='java -d64'
-export JAVACFLAGS='-target 1.5 -source 1.5'
 if [ -x /opt/local/bin/nasm ]; then
-	export NASM=/opt/local/bin/nasm
+	export ASM_NASM=/opt/local/bin/nasm
 elif [ -x /usr/local/bin/nasm ]; then
-	export NASM=/usr/local/bin/nasm
+	export ASM_NASM=/usr/local/bin/nasm
 else
 	echo NASM not found!
 	exit 1
 fi
 
+export CFLAGS="-mmacosx-version-min=10.5"
+
+CMAKE_BUILD_TYPE=Release
+
 if [ "$1" = "-g" ]; then
-	export CFLAGS="$CFLAGS -g"
+	CMAKE_BUILD_TYPE=RelWithDebInfo
 	shift
 fi
 
-sh ../configure --with-java --with-pic --with-simd ${1+"$@"}
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' \
+	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 -DWITH_JAVA=1 \
+	.. ${1+"$@"}

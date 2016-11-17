@@ -1,20 +1,9 @@
-export host_alias=i686-apple-darwin
-if [ -x /opt/local/bin/gcc-mp-5 ]; then
-	export CC=/opt/local/bin/gcc-mp-5
-elif [ -x /usr/local/bin/gcc-5 ]; then
-	export CC=/usr/local/bin/gcc-5
-else
-	echo GCC v5 not found!
-	exit 1
-fi
-export CFLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -O3 -m32"
-export JAVA='/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Commands/java -d32'
-export JAVACFLAGS='-target 1.5 -source 1.5'
-export LDFLAGS=-m32
+SCRIPTDIR=`dirname $0`
 
-if [ "$1" = "-g" ]; then
-	export CFLAGS="$CFLAGS -g"
-	shift
-fi
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
 
-sh ../configure --with-java --with-pic --with-simd ${1+"$@"}
+LDFLAGS=-m32 \
+$SCRIPTDIR/osxx8664 \
+	${1+"$@"} \
+	-DCMAKE_C_FLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -m32" \
+	-DJAVAARGS=-d32
