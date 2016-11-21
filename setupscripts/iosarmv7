@@ -1,11 +1,9 @@
-IOS_PLATFORMDIR="/Applications/Xcode72.app/Contents/Developer/Platforms/iPhoneOS.platform"
+IOS_PLATFORMDIR=/Applications/Xcode72.app/Contents/Developer/Platforms/iPhoneOS.platform
 IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS.sdk"
-IOS_CFLAGS="-arch armv7 -miphoneos-version-min=6.0 -fembed-bitcode"
 
 export host_alias=arm-apple-darwin10
-export CC="/Applications/Xcode72.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-export CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS"
-export CPP=/usr/bin/cpp
+export CC=/Applications/Xcode72.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+export CFLAGS="-mfloat-abi=softfp -isysroot $IOS_SYSROOT -O3 -arch armv7 -miphoneos-version-min=6.0 -fembed-bitcode"
 
 if [ "$1" = "-g" ]; then
 	export CFLAGS="$CFLAGS -g"
