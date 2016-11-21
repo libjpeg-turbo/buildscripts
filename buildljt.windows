@@ -36,9 +36,9 @@ popd
 mkdir mingw64
 pushd mingw64
 sh $SCRIPTDIR/setupscripts/mingw64
-make
-make installer
-make test
+PATH=/mingw64/bin:$PATH make
+PATH=/mingw64/bin:$PATH make installer
+PATH=/mingw64/bin:$PATH make test
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe

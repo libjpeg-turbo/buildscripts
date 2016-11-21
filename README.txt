@@ -76,14 +76,9 @@ depend on the C run-time DLLs from whichever version of Visual C++ was used to
 build it.
 
 The Windows native builds (both Visual C++ and MinGW) must be conducted from
-within an MSYS shell.  MSYS can be installed from:
-http://downloads.sourceforge.net/mingw/MSYS-1.0.11.exe
-Edit /etc/fstab in your MSYS installation and assign the /mingw mount point
-to the directory containing a 32-bit MinGW toolchain and the /mingw64 mount
-point to the directory containing a 64-bit MinGW64 toolchain (the
-x32-4.8.1-win32-dwarf and x64-4.8.1-win32-seh toolchains from MinGW-builds are
-used to generate the official libjpeg-turbo binaries for GCC, but TDM-GCC and
-other distributions work as well.)
+within an MSYS shell.  The easiest way to do that is to install MSYS2
+(http://msys2.github.io/) and then use its built-in package manager (pacman)
+to install the i686 and x86_64 MinGW compilers.
 
 Both 64-bit and 32-bit JDKs should be installed, but they do not need to be
 added to the PATH.  You do, however, need to create a symbolic link to the
