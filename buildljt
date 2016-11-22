@@ -199,6 +199,7 @@ else
 					rm -f $OUTDIR/files/jni/*
 					rmdir $OUTDIR/files/jni
 				fi
+				rm -rf $OUTDIR/files/cygwin
 				rm -f $OUTDIR/files/*
 				rmdir $OUTDIR/files
 			fi
