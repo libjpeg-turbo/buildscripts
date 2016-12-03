@@ -33,7 +33,7 @@ export LDFLAGS=
 rpm -i --define "_topdir $TMPDIR/rpmbuild" \
 	$OUTDIR/files/libjpeg-turbo-official-[0-9]*.src.rpm
 rpmbuild -ba --buildroot $TMPDIR/rpmbuild/buildroot \
-	--define "_topdir $TMPDIR/rpmbuild" rpmbuild/SPECS/libjpeg-turbo.spec
+	--define "_topdir $TMPDIR/rpmbuild" rpmbuild/SPECS/libjpeg-turbo-official.spec
 VERSION=`rpm -q -p rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm | cut -f4 -d-`
 mv rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
 unset JAVAFLAGS
