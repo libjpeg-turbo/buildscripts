@@ -42,7 +42,9 @@ unset JAVAFLAGS
 # identical between the x86_64 and i386 RPM, so they can be co-installed on
 # RHEL 6.
 cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
-jar cvf $OUTDIR/files/jni/ljtlinux64.jar -C rpmbuild/BUILD/libjpeg-turbo-$VERSION libturbojpeg.so
+rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm | cpio -idv ./opt/libjpeg-turbo/lib64/libturbojpeg.so*
+jar cvf $OUTDIR/files/jni/ljtlinux64.jar -C ./opt/libjpeg-turbo/lib64 libturbojpeg.so
+rm -rf ./opt
 rm -rf rpmbuild
 
 if [ -f $SCRIPTDIR/gpgsign ]; then
@@ -74,7 +76,9 @@ if [ -f $SCRIPTDIR/gpgsign ]; then
 	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
 	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
 fi
-jar cvf $OUTDIR/files/jni/ljtlinux32.jar libturbojpeg.so
+rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm | cpio -idv ./opt/libjpeg-turbo/lib32/libturbojpeg.so*
+jar cvf $OUTDIR/files/jni/ljtlinux32.jar -C ./opt/libjpeg-turbo/lib32 libturbojpeg.so
+rm -rf ./opt
 popd
 
 echo Creating 64-bit binary DEB ...
