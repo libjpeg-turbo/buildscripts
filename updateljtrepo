@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -u
+set -e
+
+if [ $# -lt 1 ]; then
+	echo USAGE: $0 \<SourceForge user name\>
+	exit 1
+fi
+
+FRSDIR=/home/frs/project/libjpeg-turbo
+
+SSHSERVER=$1,libjpeg-turbo@shell.sourceforge.net
+
+echo Updating YUM repo ...
+ssh $SSHSERVER create
+ssh $SSHSERVER << EOF
+	~/bin/createrepo -x OldFiles/* -s sha1 $FRSDIR
+EOF
+exit 0

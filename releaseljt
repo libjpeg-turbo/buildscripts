@@ -33,5 +33,6 @@ ssh $SSHSERVER << EOF
 	git pull
 	popd
 	~/buildscripts/libjpeg-turbo/gencygini
+	~/bin/createrepo -x OldFiles/* -s sha1 $FRSDIR
 EOF
 exit 0
