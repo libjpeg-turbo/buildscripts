@@ -63,7 +63,8 @@ pushd libjpeg-turbo-[0-9]*
 mkdir linux.rpm
 pushd linux.rpm
 sh $SCRIPTDIR/setupscripts/linux
-make -j
+export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
+make -j$NUMCPUS --load-average=$NUMCPUS
 MD5JAR1=`md5sum ../../turbojpeg.jar | cut -f1 -d' '`
 rm java/turbojpeg.jar
 mv ../../turbojpeg.jar java/
@@ -88,7 +89,7 @@ echo Creating 64-bit binary DEB ...
 mkdir linux64
 pushd linux64
 sh $SCRIPTDIR/setupscripts/linux64
-make -j deb
+make -j$NUMCPUS --load-average=$NUMCPUS deb
 make test FLOATTEST=sse
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_amd64.deb $OUTDIR/files/
@@ -102,7 +103,7 @@ echo Creating 32-bit binary DEB ...
 mkdir linux
 pushd linux
 sh $SCRIPTDIR/setupscripts/linux
-make -j deb
+make -j$NUMCPUS --load-average=$NUMCPUS deb
 make test FLOATTEST=sse
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_i386.deb $OUTDIR/files/

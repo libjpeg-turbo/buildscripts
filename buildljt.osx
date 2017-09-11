@@ -22,32 +22,33 @@ pushd libjpeg-turbo-[0-9]*
 mkdir osxx86
 pushd osxx86
 sh $SCRIPTDIR/setupscripts/osxx86
-make -j
+export NUMCPUS=`sysctl -n hw.ncpu`
+make -j$NUMCPUS --load-average=$NUMCPUS
 make test FLOATTEST=sse
 popd
 
 mkdir iosarmv7
 pushd iosarmv7
 sh $SCRIPTDIR/setupscripts/iosarmv7
-make -j
+make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 
 mkdir iosarmv7s
 pushd iosarmv7s
 sh $SCRIPTDIR/setupscripts/iosarmv7s
-make -j
+make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 
 mkdir iosarmv8
 pushd iosarmv8
 sh $SCRIPTDIR/setupscripts/iosarmv8
-make -j
+make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 
 mkdir osxx8664
 pushd osxx8664
 sh $SCRIPTDIR/setupscripts/osxx8664
-make -j
+make -j$NUMCPUS --load-average=$NUMCPUS
 make test FLOATTEST=sse
 make iosdmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
