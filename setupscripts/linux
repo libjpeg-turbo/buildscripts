@@ -1,4 +1,7 @@
-export host_alias=i686-pc-linux-gnu
+case "`uname -m`" in
+ppc64) export host_alias=powerpc-pc-linux-gnu;;
+*)     export host_alias=i686-pc-linux-gnu;;
+esac
 export CFLAGS='-m32 -O3'
 export JAVA=/usr/java/default32/bin/java
 export JAVAC=/usr/java/default32/bin/javac

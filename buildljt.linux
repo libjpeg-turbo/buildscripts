@@ -3,10 +3,29 @@ set -e
 
 SCRIPTDIR=`dirname $0`
 
-if ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.i386.rpm >/dev/null 2>&1 \
-	|| ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.x86_64.rpm >/dev/null 2>&1 \
-	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_amd64.deb >/dev/null 2>&1 \
-	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_i386.deb >/dev/null 2>&1; then
+case "`uname -m`" in
+ppc64)
+	RPM64=ppc64
+	RPM32=ppc
+	DEB64=ppc64
+	DEB32=ppc
+	FLOAT64=64bit
+	FLOAT32=64bit
+	;;
+*)
+	RPM64=x86_64
+	RPM32=i386
+	DEB64=amd64
+	DEB32=i386
+	FLOAT64=sse
+	FLOAT32=sse
+	;;
+esac
+
+if ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.$RPM32.rpm >/dev/null 2>&1 \
+	|| ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.$RPM64.rpm >/dev/null 2>&1 \
+	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_$DEB64.deb >/dev/null 2>&1 \
+	|| ls $OUTDIR/files/libjpeg-turbo-official*_[0-9]*_$DEB32.deb >/dev/null 2>&1; then
 	if [ $FORCEBINARY = 0 ]; then
 		>&2 echo
 		>&2 echo Binary already exists!
@@ -14,7 +33,7 @@ if ls $OUTDIR/files/libjpeg-turbo-official-[0-9]*.i386.rpm >/dev/null 2>&1 \
 		>&2 echo
 		exit 1
 	else
-		rm -f $OUTDIR/files/*.i386.rpm $OUTDIR/files/*.x86_64.rpm $OUTDIR/files/*.deb
+		rm -f $OUTDIR/files/*.$RPM32.rpm $OUTDIR/files/*.$RPM64.rpm $OUTDIR/files/*.deb
 	fi
 fi
 
@@ -36,8 +55,8 @@ rpm -i --define "_topdir $TMPDIR/rpmbuild" \
 	$OUTDIR/files/libjpeg-turbo-official-[0-9]*.src.rpm
 rpmbuild -ba --buildroot $TMPDIR/rpmbuild/buildroot \
 	--define "_topdir $TMPDIR/rpmbuild" rpmbuild/SPECS/libjpeg-turbo.spec
-VERSION=`rpm -q -p rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm | cut -f4 -d-`
-mv rpmbuild/RPMS/x86_64/libjpeg-turbo-official-[0-9]*.x86_64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
+VERSION=`rpm -q -p rpmbuild/RPMS/$RPM64/libjpeg-turbo-official-[0-9]*.$RPM64.rpm | cut -f4 -d-`
+mv rpmbuild/RPMS/$RPM64/libjpeg-turbo-official-[0-9]*.$RPM64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm
 unset CFLAGS
 unset JAVACFLAGS
 unset JAVA
@@ -45,7 +64,7 @@ unset JAVAC
 unset host_alias
 
 # This bit of uniqueness is necessary to ensure that the JAR file is bitwise
-# identical between the x86_64 and i386 RPM, so they can be co-installed on
+# identical between the 64-bit and 32-bit RPM, so they can be co-installed on
 # RHEL 6.
 cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
 jar cvf $OUTDIR/files/jni/ljtlinux64.jar -C rpmbuild/BUILD/libjpeg-turbo-$VERSION/.libs libturbojpeg.so
@@ -53,8 +72,8 @@ rm -rf rpmbuild
 
 if [ -f $SCRIPTDIR/gpgsign ]; then
 	. $SCRIPTDIR/gpgsign
-	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
-	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.x86_64.rpm
+	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm
+	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm
 fi
 
 echo Creating 32-bit binary RPM ...
@@ -75,11 +94,11 @@ if [ ! "$MD5JAR1" = "$MD5JAR2" ]; then
 	echo ERROR: JARs are not bitwise identical.
 	exit 1
 fi
-VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.i386.rpm | cut -f4 -d-`
-mv libjpeg-turbo-official-[0-9]*.i386.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
+VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.$RPM32.rpm | cut -f4 -d-`
+mv libjpeg-turbo-official-[0-9]*.$RPM32.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 if [ -f $SCRIPTDIR/gpgsign ]; then
-	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
-	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.i386.rpm
+	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
+	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 fi
 jar cvf $OUTDIR/files/jni/ljtlinux32.jar -C .libs libturbojpeg.so
 popd
@@ -90,11 +109,11 @@ mkdir linux64
 pushd linux64
 sh $SCRIPTDIR/setupscripts/linux64
 make -j$NUMCPUS --load-average=$NUMCPUS deb
-make test FLOATTEST=sse
+make test FLOATTEST=$FLOAT64
 #make tjtest
-mv libjpeg-turbo-official_[0-9]*_amd64.deb $OUTDIR/files/
+mv libjpeg-turbo-official_[0-9]*_$DEB64.deb $OUTDIR/files/
 if [ -f $SCRIPTDIR/gpgsign ]; then
-	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_amd64.deb
+	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_$DEB64.deb
 fi
 popd
 
@@ -104,13 +123,17 @@ mkdir linux
 pushd linux
 sh $SCRIPTDIR/setupscripts/linux
 make -j$NUMCPUS --load-average=$NUMCPUS deb
-make test FLOATTEST=sse
+make test FLOATTEST=$FLOAT32
 #make tjtest
-mv libjpeg-turbo-official_[0-9]*_i386.deb $OUTDIR/files/
-mv libjpeg-turbo-official32_[0-9]*_amd64.deb $OUTDIR/files/
+mv libjpeg-turbo-official_[0-9]*_$DEB32.deb $OUTDIR/files/
+if [ "$DEB64" = "amd64" ]; then
+	mv libjpeg-turbo-official32_[0-9]*_$DEB64.deb $OUTDIR/files/
+fi
 if [ -f $SCRIPTDIR/gpgsign ]; then
-	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_i386.deb
-	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official32_[0-9]*_amd64.deb
+	expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_$DEB32.deb
+	if [ "$DEB64" = "amd64" ]; then
+		expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official32_[0-9]*_$DEB64.deb
+	fi
 fi
 popd
 
