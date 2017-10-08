@@ -18,7 +18,7 @@ JAVA_HOME=`pwd`
 popd
 export PATH="$JAVA_HOME/bin:$PATH"
 
-export CFLAGS=-Wall
+export CFLAGS="-Wall -static-libgcc"
 
 cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" \
