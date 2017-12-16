@@ -24,15 +24,8 @@ ssh $SSHSERVER << EOF
 	mkdir "$FRSDIR/$2"
 EOF
 scp $BUILDDIR/* "$SSHSERVER:$FRSDIR/'$2'/" || true
-scp $BUILDDIR/cygwin/x86/*.tar.bz2 $SSHSERVER:$FRSDIR/cygwin/x86
-scp $BUILDDIR/cygwin/x86_64/*.tar.bz2 $SSHSERVER:$FRSDIR/cygwin/x86_64
 ssh $SSHSERVER << EOF
 	rm "$FRSDIR/$2/files.txt" "$FRSDIR/$2/index.html"
-	cd "$FRSDIR"
-	pushd ~/buildscripts/libjpeg-turbo
-	git pull
-	popd
-	~/buildscripts/libjpeg-turbo/gencygini
 	~/bin/createrepo -x OldFiles/* -s sha1 --update $FRSDIR
 EOF
 exit 0
