@@ -6,12 +6,12 @@ else
 	echo GCC v5 not found!
 	exit 1
 fi
-if [ -x /opt/local/bin/nasm ]; then
-	export ASM_NASM=/opt/local/bin/nasm
-elif [ -x /usr/local/bin/nasm ]; then
-	export ASM_NASM=/usr/local/bin/nasm
+if [ -x /opt/local/bin/yasm ]; then
+	export ASM_NASM=/opt/local/bin/yasm
+elif [ -x /usr/local/bin/yasm ]; then
+	export ASM_NASM=/usr/local/bin/yasm
 else
-	echo NASM not found!
+	echo YASM not found!
 	exit 1
 fi
 
