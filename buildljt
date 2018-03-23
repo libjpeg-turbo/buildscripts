@@ -64,6 +64,8 @@ usage()
 	echo "-l = Generate file list and HTML index"
 	echo "-r <url> = Specify Git repository URL"
 	echo "           (default = $DEFAULT_REPO)"
+	echo "-d <dir> = Build from existing source directory, located under <dir>"
+	echo "           (useful for continuous integration)"
 	echo "-s = Generate source package(s) only"
 	echo "-v = Verbose (show the output of the build in real time)"
 	echo
@@ -133,6 +135,7 @@ VERBOSE=0
 TAG=master
 DEFAULT_REPO=https://github.com/libjpeg-turbo/libjpeg-turbo.git
 REPO=$DEFAULT_REPO
+SRCDIR=
 
 while [ $# -gt 0 ]; do
 	if [ "$1" = "-f" ]; then
@@ -156,6 +159,9 @@ while [ $# -gt 0 ]; do
 		VERBOSE=1
 	elif [ "$1" = "-r" ]; then
 		REPO=$2
+		shift
+	elif [ "$1" = "-d" ]; then
+		SRCDIR=$2
 		shift
 	elif [ "$1" = "-h" -o "$1" = "-?" ]; then
 		usage
@@ -221,14 +227,20 @@ else
 fi
 cd $TMPDIR
 if [ $NOSRC = 0 ]; then
-	echo Checking out libjpeg-turbo from $TAG ...
-	git clone --depth=1 -b $TAG $REPO libjpeg-turbo
+	if [ ! "$SRCDIR" = "" ]; then
+		echo Using existing source directory $SRCDIR ...
+		DIR=$SRCDIR
+	else
+		echo Checking out libjpeg-turbo from $TAG ...
+		git clone --depth=1 -b $TAG $REPO libjpeg-turbo
+		DIR=libjpeg-turbo
+	fi
 	echo Creating source tarball and SRPM ...
-	cp -R libjpeg-turbo libjpeg-turbo.pristine
+	cp -R $DIR libjpeg-turbo.pristine
 	pushd libjpeg-turbo.pristine
 	rm -rf .git .gitattributes .gitignore .travis.yml appveyor.yml ci
 	popd
-	pushd libjpeg-turbo
+	pushd $DIR
 	VERSION=`grep "set(VERSION" CMakeLists.txt | sed -e s/[^0-9\.]//g`
 	if [ "$VERSION" = "" ]; then
 		echo Could not parse version from CMakeLists.txt!
@@ -246,7 +258,7 @@ if [ $NOSRC = 0 ]; then
 		make dist
 	fi
 	popd
-	mv libjpeg-turbo/libjpeg-turbo-$VERSION.tar.gz $OUTDIR/files/
+	mv $DIR/libjpeg-turbo-$VERSION.tar.gz $OUTDIR/files/
 	tar xfz $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
 	diff -r libjpeg-turbo.pristine libjpeg-turbo-$VERSION
 	rm -rf libjpeg-turbo.pristine
@@ -259,17 +271,20 @@ if [ $NOSRC = 0 ]; then
 		gpg --verify $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
 	fi
 	if [ "$PLATFORM" = "linux" ]; then
-		pushd libjpeg-turbo
+		pushd $DIR
 		make srpm
 		popd
-		mv libjpeg-turbo/libjpeg-turbo-official-$VERSION.src.rpm $OUTDIR/files/
+		mv $DIR/libjpeg-turbo-official-$VERSION.src.rpm $OUTDIR/files/
 		if [ -f $SCRIPTDIR/gpgsign ]; then
 			. $SCRIPTDIR/gpgsign
 			expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
 			rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
 		fi
 	fi
-	rm -rf libjpeg-turbo libjpeg-turbo-$VERSION
+	rm -rf libjpeg-turbo-$VERSION
+	if [ "$SRCDIR" = "" ]; then
+		rm -rf libjpeg-turbo
+	fi
 else
 	if [ "$PLATFORM" = "linux" ]; then
 		if ! ls $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz >/dev/null 2>&1
