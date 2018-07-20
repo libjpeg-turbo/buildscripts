@@ -6,8 +6,8 @@ esac
 
 export JAVA_HOME=/usr/java/default32
 
-LDFLAGS=-m32 \
+LDFLAGS=${LDFLAGS:--m32} \
 $SCRIPTDIR/linux64 \
-	${1+"$@"} \
 	$FLOATTESTARG \
-	-DCMAKE_C_FLAGS='-m32 -Wall'
+	-DCMAKE_C_FLAGS='-m32 -Wall' \
+	${1+"$@"}

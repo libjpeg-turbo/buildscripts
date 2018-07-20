@@ -11,8 +11,8 @@ fi
 
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
 
-LDFLAGS=-m32 \
+LDFLAGS=${LDFLAGS:--m32} \
 $SCRIPTDIR/osxx8664 \
-	${1+"$@"} \
 	-DCMAKE_C_FLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -m32" \
-	-DJAVAARGS=-d32
+	-DJAVAARGS=-d32 \
+	${1+"$@"}
