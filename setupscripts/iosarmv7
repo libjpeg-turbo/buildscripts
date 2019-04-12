@@ -1,5 +1,5 @@
 IOS_PLATFORMDIR=/Applications/Xcode72.app/Contents/Developer/Platforms/iPhoneOS.platform
-export CFLAGS="-mfloat-abi=softfp -arch armv7 -miphoneos-version-min=6.0 -fembed-bitcode"
+export CFLAGS="-mfloat-abi=softfp -arch armv7 -miphoneos-version-min=6.0 -fembed-bitcode -Wall"
 
 CMAKE_BUILD_TYPE=Release
 

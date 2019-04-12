@@ -15,7 +15,7 @@ else
 	exit 1
 fi
 
-export CFLAGS="-mmacosx-version-min=10.5"
+export CFLAGS="-mmacosx-version-min=10.5 -Wall"
 
 CMAKE_BUILD_TYPE=Release
 
