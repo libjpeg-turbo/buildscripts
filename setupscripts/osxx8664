@@ -7,7 +7,7 @@ else
 	echo GCC v5 not found!
 	exit 1
 fi
-export CFLAGS="-mmacosx-version-min=10.5 -O3"
+export CFLAGS="-mmacosx-version-min=10.5 -O3 -Wall"
 export JAVA='java -d64'
 export JAVACFLAGS='-target 1.5 -source 1.5'
 if [ -x /opt/local/bin/nasm ]; then

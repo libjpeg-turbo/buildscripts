@@ -7,7 +7,7 @@ else
 	echo GCC v5 not found!
 	exit 1
 fi
-export CFLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -O3 -m32"
+export CFLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -O3 -m32 -Wall"
 export JAVA='/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin/java -d32'
 export JAVACFLAGS='-target 1.5 -source 1.5'
 export LDFLAGS=-m32

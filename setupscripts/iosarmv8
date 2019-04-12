@@ -3,7 +3,7 @@ IOS_SYSROOT="$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS.sdk"
 
 export host_alias=aarch64-apple-darwin
 export CC=/Applications/Xcode72.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
-export CFLAGS="-isysroot $IOS_SYSROOT -O3 -arch arm64 -miphoneos-version-min=7.0 -fembed-bitcode -funwind-tables"
+export CFLAGS="-isysroot $IOS_SYSROOT -O3 -arch arm64 -miphoneos-version-min=7.0 -fembed-bitcode -funwind-tables -Wall"
 
 if [ "$1" = "-g" ]; then
 	export CFLAGS="$CFLAGS -g"
