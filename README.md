@@ -29,10 +29,10 @@ OS X 10.8 (Mountain Lion) or later required
 
 GCC 5 (installed through MacPorts or Homebrew)
 
-Xcode 7.2.x (available at <https://developer.apple.com/downloads> --
+Xcode 8.3.x (available at <https://developer.apple.com/downloads> --
 Apple ID required.)  The build scripts need this in order to produce
 bitcode-enabled libjpeg-turbo binaries for iOS.  Xcode should be installed
-under **/Applications/Xcode72.app**.
+under **/Applications/Xcode83.app**.
 
 Apple Java for OS X (needed in order to test the 32-bit x86 build)
 
