@@ -31,8 +31,8 @@ fi
 . $SCRIPTDIR/macvars
 
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-	-DCMAKE_C_COMPILER=/Applications/Xcode72.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
-	-DCMAKE_OSX_SYSROOT=/Applications/Xcode72.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk \
+	-DCMAKE_C_COMPILER=/Applications/Xcode_12.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
+	-DCMAKE_OSX_SYSROOT=/Applications/Xcode_12.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 -DWITH_JAVA=1 \
 	-DJAVA_AWT_INCLUDE_PATH=$JAVADIR/include \
@@ -40,4 +40,5 @@ cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DJAVA_INCLUDE_PATH2=$JAVADIR/include/darwin \
 	-DJAVA_AWT_LIBRARY="-framework JavaVM" \
 	-DJAVA_JVM_LIBRARY="-framework JavaVM" \
+	-DOSX_32BIT_BUILD="" -DIOS_ARMV7_BUILD="" -DIOS_ARMV7S_BUILD="" \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}

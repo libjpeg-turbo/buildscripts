@@ -3,7 +3,7 @@ DRC's libjpeg-turbo Build Scripts
 
 These scripts are used to build the "official" libjpeg-turbo binaries, which
 work on any Linux platform with GLIBC 2.5 and later, as well as Windows XP and
-later and OS X 10.5 and later.
+later and OS X/macOS 10.7 and later.
 
 See **BUILDING.md** in the libjpeg-turbo source for basic build requirements.
 Additional build requirements for these scripts are listed below.
@@ -22,24 +22,19 @@ Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to **BUILDING.md**.)
 
 
-Build Environment: OS X
------------------------
+Build Environment: macOS
+------------------------
 
-OS X 10.10.5 (Yosemite) or later required
+macOS 10.15 (Catalina) or later required
 
 CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 (<http://www.MacPorts.org>) works, or just install the CMake application from
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
-GCC 5 (installed through MacPorts or Homebrew.)  The build scripts need this in
-order to produce 32-bit (i386) libjpeg-turbo binaries for OS X/macOS.
-
-Xcode 7.2.x (available at <https://developer.apple.com/downloads> --
+Xcode 12.2.x (available at <https://developer.apple.com/downloads> --
 Apple ID required.)  Xcode should be installed under
-**/Applications/Xcode72.app**.
-
-Apple Java for OS X (needed in order to test the 32-bit x86 build)
+**/Applications/Xcode_12.2.app**.
 
 Oracle JDK
 
