@@ -264,7 +264,8 @@ if [ $NOSRC = 0 ]; then
 		if [ -f $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig ]; then
 			rm -f $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
 		fi
-		gpg --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
+		gpg --pinentry-mode loopback --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz \
+			|| gpg --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
 		gpg --verify $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
 	fi
 	if [ "$PLATFORM" = "linux" ]; then
