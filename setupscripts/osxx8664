@@ -1,3 +1,5 @@
+SCRIPTDIR=`dirname $0`
+
 if [ -x /opt/local/bin/gcc-mp-5 ]; then
 	export CC=/opt/local/bin/gcc-mp-5
 elif [ -x /usr/local/bin/gcc-5 ]; then
@@ -34,6 +36,8 @@ else
 	exit 1
 fi
 
+. $SCRIPTDIR/macvars
+
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 -DWITH_JAVA=1 \
@@ -42,4 +46,4 @@ cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DJAVA_INCLUDE_PATH2=$JAVADIR/include/darwin \
 	-DJAVA_AWT_LIBRARY="-framework JavaVM" \
 	-DJAVA_JVM_LIBRARY="-framework JavaVM" \
-	.. ${1+"$@"}
+	"${CMAKEARGS[@]}" .. ${1+"$@"}

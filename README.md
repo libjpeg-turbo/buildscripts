@@ -125,6 +125,17 @@ file:
 [debsigs](https://gitlab.com/debsigs/debsigs/tags) must be installed and in the
 `PATH`.
 
+Signing the Mac Package/DMG
+---------------------------
+
+To sign the Mac installer package and DMG, create a file called **macsign**
+under **setupscripts/**, and include the following contents in the file:
+
+    OSX_APP_CERT_NAME={full name of Mac Developer ID Application certficate (in the macOS keychain) used to sign the DMG}
+    OSX_INST_CERT_NAME={full name of Mac Developer ID Installer certificate (in the macOS keychain) used to sign the installer package}
+
+macOS 10.11 "El Capitan" or later is required in order to sign the Mac
+package/DMG.
 
 Signing the Windows Packages
 ----------------------------
