@@ -1,0 +1,24 @@
+__SCRIPTDIR=`dirname ${BASH_SOURCE[0]}`
+
+CMAKEARGS=
+
+if [ -f $__SCRIPTDIR/macsign ]; then
+	. $__SCRIPTDIR/macsign
+
+	echo Signing Mac package/DMG.
+
+	if [ ! -z ${OSX_APP_CERT_NAME+x} ]; then
+		CMAKEARGS=(-DOSX_APP_CERT_NAME="$OSX_APP_CERT_NAME")
+		echo OSX_APP_CERT_NAME=$OSX_APP_CERT_NAME
+	else
+		>&2 echo ERROR: OSX_APP_CERT_NAME must be defined
+		exit 1
+	fi
+	if [ ! -z ${OSX_INST_CERT_NAME+x} ]; then
+		CMAKEARGS=("${CMAKEARGS[@]}" -DOSX_INST_CERT_NAME="$OSX_INST_CERT_NAME")
+		echo OSX_INST_CERT_NAME=$OSX_INST_CERT_NAME
+	else
+		>&2 echo ERROR: OSX_INST_CERT_NAME must be defined
+		exit 1
+	fi
+fi
