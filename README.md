@@ -27,6 +27,11 @@ Build Environment: OS X
 
 OS X 10.8 (Mountain Lion) or later required
 
+CMake should be installed somewhere in the `PATH`.  The version in MacPorts
+(<http://www.MacPorts.org>) works, or just install the CMake application from
+the DMG (<http://www.cmake.org>) and add
+**/Applications/CMake.app/Contents/bin** to the `PATH`.
+
 GCC 5 (installed through MacPorts or Homebrew)
 
 Xcode 8.3.x (available at <https://developer.apple.com/downloads> --
