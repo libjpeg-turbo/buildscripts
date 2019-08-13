@@ -35,6 +35,8 @@ fi
 
 exec 2>&1
 
+export CTEST_OUTPUT_ON_FAILURE=1
+
 echo Creating 64-bit binary RPM ...
 
 mkdir -p rpmbuild/RPMS

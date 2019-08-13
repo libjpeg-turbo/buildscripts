@@ -17,6 +17,8 @@ fi
 
 exec 2>&1
 
+export CTEST_OUTPUT_ON_FAILURE=1
+
 pushd libjpeg-turbo-[0-9]*
 
 mkdir mingw
