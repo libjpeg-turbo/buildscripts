@@ -74,8 +74,17 @@ build it.
 
 The Windows native builds (both Visual C++ and MinGW) must be conducted from
 within an MSYS shell.  The easiest way to do that is to install
-[MSYS2](http://msys2.github.io) and then use its built-in package manager
-(pacman) to install the i686 and x86_64 MinGW compilers.
+[MSYS2](http://www.msys2.org) and then use its built-in package manager
+(pacman) to install the `make` package.
+
+In order for the libjpeg-turbo static libraries to be compatible with a wide
+variety of MinGW distributions, it is necessary to build libjpeg-turbo using
+specific versions of the MinGW toolchain.  Use the
+[MinGW-builds installer](http://mingw-w64.org/doku.php/download/mingw-builds)
+to install the following toolchain versions into their default directories:
+
+* Version 6.4.0 / x86_64 / POSIX threads / SEH exception handling / Rev. 0
+* Version 6.4.0 / i686 / POSIX threads / DWARF exception handling / Rev. 0
 
 Both 64-bit and 32-bit JDKs should be installed, but they do not need to be
 added to the `PATH`.  You do, however, need to create a symbolic link to the

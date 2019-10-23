@@ -21,6 +21,7 @@ case "`uname -s`" in
 Linux)  export PLATFORM=linux ;;
 Darwin) export PLATFORM=osx ;;
 MINGW*) export PLATFORM=windows ;;
+MSYS*)  export PLATFORM=windows ;;
 CYGWIN*)
 	case "`uname -m`" in
 	x86_64) export PLATFORM=cygwin64 ;;
