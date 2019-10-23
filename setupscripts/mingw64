@@ -5,8 +5,20 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
+if [ -n "${PROGRAMDATA}" ]; then
+	export JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java/javapath"
+elif [ -n "${ProgramData}" ]; then
+	export JAVA_HOME="${ProgramData/\\//}/Oracle/Java/javapath"
+else
+	echo ERROR: ProgramData environment variable not set
+	exit 1
+fi
+pushd $JAVA_HOME
+export JAVA_HOME=`pwd`
+popd
+export PATH="$JAVA_HOME/bin:/c/Program Files/mingw-w64/x86_64-6.4.0-posix-seh-rt_v5-rev0/mingw64/bin:$PATH"
+
 export CFLAGS=-Wall
-export PATH="/c/Program Files/mingw-w64/x86_64-6.4.0-posix-seh-rt_v5-rev0/mingw64/bin":$PATH
 
 cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" \
