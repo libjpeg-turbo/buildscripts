@@ -1,4 +1,9 @@
-SCRIPTDIR=`dirname $0`
+CMAKE_BUILD_TYPE=Release
+
+if [ "$1" = "-g" ]; then
+	CMAKE_BUILD_TYPE=RelWithDebInfo
+	shift
+fi
 
 case "`uname -s`" in
 CYGWIN*)
@@ -21,4 +26,6 @@ CYGWIN*)
 	;;
 esac
 
-$SCRIPTDIR/win64 ${1+"$@"}
+cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' -DREQUIRE_SIMD=1 \
+	-DWITH_JAVA=1 .. ${1+"$@"}
