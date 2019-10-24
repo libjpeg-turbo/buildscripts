@@ -35,6 +35,8 @@ fi
 
 exec 2>&1
 
+export CTEST_OUTPUT_ON_FAILURE=1
+
 echo Creating 64-bit binary RPM ...
 
 mkdir -p rpmbuild/RPMS
@@ -73,7 +75,7 @@ echo Creating 32-bit binary RPM ...
 pushd libjpeg-turbo-[0-9]*
 mkdir linux.rpm
 pushd linux.rpm
-sh $SCRIPTDIR/setupscripts/linux
+$SCRIPTDIR/setupscripts/linux
 export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
 make -j$NUMCPUS --load-average=$NUMCPUS
 MD5JAR1=`md5sum ../../turbojpeg.jar | cut -f1 -d' '`
@@ -101,7 +103,7 @@ echo Creating 64-bit binary DEB ...
 
 mkdir linux64
 pushd linux64
-sh $SCRIPTDIR/setupscripts/linux64
+$SCRIPTDIR/setupscripts/linux64
 make -j$NUMCPUS --load-average=$NUMCPUS deb
 make test
 #make tjtest
@@ -115,7 +117,7 @@ echo Creating 32-bit binary DEB ...
 
 mkdir linux
 pushd linux
-sh $SCRIPTDIR/setupscripts/linux
+$SCRIPTDIR/setupscripts/linux
 make -j$NUMCPUS --load-average=$NUMCPUS deb
 make test
 #make tjtest

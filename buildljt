@@ -21,12 +21,7 @@ case "`uname -s`" in
 Linux)  export PLATFORM=linux ;;
 Darwin) export PLATFORM=osx ;;
 MINGW*) export PLATFORM=windows ;;
-CYGWIN*)
-	case "`uname -m`" in
-	x86_64) export PLATFORM=cygwin64 ;;
-	*)      export PLATFORM=cygwin ;;
-	esac
-	;;
+MSYS*)  export PLATFORM=windows ;;
 *)      echo "Unsupported platform";  exit 1 ;;
 esac
 
@@ -88,7 +83,7 @@ update_list()
 	echo "<html><body><table border=1 cellpadding=5>" >../index.html
 	echo "<tr><th>File</th><th>Size</th><th>Date</th><th>MD5 sum</th></tr>" >>../index.html
 	for i in *; do
-		if [ -d $i -a "$i" != "cygwin" ]; then continue; fi
+		if [ -d $i ]; then continue; fi
 		LSL=`ls -l $i`
 		SIZE=
 		DATE=
@@ -205,7 +200,6 @@ else
 					rm -f $OUTDIR/files/jni/*
 					rmdir $OUTDIR/files/jni
 				fi
-				rm -rf $OUTDIR/files/cygwin
 				rm -f $OUTDIR/files/*
 				rmdir $OUTDIR/files
 			fi
@@ -310,19 +304,17 @@ tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
 echo   done.
 echo Building libjpeg-turbo for $PLATFORM...
 if [ $VERBOSE = 1 ]; then
-	sh $SCRIPTDIR/buildljt.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
+	$SCRIPTDIR/buildljt.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
 else
-	sh $SCRIPTDIR/buildljt.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
+	$SCRIPTDIR/buildljt.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
 fi
 echo   done.
 
-if [ "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" ]; then
-	update_jni
-fi
+update_jni
 update_list
 
-if [ "$PLATFORM" != "windows" -a "$PLATFORM" != "cygwin" -a "$PLATFORM" != "cygwin64" -a $LATEST = 1 ]; then
-	# sym links aren't implemented properly in MinGW or Cygwin
+if [ "$PLATFORM" != "windows" -a $LATEST = 1 ]; then
+	# sym links aren't implemented properly in MinGW
 	if [ -h $OUTDIR/../latest ]; then rm $OUTDIR/../latest; fi
 	ln -fs $BUILD $OUTDIR/../latest
 fi

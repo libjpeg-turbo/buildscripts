@@ -17,11 +17,13 @@ fi
 
 exec 2>&1
 
+export CTEST_OUTPUT_ON_FAILURE=1
+
 pushd libjpeg-turbo-[0-9]*
 
 mkdir osxx86
 pushd osxx86
-sh $SCRIPTDIR/setupscripts/osxx86
+$SCRIPTDIR/setupscripts/osxx86
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
 make test
@@ -29,13 +31,13 @@ popd
 
 mkdir iosarmv8
 pushd iosarmv8
-sh $SCRIPTDIR/setupscripts/iosarmv8
+$SCRIPTDIR/setupscripts/iosarmv8
 make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 
 mkdir osxx8664
 pushd osxx8664
-sh $SCRIPTDIR/setupscripts/osxx8664
+$SCRIPTDIR/setupscripts/osxx8664
 make -j$NUMCPUS --load-average=$NUMCPUS
 make test
 make udmg

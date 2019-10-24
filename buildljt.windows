@@ -17,14 +17,19 @@ fi
 
 exec 2>&1
 
+export CTEST_OUTPUT_ON_FAILURE=1
+
 pushd libjpeg-turbo-[0-9]*
 
 mkdir mingw
 pushd mingw
-sh $SCRIPTDIR/setupscripts/mingw
+$SCRIPTDIR/setupscripts/mingw
+OLDPATH=$PATH
+PATH="/c/Program Files (x86)/mingw-w64/i686-6.4.0-posix-dwarf-rt_v5-rev0/mingw32/bin:$PATH"
 make installer
 make
 make test
+PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	. $SCRIPTDIR/mssign
@@ -35,10 +40,13 @@ popd
 
 mkdir mingw64
 pushd mingw64
-sh $SCRIPTDIR/setupscripts/mingw64
-PATH=/mingw64/bin:$PATH make installer
-PATH=/mingw64/bin:$PATH make
-PATH=/mingw64/bin:$PATH make test
+$SCRIPTDIR/setupscripts/mingw64
+OLDPATH=$PATH
+PATH="/c/Program Files/mingw-w64/x86_64-6.4.0-posix-seh-rt_v5-rev0/mingw64/bin:$PATH"
+make installer
+make
+make test
+PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
@@ -48,7 +56,7 @@ popd
 
 mkdir win64
 pushd win64
-sh $SCRIPTDIR/setupscripts/win64
+$SCRIPTDIR/setupscripts/win64
 nmake installer
 nmake
 nmake test
@@ -63,7 +71,7 @@ popd
 . $SCRIPTDIR/vc32
 mkdir win32
 pushd win32
-sh $SCRIPTDIR/setupscripts/win32
+$SCRIPTDIR/setupscripts/win32
 nmake installer
 nmake
 nmake test
