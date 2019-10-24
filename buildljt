@@ -304,9 +304,9 @@ tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
 echo   done.
 echo Building libjpeg-turbo for $PLATFORM...
 if [ $VERBOSE = 1 ]; then
-	sh $SCRIPTDIR/buildljt.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
+	$SCRIPTDIR/buildljt.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
 else
-	sh $SCRIPTDIR/buildljt.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
+	$SCRIPTDIR/buildljt.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
 fi
 echo   done.
 
