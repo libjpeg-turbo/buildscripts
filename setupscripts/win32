@@ -5,26 +5,18 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
-case "`uname -s`" in
-CYGWIN*)
+if [ -n "${PROGRAMDATA}" ]; then
+	export JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
+elif [ -n "${ProgramData}" ]; then
 	export JAVA_HOME="${ProgramData/\\//}/Oracle/Java32"
-	export PATH="`cygpath $JAVA_HOME`/bin:$PATH"
-	;;
-*)
-	if [ -n "${PROGRAMDATA}" ]; then
-		export JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/Java32"
-	elif [ -n "${ProgramData}" ]; then
-		export JAVA_HOME="${ProgramData/\\//}/Oracle/Java32"
-	else
-		echo ERROR: ProgramData environment variable not set
-		exit 1
-	fi
-	pushd $JAVA_HOME
-	export JAVA_HOME=`pwd`
-	popd
-	export PATH="$JAVA_HOME/bin:$PATH"
-	;;
-esac
+else
+	echo ERROR: ProgramData environment variable not set
+	exit 1
+fi
+pushd $JAVA_HOME
+export JAVA_HOME=`pwd`
+popd
+export PATH="$JAVA_HOME/bin:$PATH"
 
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DWITH_JAVA=1 -DJAVACFLAGS="-target 1.5 -source 1.5" \
