@@ -32,7 +32,7 @@ CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
-GCC 5 (installed through MacPorts or Homebrew)
+GCC 6 (installed through MacPorts or Homebrew)
 
 Xcode 8.3.x (available at <https://developer.apple.com/downloads> --
 Apple ID required.)  The build scripts need this in order to produce

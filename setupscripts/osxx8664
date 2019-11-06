@@ -1,11 +1,11 @@
 SCRIPTDIR=`dirname $0`
 
-if [ -x /opt/local/bin/gcc-mp-5 ]; then
-	export CC=/opt/local/bin/gcc-mp-5
-elif [ -x /usr/local/bin/gcc-5 ]; then
-	export CC=/usr/local/bin/gcc-5
+if [ -x /opt/local/bin/gcc-mp-6 ]; then
+	export CC=/opt/local/bin/gcc-mp-6
+elif [ -x /usr/local/bin/gcc-6 ]; then
+	export CC=/usr/local/bin/gcc-6
 else
-	echo GCC v5 not found!
+	echo GCC v6 not found!
 	exit 1
 fi
 if [ -x /opt/local/bin/yasm ]; then
