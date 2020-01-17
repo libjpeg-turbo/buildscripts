@@ -1,6 +1,10 @@
 export PATH=${PATH//bin\/amd64/bin}
+export PATH=${PATH//BIN\/amd64/bin}
 export PATH=${PATH//bin\/x64/bin}
 export LIB=${LIB//lib\\amd64/lib}
+export LIB=${LIB//LIB\\amd64/lib}
 export LIB=${LIB//lib\\x64/lib}
+export LIB=${LIB//ucrt\\x64/ucrt\\x86}
+export LIB=${LIB//um\\x64/um\\x86}
 echo PATH = $PATH
 echo LIB = $LIB
