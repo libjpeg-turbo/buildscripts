@@ -18,6 +18,8 @@ export JAVA_HOME=`pwd`
 popd
 export PATH="$JAVA_HOME/bin:$PATH"
 
+export LDFLAGS="/subsystem:console,5.01"
+
 cmake -G"NMake Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' -DREQUIRE_SIMD=1 \
 	-DWITH_JAVA=1 .. ${1+"$@"}
