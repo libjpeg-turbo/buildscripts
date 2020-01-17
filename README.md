@@ -50,25 +50,19 @@ Windows XP 64-bit or later required
 CMake (the Windows native version, not the Cygwin version) should be installed
 somewhere in the `PATH`.
 
-The directory containing the 64-bit Visual C++ compiler
-(e.g. **c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64**)
-should be listed in the `PATH` environment variable.
+The directory containing the 64-bit Visual C++ compiler should be listed in the
+`PATH` environment variable.  The directory containing the 64-bit Windows SDK
+libraries should be listed in the `LIB` environment variable.  The directories
+containing the Visual C++ and Windows SDK header files should be listed in the
+`INCLUDE` environment variable.  The easiest way to accomplish this is to use
+the `vcvars64.bat` script provided by Visual C++, as described in the
+libjpeg-turbo build instructions.
 
-The directory containing the 64-bit Windows SDK libraries
-(e.g. **C:\Program Files\Microsoft SDKs\Windows\v7.0\Lib\x64**)
-should be listed in the `LIB` environment variable.
-
-The directories containing the Visual C++ and Windows SDK header files
-(e.g. **c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include** and
-**C:\Program Files\Microsoft SDKs\Windows\v7.0\include**)
-should be listed in the `INCLUDE` environment variable.
-
-The official libjpeg-turbo binaries for Visual C++ are generated using the
-[Windows SDK for Windows 7 and .NET Framework 3.5 SP1](http://www.microsoft.com/en-us/download/details.aspx?id=3138),
-which contains Visual C++ 10.0, but any reasonably modern version of Visual
-C++ and the Windows SDK should work.  Note, however, that **jpegXX.dll** will
-depend on the C run-time DLLs from whichever version of Visual C++ was used to
-build it.
+The official libjpeg-turbo binaries for Visual C++ are generated using
+[Visual Studio 2015 Community Edition](https://visualstudio.microsoft.com), but
+any reasonably modern version of Visual C++ and the Windows SDK should work.
+Note, however, that **jpegXX.dll** will depend on the C run-time DLLs from
+whichever version of Visual C++ was used to build it.
 
 The Windows native builds (both Visual C++ and MinGW) must be conducted from
 within an MSYS shell.  The easiest way to do that is to install
