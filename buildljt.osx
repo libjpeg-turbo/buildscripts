@@ -29,21 +29,33 @@ make -j$NUMCPUS --load-average=$NUMCPUS
 make test
 popd
 
+mkdir osxx8664
+pushd osxx8664
+$SCRIPTDIR/setupscripts/osxx8664
+make -j$NUMCPUS --load-average=$NUMCPUS
+make test
+make dmg
+mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
+lipo -create -arch i386 ../osxx86/libturbojpeg.dylib -arch x86_64 libturbojpeg.dylib -output libturbojpeg.jnilib
+jar cvf $OUTDIR/files/jni/ljtosx.jar -C . libturbojpeg.jnilib
+popd
+
 mkdir iosarmv8
 pushd iosarmv8
 $SCRIPTDIR/setupscripts/iosarmv8
 make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 
-mkdir osxx8664
-pushd osxx8664
-$SCRIPTDIR/setupscripts/osxx8664
+mkdir iosx86
+pushd iosx86
+$SCRIPTDIR/setupscripts/iosx86
 make -j$NUMCPUS --load-average=$NUMCPUS
-make test
-make udmg
-mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
-lipo -create -arch i386 ../osxx86/libturbojpeg.dylib -arch x86_64 libturbojpeg.dylib -output libturbojpeg.jnilib
-jar cvf $OUTDIR/files/jni/ljtosx.jar -C . libturbojpeg.jnilib
 popd
 
+mkdir iosx8664
+pushd iosx8664
+$SCRIPTDIR/setupscripts/iosx8664
+make -j$NUMCPUS --load-average=$NUMCPUS
+make dmg
+mv libjpeg-turbo-ios-[0-9]*.dmg $OUTDIR/files/
 popd

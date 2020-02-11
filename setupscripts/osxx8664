@@ -46,4 +46,5 @@ cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DJAVA_INCLUDE_PATH2=$JAVADIR/include/darwin \
 	-DJAVA_AWT_LIBRARY="-framework JavaVM" \
 	-DJAVA_JVM_LIBRARY="-framework JavaVM" \
+	-DOSX_32BIT_BUILD=../osxx86 \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}

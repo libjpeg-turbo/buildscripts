@@ -21,5 +21,7 @@ EOF
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_OSX_SYSROOT=$IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS.sdk \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
+	-DPKGNAME=libjpeg-turbo-ios \
+	-DCMAKE_INSTALL_DEFAULT_PREFIX=/opt/libjpeg-turbo-ios \
 	-DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}

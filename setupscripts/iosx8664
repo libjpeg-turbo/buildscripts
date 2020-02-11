@@ -1,0 +1,32 @@
+SCRIPTDIR=`dirname $0`
+
+IOS_PLATFORMDIR=/Applications/Xcode83.app/Contents/Developer
+export CC=$IOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+if [ -x /opt/local/bin/yasm ]; then
+	export ASM_NASM=/opt/local/bin/yasm
+elif [ -x /usr/local/bin/yasm ]; then
+	export ASM_NASM=/usr/local/bin/yasm
+else
+	echo YASM not found!
+	exit 1
+fi
+
+export CFLAGS="-miphoneos-version-min=7.0 -target x86_64-apple-ios -Wall"
+
+CMAKE_BUILD_TYPE=Release
+
+if [ "$1" = "-g" ]; then
+	CMAKE_BUILD_TYPE=RelWithDebInfo
+	shift
+fi
+
+. $SCRIPTDIR/macvars
+
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_OSX_SYSROOT=$IOS_PLATFORMDIR/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk \
+	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
+	-DPKGNAME=libjpeg-turbo-ios \
+	-DCMAKE_INSTALL_DEFAULT_PREFIX=/opt/libjpeg-turbo-ios \
+	-DOSX_32BIT_BUILD=../iosx86 \
+	-DIOS_ARMV8_BUILD=../iosarmv8 \
+	"${CMAKEARGS[@]}" .. ${1+"$@"}
