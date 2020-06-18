@@ -60,7 +60,6 @@ unset JAVAFLAGS
 # RHEL 6.
 cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
 rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm | cpio -idv ./opt/libjpeg-turbo/lib64/libturbojpeg.so*
-jar cvf $OUTDIR/files/jni/ljtlinux64.jar -C ./opt/libjpeg-turbo/lib64 libturbojpeg.so
 rm -rf ./opt
 rm -rf rpmbuild
 
@@ -95,7 +94,6 @@ if [ -f $SCRIPTDIR/gpgsign ]; then
 	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 fi
 rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm | cpio -idv ./opt/libjpeg-turbo/lib32/libturbojpeg.so*
-jar cvf $OUTDIR/files/jni/ljtlinux32.jar -C ./opt/libjpeg-turbo/lib32 libturbojpeg.so
 rm -rf ./opt
 popd
 

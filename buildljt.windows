@@ -65,7 +65,6 @@ if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
 	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
 fi
-jar cvf $OUTDIR/files/jni/ljtwin64.jar -C . turbojpeg.dll
 popd
 
 . $SCRIPTDIR/vc32
@@ -80,7 +79,6 @@ if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
 	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
 fi
-jar cvf $OUTDIR/files/jni/ljtwin32.jar -C . turbojpeg.dll
 popd
 
 popd

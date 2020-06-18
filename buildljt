@@ -55,7 +55,6 @@ usage()
 	echo "-f = Force new build (deletes all existing build files in the build directory)"
 	echo "-fb = Use existing source tarball in the build directory, but force new"
 	echo "      binaries to be built for this platform"
-	echo "-j = Generate .zip file containing JNI JARs from all platforms"
 	echo "-l = Generate file list and HTML index"
 	echo "-r <url> = Specify Git repository URL"
 	echo "           (default = $DEFAULT_REPO)"
@@ -101,21 +100,6 @@ update_list()
 	mv ../index.html .
 }
 
-update_jni()
-{
-	if [ ! -d $OUTDIR/files/jni ]; then
-		echo
-		echo Build does not exist in $OUTDIR/files!
-		echo
-		exit 1
-	fi
-	if ls $OUTDIR/files/*.zip >/dev/null 2>&1; then
-		rm $OUTDIR/files/*.zip
-	fi
-	VERSION=`basename $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz .tar.gz | cut -d- -f3`
-	zip -j $OUTDIR/files/libjpeg-turbo-$VERSION-jws.zip $OUTDIR/files/jni/*.jar
-}
-
 BUILD=`date +%Y%m%d`
 export OUTDIR=$HOME/src/ljt.nightly/$BUILD
 LATEST=1
@@ -125,7 +109,6 @@ export FORCEBINARY=0
 SRCONLY=0
 NOSRC=0
 UPDATELIST=0
-UPDATEJNI=0
 VERBOSE=0
 TAG=master
 DEFAULT_REPO=https://github.com/libjpeg-turbo/libjpeg-turbo.git
@@ -148,8 +131,6 @@ while [ $# -gt 0 ]; do
 		shift
 	elif [ "$1" = "-l" ]; then
 		UPDATELIST=1
-	elif [ "$1" = "-j" ]; then
-		UPDATEJNI=1
 	elif [ "$1" = "-v" ]; then
 		VERBOSE=1
 	elif [ "$1" = "-r" ]; then
@@ -176,13 +157,8 @@ if [ $UPDATELIST = 1 ]; then
 	exit 0
 fi
 
-if [ $UPDATEJNI = 1 ]; then
-	update_jni
-	exit 0
-fi
-
 if [ ! -d $OUTDIR ]; then
-	mkdir -p $OUTDIR/files/jni
+	mkdir -p $OUTDIR/files
 else
 	if [ $FORCE = 0 -a $NOSRC = 0 ]; then
 		if [ $SRCONLY = 0 ]; then
@@ -196,16 +172,12 @@ else
 	else
 		if [ $NOSRC = 0 ]; then
 			if [ -d $OUTDIR/files ]; then
-				if [ -d $OUTDIR/files/jni ]; then
-					rm -f $OUTDIR/files/jni/*
-					rmdir $OUTDIR/files/jni
-				fi
 				rm -f $OUTDIR/files/*
 				rmdir $OUTDIR/files
 			fi
 			rm -f $OUTDIR/*
 			rmdir $OUTDIR
-			mkdir -p $OUTDIR/files/jni
+			mkdir -p $OUTDIR/files
 		fi
 	fi
 fi
@@ -310,7 +282,6 @@ else
 fi
 echo   done.
 
-update_jni
 update_list
 
 if [ "$PLATFORM" != "windows" -a $LATEST = 1 ]; then
