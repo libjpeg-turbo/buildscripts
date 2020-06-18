@@ -12,7 +12,7 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 5 64-bit
+Recommended distro:  Red Hat or CentOS Enterprise Linux 6 64-bit
 
 Both 64-bit and 32-bit JDKs should be installed.  The 64-bit version should be
 in your `PATH`, and the directory containing the 32-bit version should be
