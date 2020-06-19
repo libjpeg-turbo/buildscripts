@@ -1,7 +1,7 @@
 SCRIPTDIR=`dirname $0`
 
 IOS_PLATFORMDIR=/Applications/Xcode72.app/Contents/Developer/Platforms/iPhoneOS.platform
-export CFLAGS="-arch arm64 -miphoneos-version-min=7.0 -fembed-bitcode -funwind-tables -Wall"
+export CFLAGS="-arch arm64 -miphoneos-version-min=8.0 -fembed-bitcode -funwind-tables -Wall"
 
 CMAKE_BUILD_TYPE=Release
 
