@@ -11,5 +11,5 @@ fi
 
 LDFLAGS=${LDFLAGS:--m32} \
 $SCRIPTDIR/iosx8664 \
-	-DCMAKE_C_FLAGS="-miphoneos-version-min=7.0 -target i386-apple-ios -m32 -Wall" \
+	-DCMAKE_C_FLAGS="-miphoneos-version-min=9.0 -target i386-apple-ios -m32 -Wall" \
 	${1+"$@"}
