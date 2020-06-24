@@ -32,12 +32,12 @@ CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
-GCC 5 (installed through MacPorts or Homebrew)
+GCC 5 (installed through MacPorts or Homebrew.)  The build scripts need this in
+order to produce 32-bit (i386) libjpeg-turbo binaries for OS X/macOS.
 
 Xcode 7.2.x (available at <https://developer.apple.com/downloads> --
-Apple ID required.)  The build scripts need this in order to produce
-bitcode-enabled libjpeg-turbo binaries for iOS.  Xcode should be installed
-under **/Applications/Xcode72.app**.
+Apple ID required.)  Xcode should be installed under
+**/Applications/Xcode72.app**.
 
 Apple Java for OS X (needed in order to test the 32-bit x86 build)
 
