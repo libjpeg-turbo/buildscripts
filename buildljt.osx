@@ -21,33 +21,19 @@ export CTEST_OUTPUT_ON_FAILURE=1
 
 pushd libjpeg-turbo-[0-9]*
 
-mkdir osxx86
-pushd osxx86
-$SCRIPTDIR/setupscripts/osxx86
-export NUMCPUS=`sysctl -n hw.ncpu`
-make -j$NUMCPUS --load-average=$NUMCPUS
-make test
-popd
-
 mkdir osxx8664
 pushd osxx8664
 $SCRIPTDIR/setupscripts/osxx8664
+export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
 make test
 make dmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
-lipo -create -arch i386 ../osxx86/libturbojpeg.dylib -arch x86_64 libturbojpeg.dylib -output libturbojpeg.jnilib
 popd
 
 mkdir iosarmv8
 pushd iosarmv8
 $SCRIPTDIR/setupscripts/iosarmv8
-make -j$NUMCPUS --load-average=$NUMCPUS
-popd
-
-mkdir iosx86
-pushd iosx86
-$SCRIPTDIR/setupscripts/iosx86
 make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 

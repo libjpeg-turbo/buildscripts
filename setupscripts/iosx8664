@@ -27,6 +27,5 @@ cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
 	-DPKGNAME=libjpeg-turbo-ios \
 	-DCMAKE_INSTALL_DEFAULT_PREFIX=/opt/libjpeg-turbo-ios \
-	-DOSX_32BIT_BUILD=../iosx86 \
 	-DIOS_ARMV8_BUILD=../iosarmv8 \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}
