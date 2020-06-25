@@ -25,7 +25,7 @@ libjpeg-turbo (refer to **BUILDING.md**.)
 Build Environment: OS X
 -----------------------
 
-OS X 10.8 (Mountain Lion) or later required
+OS X 10.10.5 (Yosemite) or later required
 
 CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 (<http://www.MacPorts.org>) works, or just install the CMake application from
