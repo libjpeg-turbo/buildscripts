@@ -1,5 +1,13 @@
 SCRIPTDIR=`dirname $0`
 
+if [ -x /opt/local/bin/gcc-mp-6 ]; then
+	export CC=/opt/local/bin/gcc-mp-6
+elif [ -x /usr/local/bin/gcc-6 ]; then
+	export CC=/usr/local/bin/gcc-6
+else
+	echo GCC v6 not found!
+	exit 1
+fi
 if [ -x /opt/local/bin/yasm ]; then
 	export ASM_NASM=/opt/local/bin/yasm
 elif [ -x /usr/local/bin/yasm ]; then
@@ -9,8 +17,18 @@ else
 	exit 1
 fi
 
-LDFLAGS=${LDFLAGS:--m32} \
-$SCRIPTDIR/osxx8664 \
-	-DCMAKE_C_FLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -m32 -Wall" \
-	-DWITH_JAVA=0 \
-	${1+"$@"}
+export CFLAGS="-D_NONSTD_SOURCE -mmacosx-version-min=10.5 -m32 -Wall"
+export LDFLAGS=${LDFLAGS:--m32}
+
+CMAKE_BUILD_TYPE=Release
+
+if [ "$1" = "-g" ]; then
+	CMAKE_BUILD_TYPE=RelWithDebInfo
+	shift
+fi
+
+. $SCRIPTDIR/macvars
+
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
+	"${CMAKEARGS[@]}" .. ${1+"$@"}

@@ -25,19 +25,19 @@ libjpeg-turbo (refer to **BUILDING.md**.)
 Build Environment: OS X
 -----------------------
 
-OS X 10.8 (Mountain Lion) or later required
+OS X 10.12 (Sierra) or later required
 
 CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 (<http://www.MacPorts.org>) works, or just install the CMake application from
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
-GCC 6 (installed through MacPorts or Homebrew)
+GCC 6 (installed through MacPorts or Homebrew)  The build scripts need this in
+order to produce 32-bit (i386) libjpeg-turbo binaries for OS X/macOS.
 
 Xcode 8.3.x (available at <https://developer.apple.com/downloads> --
-Apple ID required.)  The build scripts need this in order to produce
-bitcode-enabled libjpeg-turbo binaries for iOS.  Xcode should be installed
-under **/Applications/Xcode83.app**.
+Apple ID required.)  Xcode should be installed under
+**/Applications/Xcode83.app**.
 
 Oracle JDK
 
