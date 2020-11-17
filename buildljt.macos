@@ -21,9 +21,9 @@ export CTEST_OUTPUT_ON_FAILURE=1
 
 pushd libjpeg-turbo-[0-9]*
 
-mkdir osxx8664
-pushd osxx8664
-$SCRIPTDIR/setupscripts/osxx8664
+mkdir macosx8664
+pushd macosx8664
+$SCRIPTDIR/setupscripts/macosx8664
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
 make test
