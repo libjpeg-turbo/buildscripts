@@ -21,6 +21,13 @@ export CTEST_OUTPUT_ON_FAILURE=1
 
 pushd libjpeg-turbo-[0-9]*
 
+mkdir macosarmv8
+pushd macosarmv8
+$SCRIPTDIR/setupscripts/macosarmv8
+export NUMCPUS=`sysctl -n hw.ncpu`
+make -j$NUMCPUS --load-average=$NUMCPUS
+popd
+
 mkdir macosx8664
 pushd macosx8664
 $SCRIPTDIR/setupscripts/macosx8664

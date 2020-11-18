@@ -25,7 +25,7 @@ libjpeg-turbo (refer to **BUILDING.md**.)
 Build Environment: macOS
 ------------------------
 
-macOS 10.12 (Sierra) or later required
+macOS 10.15 (Catalina) or later required
 
 CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 (<http://www.MacPorts.org>) works, or just install the CMake application from
@@ -35,6 +35,10 @@ the DMG (<http://www.cmake.org>) and add
 Xcode 8.3.x (available at <https://developer.apple.com/downloads> --
 Apple ID required.)  Xcode should be installed under
 **/Applications/Xcode83.app**.
+
+Xcode 12.2.x (available at <https://developer.apple.com/downloads> --
+Apple ID required.)  Xcode should be installed under
+**/Applications/Xcode122.app**.
 
 Oracle JDK
 
