@@ -32,10 +32,6 @@ CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
-Xcode 8.3.x (available at <https://developer.apple.com/downloads> --
-Apple ID required.)  Xcode should be installed under
-**/Applications/Xcode83.app**.
-
 Xcode 12.2.x (available at <https://developer.apple.com/downloads> --
 Apple ID required.)  Xcode should be installed under
 **/Applications/Xcode122.app**.
