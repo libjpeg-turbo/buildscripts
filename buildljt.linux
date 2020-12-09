@@ -104,7 +104,8 @@ echo Creating 64-bit binary DEB ...
 mkdir linux64
 pushd linux64
 $SCRIPTDIR/setupscripts/linux64
-make -j$NUMCPUS --load-average=$NUMCPUS deb
+make -j$NUMCPUS --load-average=$NUMCPUS
+make deb
 make test
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_$DEB64.deb $OUTDIR/files/
@@ -118,7 +119,8 @@ echo Creating 32-bit binary DEB ...
 mkdir linux
 pushd linux
 $SCRIPTDIR/setupscripts/linux
-make -j$NUMCPUS --load-average=$NUMCPUS deb
+make -j$NUMCPUS --load-average=$NUMCPUS
+make deb
 make test
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_$DEB32.deb $OUTDIR/files/
