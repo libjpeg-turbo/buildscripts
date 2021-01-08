@@ -204,7 +204,7 @@ if [ $NOSRC = 0 ]; then
 	echo Creating source tarball and SRPM ...
 	cp -R $DIR libjpeg-turbo.pristine
 	pushd libjpeg-turbo.pristine
-	rm -rf .git .gitattributes .github .gitignore .travis.yml appveyor.yml ci
+	rm -rf .git .gitattributes .github .gitignore appveyor.yml
 	popd
 	pushd $DIR
 	VERSION=`grep "set(VERSION" CMakeLists.txt | sed -e s/[^0-9\.]//g`

@@ -1,6 +1,6 @@
 SCRIPTDIR=`dirname $0`
 
-IOS_PLATFORMDIR=/Applications/Xcode122.app/Contents/Developer
+IOS_PLATFORMDIR=/Applications/Xcode_12.2.app/Contents/Developer
 export CC=$IOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 if [ -x /opt/local/bin/yasm ]; then
 	export ASM_NASM=/opt/local/bin/yasm

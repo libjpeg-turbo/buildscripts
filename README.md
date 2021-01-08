@@ -34,7 +34,7 @@ the DMG (<http://www.cmake.org>) and add
 
 Xcode 12.2.x (available at <https://developer.apple.com/downloads> --
 Apple ID required.)  Xcode should be installed under
-**/Applications/Xcode122.app**.
+**/Applications/Xcode_12.2.app**.
 
 Oracle JDK
 
