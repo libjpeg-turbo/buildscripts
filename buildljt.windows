@@ -33,7 +33,7 @@ PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	. $SCRIPTDIR/mssign
-	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
 	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
 fi
 popd
@@ -49,7 +49,7 @@ make test
 PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
-	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
 	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
 fi
 popd
@@ -62,7 +62,7 @@ nmake
 nmake test
 mv libjpeg-turbo-[0-9]*-vc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
-	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
 	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
 fi
 popd
@@ -76,7 +76,7 @@ nmake
 nmake test
 mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
-	signtool sign -f "$MS_KEY_FILE" -t http://timestamp.verisign.com/scripts/timstamp.dll -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
 	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
 fi
 popd
