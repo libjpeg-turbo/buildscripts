@@ -19,7 +19,7 @@ EOF
 . $SCRIPTDIR/macvars
 
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-	-DCMAKE_OSX_SYSROOT=/Applications/Xcode_12.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+	-DCMAKE_OSX_SYSROOT=$MACOS_PLATFORMDIR/Developer/SDKs/MacOSX.sdk \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
 	-DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}
