@@ -46,7 +46,7 @@ uid()
 usage()
 {
 	echo
-	echo "USAGE: $SCRIPT [options] [branch/tag (default = master)]"
+	echo "USAGE: $SCRIPT [options] [branch/tag (default = main)]"
 	echo
 	echo "Options:"
 	echo "-b <dir> = Specify build directory"
@@ -110,7 +110,7 @@ SRCONLY=0
 NOSRC=0
 UPDATELIST=0
 VERBOSE=0
-TAG=master
+TAG=main
 DEFAULT_REPO=https://github.com/libjpeg-turbo/libjpeg-turbo.git
 REPO=$DEFAULT_REPO
 SRCDIR=
