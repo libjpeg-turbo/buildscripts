@@ -12,13 +12,23 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 6 64-bit
+Recommended distro:  Red Hat or CentOS Enterprise Linux 6 x86-64
 
-Both 64-bit and 32-bit JDKs should be installed.  The 64-bit version should be
-in your `PATH`, and the directory containing the 32-bit version should be
-symlinked to **/usr/java/default32**.
+Both x86-64 and i386 JDKs should be installed.  The x86-64 version should be in
+your `PATH`, and the directory containing the i386 version should be symlinked
+to **/usr/java/default32**.
 
-Install all other software necessary to build a 32-bit and a 64-bit version of
+Install a compatible x86-64 Linux hosted/AArch64 Linux target toolchain
+(available at
+<https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads>)
+under **/opt/gcc.arm64**.  Note that 9.2-2019.12 is the latest toolchain that
+will run on RHEL 6.
+
+Install OpenJDK 8 for Linux/AArch64 (available at
+<https://adoptium.net/releases.html?variant=openjdk8>) under
+**/opt/openjdk.arm64**.
+
+Install all other software necessary to build an i386 and an x86-64 version of
 libjpeg-turbo (refer to **BUILDING.md**.)
 
 

@@ -1,0 +1,12 @@
+cat <<EOF >linux64-arm-toolchain.cmake
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
+set(CMAKE_C_COMPILER /opt/gcc.arm64/bin/aarch64-none-linux-gnu-gcc)
+EOF
+
+`dirname $0`/linux64 ${1+"$@"} \
+	-DCMAKE_TOOLCHAIN_FILE=linux64-arm-toolchain.cmake \
+	-DJAVA_AWT_LIBRARY=/opt/openjdk.arm64/lib/aarch64/libjawt.so \
+	-DJAVA_JVM_LIBRARY=/opt/openjdk.arm64/jre/lib/aarch64/server/libjvm.so \
+	-DJAVA_INCLUDE_PATH=/opt/openjdk.arm64/include \
+	-DJAVA_INCLUDE_PATH2=/opt/openjdk.arm64/include/linux
