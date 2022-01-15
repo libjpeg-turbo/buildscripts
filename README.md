@@ -31,6 +31,9 @@ Install OpenJDK 8 for Linux/AArch64 (available at
 Install all other software necessary to build an i386 and an x86-64 version of
 libjpeg-turbo (refer to **BUILDING.md**.)
 
+For convenience, a Docker recipe is available at
+<https://github.com/libjpeg-turbo/docker>.
+
 
 Build Environment: macOS
 ------------------------
