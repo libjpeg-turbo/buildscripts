@@ -21,6 +21,9 @@ symlinked to **/usr/java/default32**.
 Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to **BUILDING.md**.)
 
+For convenience, a Docker recipe is available at
+<https://github.com/libjpeg-turbo/docker>.
+
 
 Build Environment: macOS
 ------------------------
