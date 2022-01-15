@@ -146,7 +146,6 @@ if [ "$RPM64" != "$RPMA64" -a "$DEB64" != "$DEBA64" ]; then
 	mkdir linux64.arm
 	pushd linux64.arm
 	$SCRIPTDIR/setupscripts/linux64.arm
-	export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
 	make -j$NUMCPUS --load-average=$NUMCPUS
 	STRIP=/opt/gcc.arm64/bin/aarch64-none-linux-gnu-strip make rpm
 	VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.$RPMA64.rpm | cut -f4 -d-`
