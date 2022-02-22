@@ -60,6 +60,8 @@ Windows XP 64-bit or later required
 CMake (the Windows native version, not the Cygwin version) should be installed
 somewhere in the `PATH`.
 
+Ninja should be installed somewhere in the `PATH`.
+
 The directory containing the 64-bit Visual C++ compiler should be listed in the
 `PATH` environment variable.  The directory containing the 64-bit Windows SDK
 libraries should be listed in the `LIB` environment variable.  The directories
