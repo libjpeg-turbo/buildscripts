@@ -26,9 +26,9 @@ pushd mingw
 $SCRIPTDIR/setupscripts/mingw
 OLDPATH=$PATH
 PATH="/c/Program Files (x86)/mingw-w64/i686-6.4.0-posix-dwarf-rt_v5-rev0/mingw32/bin:$PATH"
-make installer
-make
-make test
+ninja installer
+ninja
+ninja test
 PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
@@ -43,9 +43,9 @@ pushd mingw64
 $SCRIPTDIR/setupscripts/mingw64
 OLDPATH=$PATH
 PATH="/c/Program Files/mingw-w64/x86_64-6.4.0-posix-seh-rt_v5-rev0/mingw64/bin:$PATH"
-make installer
-make
-make test
+ninja installer
+ninja
+ninja test
 PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
@@ -57,9 +57,9 @@ popd
 mkdir win64
 pushd win64
 $SCRIPTDIR/setupscripts/win64
-nmake installer
-nmake
-nmake test
+ninja installer
+ninja
+ninja test
 mv libjpeg-turbo-[0-9]*-vc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
@@ -72,9 +72,9 @@ popd
 mkdir win32
 pushd win32
 $SCRIPTDIR/setupscripts/win32
-nmake installer
-nmake
-nmake test
+ninja installer
+ninja
+ninja test
 mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe

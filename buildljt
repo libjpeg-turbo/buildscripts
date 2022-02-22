@@ -241,8 +241,8 @@ if [ $NOSRC = 0 ]; then
 		exit 1
 	fi
 	if [ "$PLATFORM" = "windows" ]; then
-		cmake -G"NMake Makefiles" .
-		nmake dist
+		CC=cl cmake -G"Ninja" .
+		ninja dist
 	elif [ "$PLATFORM" = "linux" ]; then
 		# We set these variables here in order to populate the RPM spec file
 		cmake -G"Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official -DREQUIRE_SIMD=1 -DWITH_JAVA=1 .
