@@ -18,7 +18,7 @@ export JAVA_HOME=`pwd`
 popd
 export PATH="$JAVA_HOME/bin:/c/Program Files (x86)/mingw-w64/i686-6.4.0-posix-dwarf-rt_v5-rev0/mingw32/bin:$PATH"
 
-export CFLAGS="-Wall -static-libgcc"
+export CFLAGS="-Wall -static-libgcc -static"
 
 CC=gcc cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' -DREQUIRE_SIMD=1 \
