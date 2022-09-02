@@ -48,7 +48,7 @@ the DMG (<http://www.cmake.org>) and add
 Xcode 12.0 or later (available at <https://developer.apple.com/downloads> --
 Apple ID required.)
 
-Oracle JDK
+Oracle JDK or OpenJDK
 
 
 Build Environment: Windows (not Cygwin)
