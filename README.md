@@ -35,9 +35,8 @@ CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
-Xcode 12.2.x (available at <https://developer.apple.com/downloads> --
-Apple ID required.)  Xcode should be installed under
-**/Applications/Xcode_12.2.app**.
+Xcode 12.0 or later (available at <https://developer.apple.com/downloads> --
+Apple ID required.)
 
 Oracle JDK
 

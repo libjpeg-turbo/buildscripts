@@ -18,11 +18,18 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
+OSX_PLATFORMDIR=`xcode-select --print-path`
+if [ -d $OSX_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk ]; then
+	OSX_SYSROOT=$OSX_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
+else
+	OSX_SYSROOT=$OSX_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/`ls $OSX_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/ | grep MacOSX | sort -n | head -1`
+fi
+
 . $SCRIPTDIR/macvars
 
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-	-DCMAKE_C_COMPILER=/Applications/Xcode_12.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
-	-DCMAKE_OSX_SYSROOT=/Applications/Xcode_12.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+	-DCMAKE_C_COMPILER=$OSX_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
+	-DCMAKE_OSX_SYSROOT=$OSX_SYSROOT \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 -DWITH_JAVA=1 \
 	-DOSX_32BIT_BUILD="" -DIOS_ARMV7_BUILD="" -DIOS_ARMV7S_BUILD="" \
