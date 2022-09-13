@@ -245,7 +245,7 @@ if [ $NOSRC = 0 ]; then
 		if [ -f $SCRIPTDIR/gpgsign ]; then
 			. $SCRIPTDIR/gpgsign
 			expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
-			rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
+			rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
 		fi
 	fi
 	rm -rf libjpeg-turbo-$VERSION

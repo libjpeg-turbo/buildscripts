@@ -72,7 +72,7 @@ rm -rf rpmbuild
 if [ -f $SCRIPTDIR/gpgsign ]; then
 	. $SCRIPTDIR/gpgsign
 	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm
-	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm
+	rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm
 fi
 
 echo Creating $RPM32 binary RPM ...
@@ -97,7 +97,7 @@ VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.$RPM32.rpm | cut -f4 -d-`
 mv libjpeg-turbo-official-[0-9]*.$RPM32.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 if [ -f $SCRIPTDIR/gpgsign ]; then
 	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
-	rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
+	rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 fi
 rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm | cpio -idv ./opt/libjpeg-turbo/lib32/libturbojpeg.so*
 rm -rf ./opt
@@ -152,7 +152,7 @@ if [ "$RPM64" != "$RPMA64" -a "$DEB64" != "$DEBA64" ]; then
 	mv libjpeg-turbo-official-[0-9]*.$RPMA64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
 	if [ -f $SCRIPTDIR/gpgsign ]; then
 		expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
-		rpm --checksig $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
+		rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
 	fi
 	make deb
 	mv libjpeg-turbo-official_[0-9]*_$DEBA64.deb $OUTDIR/files/
