@@ -15,6 +15,6 @@ SSHSERVER=$1,libjpeg-turbo@shell.sourceforge.net
 echo Updating YUM repo ...
 ssh $SSHSERVER create
 ssh $SSHSERVER << EOF
-	~/bin/createrepo -x OldFiles/* -s sha1 --update $FRSDIR
+	~/bin/createrepo -x OldFiles/* -s sha256 --update $FRSDIR
 EOF
 exit 0
