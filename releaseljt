@@ -26,6 +26,6 @@ EOF
 scp $BUILDDIR/* "$SSHSERVER:$FRSDIR/'$2'/" || true
 ssh $SSHSERVER << EOF
 	rm "$FRSDIR/$2/files.txt" "$FRSDIR/$2/index.html"
-	~/bin/createrepo -x 'OldFiles/*' -s sha1 --update "$FRSDIR"
+	~/bin/createrepo -x 'OldFiles/*' -s sha256 --update "$FRSDIR"
 EOF
 exit 0
