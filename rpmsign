@@ -4,7 +4,9 @@ set password [lindex $argv 0]
 set key [lindex $argv 1]
 set files [lrange $argv 2 2 ]
 
-spawn rpm --define "%_gpg_name=$key" --addsign $files
+spawn rpm --define "%_gpg_name $key" \
+    --define "%__gpg_sign_cmd %{__gpg} gpg --digest-algo sha256 --batch --no-verbose --no-armor --passphrase-fd 3 --no-secmem-warning -u \"%{_gpg_name}\" -sbo %{__signature_filename} %{__plaintext_filename}" \
+    --addsign $files
 expect "Enter pass phrase:"
 send -- "$password\r"
 
