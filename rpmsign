@@ -1,16 +1,10 @@
-#!/usr/bin/expect -f
+set -u
+set -e
 
-set password [lindex $argv 0]
-set key [lindex $argv 1]
-set files [lrange $argv 2 2 ]
+SCRIPTDIR=`dirname $0`
 
-spawn rpm --define "%_gpg_name $key" \
-    --define "%__gpg_sign_cmd %{__gpg} gpg --digest-algo sha256 --batch --no-verbose --no-armor --passphrase-fd 3 --no-secmem-warning -u \"%{_gpg_name}\" -sbo %{__signature_filename} %{__plaintext_filename}" \
-    --addsign $files
-expect "Enter pass phrase:"
-send -- "$password\r"
+. $SCRIPTDIR/gpgsign
 
-expect {
-    "Pass phrase check failed"  { exit 1 }
-    eof
-}
+rpm --define "%_gpg_name $GPG_KEY_NAME" \
+    --define "%__gpg_sign_cmd %{__gpg} gpg --digest-algo sha256 --batch --no-verbose --no-armor --passphrase $GPG_KEY_PASS --no-secmem-warning -u \"%{_gpg_name}\" -sbo %{__signature_filename} %{__plaintext_filename}" \
+    --addsign ${1+"$@"}

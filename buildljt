@@ -243,8 +243,7 @@ if [ $NOSRC = 0 ]; then
 		popd
 		mv $DIR/libjpeg-turbo-official-$VERSION.src.rpm $OUTDIR/files/
 		if [ -f $SCRIPTDIR/gpgsign ]; then
-			. $SCRIPTDIR/gpgsign
-			expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
+			$SCRIPTDIR/rpmsign $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
 			rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
 		fi
 	fi

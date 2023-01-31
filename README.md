@@ -2,7 +2,7 @@ DRC's libjpeg-turbo Build Scripts
 =================================
 
 These scripts are used to build the "official" libjpeg-turbo binaries, which
-work on any Linux platform with GLIBC 2.12 and later, as well as Windows XP and
+work on any Linux platform with GLIBC 2.17 and later, as well as Windows XP and
 later and OS X/macOS 10.7 and later.
 
 See **BUILDING.md** in the libjpeg-turbo source for basic build requirements.
@@ -12,27 +12,10 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 6 x86-64
+Recommended distro:  Red Hat or CentOS Enterprise Linux 7 x86-64
 
-Both x86-64 and i386 JDKs should be installed.  The x86-64 version should be in
-your `PATH`, and the directory containing the i386 version should be symlinked
-to **/usr/java/default32**.
-
-Install a compatible x86-64 Linux hosted/AArch64 Linux target toolchain
-(available at
-<https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads>)
-under **/opt/gcc.arm64**.  Note that 9.2-2019.12 is the latest toolchain that
-will run on RHEL 6.
-
-Install OpenJDK 8 for Linux/AArch64 (available at
-<https://adoptium.net/releases.html?variant=openjdk8>) under
-**/opt/openjdk.arm64**.
-
-Install all other software necessary to build an i386 and an x86-64 version of
-libjpeg-turbo (refer to **BUILDING.md**.)
-
-For convenience, a Docker recipe is available at
-<https://github.com/libjpeg-turbo/docker>.
+Complete Linux build environment requirements are best understood by examining
+the official Docker recipe at <https://github.com/libjpeg-turbo/docker>.
 
 
 Build Environment: macOS
