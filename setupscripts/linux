@@ -1,13 +1,8 @@
 SCRIPTDIR=`dirname $0`
 
-case "`uname -m`" in
-ppc64) export FLOATTESTARG="-DFLOATTEST=64bit";;
-esac
-
 export JAVA_HOME=/usr/java/default32
 
 LDFLAGS=${LDFLAGS:--m32} \
 $SCRIPTDIR/linux64 \
-	$FLOATTESTARG \
 	-DCMAKE_C_FLAGS='-m32 -Wall' \
 	${1+"$@"}
