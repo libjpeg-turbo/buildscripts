@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -u
+set -e
+
+TAG=
+
+if [ $# -lt 1 ]; then
+	echo "USAGE: $0 <Release tag>"
+	exit 1
+fi
+
+TAG=$1
+
+BUILDDIR=$HOME/src/ljt.nightly/$TAG/files
+if [ ! -d $BUILDDIR ]; then
+	echo "Cannot find release under $BUILDDIR."
+	exit 1
+fi
+
+echo Pushing release to PackageCloud ...
+
+find $BUILDDIR -type f -depth 1 -name '*.rpm' | while read file; do
+	package_cloud push dcommander/libjpeg-turbo/rpm_any/rpm_any "$file" || true
+done
+
+find $BUILDDIR -type f -depth 1 -name '*.deb' | while read file; do
+	package_cloud push dcommander/libjpeg-turbo/any/any "$file" || true
+done
+
+echo GREAT SUCCESS!

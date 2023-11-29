@@ -3,29 +3,42 @@
 set -u
 set -e
 
+NAME=
+TAG=
+PRARG=
+
 if [ $# -lt 2 ]; then
-	echo USAGE: $0 \<SourceForge user name\> \<Release name\>
+	echo "USAGE: $0 <Release name> <Release tag> [-prerelease]"
 	exit 1
 fi
 
-BUILDDIR=$HOME/src/ljt.nightly/latest/files
-FRSDIR=/home/frs/project/libjpeg-turbo
+NAME=$1
+shift
+TAG=$1
+shift
+while [ $# -gt 0 ]; do
+	case "$1" in
+	-p*) PRARG=--prerelease ;;
+	esac
+	shift
+done
 
-SSHSERVER=$1,libjpeg-turbo@shell.sourceforge.net
-
+BUILDDIR=$HOME/src/ljt.nightly/$TAG/files
 if [ ! -d $BUILDDIR ]; then
-	echo No nightly build to release!
+	echo "Cannot find release under $BUILDDIR."
 	exit 1
 fi
 
-echo Uploading build ...
-ssh $SSHSERVER create
-ssh $SSHSERVER << EOF
-	mkdir "$FRSDIR/$2"
-EOF
-scp $BUILDDIR/* "$SSHSERVER:$FRSDIR/'$2'/" || true
-ssh $SSHSERVER << EOF
-	rm "$FRSDIR/$2/files.txt" "$FRSDIR/$2/index.html"
-	~/bin/createrepo -x 'OldFiles/*' -s sha256 --update "$FRSDIR"
-EOF
-exit 0
+echo Pushing release to GitHub ...
+
+gh release create -R libjpeg-turbo/libjpeg-turbo $PRARG --title "$NAME" \
+	--verify-tag --notes-file $BUILDDIR/README.md $TAG ||
+gh release edit -R libjpeg-turbo/libjpeg-turbo $PRARG --title "$NAME" \
+	--verify-tag --notes-file $BUILDDIR/README.md $TAG
+
+find $BUILDDIR -type f -depth 1 \
+	! -name '*.txt' -a ! -name '*.md' -a ! -name '*.html' | while read file; do
+	gh release upload -R libjpeg-turbo/libjpeg-turbo $TAG "$file" || true
+done
+
+echo GREAT SUCCESS!
