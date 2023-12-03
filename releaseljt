@@ -37,7 +37,8 @@ gh release edit -R libjpeg-turbo/libjpeg-turbo $PRARG --title "$NAME" \
 	--verify-tag --notes-file $BUILDDIR/README.md $TAG
 
 find $BUILDDIR -type f -depth 1 \
-	! -name '*.txt' -a ! -name '*.md' -a ! -name '*.html' | while read file; do
+	! -name '*.txt' -a ! -name '*.md' -a ! -name '*.html' \
+	-a ! -name '.DS_Store' | while read file; do
 	gh release upload -R libjpeg-turbo/libjpeg-turbo $TAG "$file" || true
 done
 
