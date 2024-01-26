@@ -20,11 +20,6 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 export LDFLAGS="/subsystem:console,5.01"
 
-cat <<EOF >win32-include.cmake
-cmake_policy(SET CMP0091 OLD)
-EOF
-
 CC=cl cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.5 -source 1.5' -DREQUIRE_SIMD=1 \
-	-DWITH_JAVA=1 -DCMAKE_PROJECT_INCLUDE_BEFORE=`pwd`/win32-include.cmake \
-	.. ${1+"$@"}
+	-DWITH_JAVA=1 .. ${1+"$@"}

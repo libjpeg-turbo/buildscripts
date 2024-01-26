@@ -213,11 +213,7 @@ if [ $NOSRC = 0 ]; then
 		exit 1
 	fi
 	if [ "$PLATFORM" = "windows" ]; then
-		cat <<EOF >winsrc-include.cmake
-cmake_policy(SET CMP0091 OLD)
-EOF
-		CC=cl cmake -G"Ninja" \
-			-DCMAKE_PROJECT_INCLUDE_BEFORE=`pwd`/winsrc-include.cmake .
+		CC=cl cmake -G"Ninja" .
 		ninja dist
 	elif [ "$PLATFORM" = "linux" ]; then
 		# We set these variables here in order to populate the RPM spec file
