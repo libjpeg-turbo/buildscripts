@@ -65,8 +65,6 @@ unset JAVAFLAGS
 # identical between the x86-64 and i386 RPM, so they can be co-installed on
 # RHEL 6.
 cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
-rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM64.rpm | cpio -idv ./opt/libjpeg-turbo/lib64/libturbojpeg.so*
-rm -rf ./opt
 rm -rf rpmbuild
 
 if [ -f $SCRIPTDIR/gpgsign ]; then
@@ -99,8 +97,6 @@ if [ -f $SCRIPTDIR/gpgsign ]; then
 	expect $SCRIPTDIR/rpmsign "$GPG_KEY_PASS" "$GPG_KEY_NAME" $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 	rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm
 fi
-rpm2cpio $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPM32.rpm | cpio -idv ./opt/libjpeg-turbo/lib32/libturbojpeg.so*
-rm -rf ./opt
 popd
 
 echo Creating $DEB64 binary DEB ...
