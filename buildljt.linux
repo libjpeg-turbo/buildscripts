@@ -105,7 +105,7 @@ pushd linux64
 $SCRIPTDIR/setupscripts/linux64
 make -j$NUMCPUS --load-average=$NUMCPUS
 make deb
-make test
+ctest -j$NUMCPUS
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_$DEB64.deb $OUTDIR/files/
 if [ -f $SCRIPTDIR/gpgsign ]; then
@@ -121,7 +121,7 @@ pushd linux
 $SCRIPTDIR/setupscripts/linux
 make -j$NUMCPUS --load-average=$NUMCPUS
 make deb
-make test
+ctest -j$NUMCPUS
 #make tjtest
 mv libjpeg-turbo-official_[0-9]*_$DEB32.deb $OUTDIR/files/
 if [ "$DEB64" = "amd64" ]; then

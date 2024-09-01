@@ -28,7 +28,7 @@ OLDPATH=$PATH
 PATH="/c/Program Files (x86)/mingw-w64/i686-6.4.0-posix-dwarf-rt_v5-rev0/mingw32/bin:$PATH"
 ninja installer
 ninja
-ninja test
+ctest -j$NUMBER_OF_PROCESSORS
 PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
@@ -45,7 +45,7 @@ OLDPATH=$PATH
 PATH="/c/Program Files/mingw-w64/x86_64-6.4.0-posix-seh-rt_v5-rev0/mingw64/bin:$PATH"
 ninja installer
 ninja
-ninja test
+ctest -j$NUMBER_OF_PROCESSORS
 PATH=$OLDPATH
 mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
@@ -59,7 +59,7 @@ pushd win64
 $SCRIPTDIR/setupscripts/win64
 ninja installer
 ninja
-ninja test
+ctest -j$NUMBER_OF_PROCESSORS
 mv libjpeg-turbo-[0-9]*-vc64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
@@ -73,7 +73,7 @@ pushd win32
 $SCRIPTDIR/setupscripts/win32
 ninja installer
 ninja
-ninja test
+ctest -j$NUMBER_OF_PROCESSORS
 mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
