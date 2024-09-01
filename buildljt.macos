@@ -33,7 +33,7 @@ pushd macosx8664
 $SCRIPTDIR/setupscripts/macosx8664
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
-make test
+ctest -j$NUMCPUS
 make dmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
 popd
