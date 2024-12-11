@@ -31,8 +31,9 @@ fi
 
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_C_COMPILER=$MACOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
+	-DCMAKE_OSX_ARCHITECTURES=x86_64 \
 	-DCMAKE_OSX_SYSROOT=$MACOS_SYSROOT \
-	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.7 -source 1.7' \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 -DWITH_JAVA=1 \
-	-DARMV8_BUILD=../macosarmv8 \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.7 -source 1.7' \
+	-DSECONDARY_BUILD=../macosarm64 \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}
