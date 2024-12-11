@@ -2,6 +2,8 @@ SCRIPTDIR=`dirname $0`
 
 if [ -x /opt/local/bin/yasm ]; then
 	export ASM_NASM=/opt/local/bin/yasm
+elif [ -x /opt/homebrew/bin/yasm ]; then
+	export ASM_NASM=/opt/homebrew/bin/yasm
 elif [ -x /usr/local/bin/yasm ]; then
 	export ASM_NASM=/usr/local/bin/yasm
 else
