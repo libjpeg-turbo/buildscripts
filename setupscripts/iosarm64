@@ -1,7 +1,6 @@
 SCRIPTDIR=`dirname $0`
 
-IOS_PLATFORMDIR=`xcode-select --print-path`
-export CFLAGS="-arch arm64 -miphoneos-version-min=8.0 -fembed-bitcode -funwind-tables -Wall"
+export CFLAGS="-miphoneos-version-min=8.0 -fembed-bitcode -funwind-tables -Wall"
 
 CMAKE_BUILD_TYPE=Release
 
@@ -10,18 +9,16 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
-cat <<EOF >toolchain.cmake
-set(CMAKE_SYSTEM_NAME Darwin)
-set(CMAKE_SYSTEM_PROCESSOR aarch64)
-set(CMAKE_C_COMPILER $IOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
-EOF
+IOS_PLATFORMDIR=`xcode-select --print-path`
 
 . $SCRIPTDIR/macvars
 
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_C_COMPILER=$IOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
+	-DCMAKE_OSX_ARCHITECTURES=arm64 \
 	-DCMAKE_OSX_SYSROOT=$IOS_PLATFORMDIR/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
 	-DPKGNAME=libjpeg-turbo-ios \
 	-DCMAKE_INSTALL_DEFAULT_PREFIX=/opt/libjpeg-turbo-ios \
-	-DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
+	-DSECONDARY_BUILD=../iosx8664 \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}

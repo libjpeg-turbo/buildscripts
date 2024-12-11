@@ -21,16 +21,27 @@ export CTEST_OUTPUT_ON_FAILURE=1
 
 pushd libjpeg-turbo-[0-9]*
 
-mkdir macosarmv8
-pushd macosarmv8
-$SCRIPTDIR/setupscripts/macosarmv8
+PRIMARY=macosx8664
+SECONDARY=macosarm64
+if [ "`uname -m`" = "arm64" ]; then
+	PRIMARY=macosarm64
+	SECONDARY=macosx8664
+fi
+
+mkdir $SECONDARY
+pushd $SECONDARY
+$SCRIPTDIR/setupscripts/$SECONDARY -DWITH_JAVA=0
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
+if [ "`uname -m`" = "arm64" ]; then
+	# Go go gadget Rosetta
+	ctest -j$NUMCPUS
+fi
 popd
 
-mkdir macosx8664
-pushd macosx8664
-$SCRIPTDIR/setupscripts/macosx8664
+mkdir $PRIMARY
+pushd $PRIMARY
+$SCRIPTDIR/setupscripts/$PRIMARY
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
 ctest -j$NUMCPUS
@@ -38,9 +49,9 @@ make dmg
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
 popd
 
-mkdir iosarmv8
-pushd iosarmv8
-$SCRIPTDIR/setupscripts/iosarmv8
+mkdir iosarm64
+pushd iosarm64
+$SCRIPTDIR/setupscripts/iosarm64
 make -j$NUMCPUS --load-average=$NUMCPUS
 popd
 
