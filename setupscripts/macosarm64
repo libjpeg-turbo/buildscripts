@@ -1,7 +1,6 @@
 SCRIPTDIR=`dirname $0`
 
-MACOS_PLATFORMDIR=`xcode-select --print-path`
-export CFLAGS="-arch arm64 -mmacosx-version-min=11.0 -Wall"
+export CFLAGS="-mmacosx-version-min=11.0 -Wall"
 
 CMAKE_BUILD_TYPE=Release
 
@@ -10,22 +9,19 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
+MACOS_PLATFORMDIR=`xcode-select --print-path`
 if [ -d $MACOS_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk ]; then
 	MACOS_SYSROOT=$MACOS_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk
 else
 	MACOS_SYSROOT=$MACOS_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/`ls $MACOS_PLATFORMDIR/Platforms/MacOSX.platform/Developer/SDKs/ | grep MacOSX | sort -n | head -1`
 fi
 
-cat <<EOF >toolchain.cmake
-set(CMAKE_SYSTEM_NAME Darwin)
-set(CMAKE_SYSTEM_PROCESSOR aarch64)
-set(CMAKE_C_COMPILER $MACOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
-EOF
-
 . $SCRIPTDIR/macvars
 
 cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+	-DCMAKE_C_COMPILER=$MACOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
+	-DCMAKE_OSX_ARCHITECTURES=arm64 \
 	-DCMAKE_OSX_SYSROOT=$MACOS_SYSROOT \
-	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
-	-DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
+	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 -DWITH_JAVA=1 \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.7 -source 1.7' \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}
