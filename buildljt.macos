@@ -21,6 +21,10 @@ export CTEST_OUTPUT_ON_FAILURE=1
 
 pushd libjpeg-turbo-[0-9]*
 
+if [ -f $SCRIPTDIR/setupscripts/macsign ]; then
+	. $SCRIPTDIR/setupscripts/macsign
+fi
+
 PRIMARY=macosx8664
 SECONDARY=macosarm64
 if [ "`uname -m`" = "arm64" ]; then
@@ -46,6 +50,14 @@ export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
 ctest -j$NUMCPUS
 make dmg
+if [ -n "${MACOS_NOTARIZE_ID-}" -a -n "${MACOS_NOTARIZE_TEAM_ID-}" -a \
+	-n "${MACOS_NOTARIZE_PASS-}" ]; then
+	echo libjpeg-turbo-[0-9]*.dmg ...
+	xcrun notarytool submit libjpeg-turbo-[0-9]*.dmg \
+		--apple-id $MACOS_NOTARIZE_ID --team-id $MACOS_NOTARIZE_TEAM_ID \
+		--password $MACOS_NOTARIZE_PASS --wait
+	xcrun stapler staple libjpeg-turbo-[0-9]*.dmg
+fi
 mv libjpeg-turbo-[0-9]*.dmg $OUTDIR/files/
 popd
 
@@ -60,5 +72,13 @@ pushd iosx8664
 $SCRIPTDIR/setupscripts/iosx8664
 make -j$NUMCPUS --load-average=$NUMCPUS
 make dmg
+if [ -n "${MACOS_NOTARIZE_ID-}" -a -n "${MACOS_NOTARIZE_TEAM_ID-}" -a \
+	-n "${MACOS_NOTARIZE_PASS-}" ]; then
+	echo libjpeg-turbo-ios-[0-9]*.dmg ...
+	xcrun notarytool submit libjpeg-turbo-ios-[0-9]*.dmg \
+		--apple-id $MACOS_NOTARIZE_ID --team-id $MACOS_NOTARIZE_TEAM_ID \
+		--password $MACOS_NOTARIZE_PASS --wait
+	xcrun stapler staple libjpeg-turbo-ios-[0-9]*.dmg
+fi
 mv libjpeg-turbo-ios-[0-9]*.dmg $OUTDIR/files/
 popd
