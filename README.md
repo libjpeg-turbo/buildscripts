@@ -128,14 +128,19 @@ file:
 Signing the Mac Package/DMG
 ---------------------------
 
-To sign the Mac installer package and DMG, create a file called **macsign**
-under **setupscripts/**, and include the following contents in the file:
+To sign and notarize the Mac installer package and DMG, create a file called
+**macsign** under **setupscripts/**, and include the following contents in the
+file:
 
     MACOS_APP_CERT_NAME={full name of Mac Developer ID Application certficate (in the macOS keychain) used to sign the DMG}
     MACOS_INST_CERT_NAME={full name of Mac Developer ID Installer certificate (in the macOS keychain) used to sign the installer package}
+    MACOS_NOTARIZE_ID={Apple ID (e-mail address) for notarization}
+    MACOS_NOTARIZE_TEAM_ID={Team ID for notarization}
+    MACOS_NOTARIZE_PASS={app-specific password for notarization}
 
 macOS 10.11 "El Capitan" or later is required in order to sign the Mac
-package/DMG.
+package/DMG.  macOS 12 "Monterey" or later and Xcode 14 or later are required
+in order to notarize the Mac package/DMG.
 
 Signing the Windows Packages
 ----------------------------
