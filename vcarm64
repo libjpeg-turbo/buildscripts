@@ -1,0 +1,6 @@
+export PATH=${PATH//HostX64\/x64/HostX64\/ARM64}
+export LIB=${LIB//lib\\x64/lib\\ARM64}
+export LIB=${LIB//ucrt\\x64/ucrt\\arm64}
+export LIB=${LIB//um\\x64/um\\arm64}
+echo PATH = $PATH
+echo LIB = $LIB

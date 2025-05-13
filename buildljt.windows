@@ -30,11 +30,11 @@ ninja installer
 ninja
 ctest -j$NUMBER_OF_PROCESSORS
 PATH=$OLDPATH
-mv libjpeg-turbo-[0-9]*-gcc.exe $OUTDIR/files/
+mv libjpeg-turbo-[0-9]*-gcc-x86.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
 	. $SCRIPTDIR/mssign
-	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
-	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc-x86.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc-x86.exe
 fi
 popd
 
@@ -47,12 +47,16 @@ ninja installer
 ninja
 ctest -j$NUMBER_OF_PROCESSORS
 PATH=$OLDPATH
-mv libjpeg-turbo-[0-9]*-gcc64.exe $OUTDIR/files/
+mv libjpeg-turbo-[0-9]*-gcc-x64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
-	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
-	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc64.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc-x64.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-gcc-x64.exe
 fi
 popd
+
+OLDINCLUDE=$INCLUDE
+OLDLIB=$LIB
+OLDPATH=$PATH
 
 mkdir win64
 pushd win64
@@ -60,10 +64,10 @@ $SCRIPTDIR/setupscripts/win64
 ninja installer
 ninja
 ctest -j$NUMBER_OF_PROCESSORS
-mv libjpeg-turbo-[0-9]*-vc64.exe $OUTDIR/files/
+mv libjpeg-turbo-[0-9]*-vc-x64.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
-	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
-	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc64.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc-x64.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc-x64.exe
 fi
 popd
 
@@ -74,10 +78,27 @@ $SCRIPTDIR/setupscripts/win32
 ninja installer
 ninja
 ctest -j$NUMBER_OF_PROCESSORS
-mv libjpeg-turbo-[0-9]*-vc.exe $OUTDIR/files/
+mv libjpeg-turbo-[0-9]*-vc-x86.exe $OUTDIR/files/
 if [ -f $SCRIPTDIR/mssign ]; then
-	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
-	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc.exe
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc-x86.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc-x86.exe
+fi
+popd
+
+INCLUDE=$OLDINCLUDE
+LIB=$OLDLIB
+PATH=$OLDPATH
+
+. $SCRIPTDIR/vcarm64
+mkdir win64.arm
+pushd win64.arm
+$SCRIPTDIR/setupscripts/win64.arm
+ninja installer
+ninja
+mv libjpeg-turbo-[0-9]*-vc-arm64.exe $OUTDIR/files/
+if [ -f $SCRIPTDIR/mssign ]; then
+	signtool sign -f "$MS_KEY_FILE" -t "$MS_TSA_URL" -p "$MS_KEY_PASS" $OUTDIR/files/libjpeg-turbo-[0-9]*-vc-arm64.exe
+	signtool verify -pa $OUTDIR/files/libjpeg-turbo-[0-9]*-vc-arm64.exe
 fi
 popd
 

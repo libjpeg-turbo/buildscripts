@@ -1,0 +1,23 @@
+cat <<EOF >win64-arm-toolchain.cmake
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
+EOF
+
+if [ -n "${PROGRAMDATA}" ]; then
+	export JAVA_HOME="${PROGRAMDATA/\\//}/Oracle/JavaArm64"
+elif [ -n "${ProgramData}" ]; then
+	export JAVA_HOME="${ProgramData/\\//}/Oracle/JavaArm64"
+else
+	echo ERROR: ProgramData environment variable not set
+	exit 1
+fi
+
+`dirname $0`/win64 ${1+"$@"} \
+	-DCMAKE_TOOLCHAIN_FILE=win64-arm-toolchain.cmake \
+	-DJAVA_AWT_LIBRARY=$JAVA_HOME/lib/jawt.lib \
+	-DJAVA_JVM_LIBRARY=$JAVA_HOME/lib/jvm.lib \
+	-DJAVA_INCLUDE_PATH=$JAVA_HOME/include \
+	-DJAVA_INCLUDE_PATH2=$JAVA_HOME/include/win32 \
+	-DCMAKE_EXE_LINKER_FLAGS="/machine:ARM64 /subsystem:console,6.02" \
+	-DCMAKE_MODULE_LINKER_FLAGS="/machine:ARM64 /subsystem:console,6.02" \
+	-DCMAKE_SHARED_LINKER_FLAGS="/machine:ARM64 /subsystem:console,6.02"
