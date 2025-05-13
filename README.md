@@ -78,12 +78,17 @@ within an MSYS shell.  The easiest way to do that is to install
 
 In order for the libjpeg-turbo static libraries to be compatible with a wide
 variety of MinGW distributions, it is necessary to build libjpeg-turbo using
-specific versions of the MinGW toolchain.  Use the
-[MinGW-builds installer](http://mingw-w64.org/doku.php/download/mingw-builds)
-to install the following toolchain versions into their default directories:
+specific versions of the MinGW toolchain.
 
-* Version 6.4.0 / x86_64 / POSIX threads / SEH exception handling / Rev. 0
-* Version 6.4.0 / i686 / POSIX threads / DWARF exception handling / Rev. 0
+Download
+[**x86\_64-6.4.0-release-posix-seh-rt\_v5-rev0.7z**](https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win64/Personal Builds/mingw-builds/6.4.0/threads-posix/seh/x86_64-6.4.0-release-posix-seh-rt_v5-rev0.7z)
+and extract it to
+**C:\Program Files\mingw-w64\x86\_64-6.4.0-posix-seh-rt\_v5-rev0**.
+
+Download
+[**i686-6.4.0-release-posix-dwarf-rt\_v5-rev0.7z**](https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win32/Personal Builds/mingw-builds/6.4.0/threads-posix/dwarf/i686-6.4.0-release-posix-dwarf-rt_v5-rev0.7z)
+and extract it to
+**C:\Program Files (x86)\mingw-w64\i686-6.4.0-posix-dwarf-rt\_v5-rev0**.
 
 Both 64-bit and 32-bit JDKs should be installed, but they do not need to be
 added to the `PATH`.  You do, however, need to create a symbolic link to the
