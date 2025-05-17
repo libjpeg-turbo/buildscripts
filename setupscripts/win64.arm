@@ -14,6 +14,7 @@ fi
 
 `dirname $0`/win64 ${1+"$@"} \
 	-DCMAKE_TOOLCHAIN_FILE=win64-arm-toolchain.cmake \
+	-DCMAKE_C_FLAGS='-DWIN32 -D_WINDOWS -W4 -wd4100 -wd4127 -wd4245 -wd4324 -wd4701 -wd4702 -wd4706 -WX' \
 	-DJAVA_AWT_LIBRARY=$JAVA_HOME/lib/jawt.lib \
 	-DJAVA_JVM_LIBRARY=$JAVA_HOME/lib/jvm.lib \
 	-DJAVA_INCLUDE_PATH=$JAVA_HOME/include \
