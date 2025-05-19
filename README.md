@@ -53,7 +53,7 @@ the `vcvars64.bat` script provided by Visual C++, as described in the
 libjpeg-turbo build instructions.
 
 The official libjpeg-turbo binaries for Visual C++ are generated using
-[Visual Studio 2015 Community Edition](https://visualstudio.microsoft.com), but
+[Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com), but
 any reasonably modern version of Visual C++ and the Windows SDK should work.
 Note, however, that **jpegXX.dll** will depend on the C run-time DLLs from
 whichever version of Visual C++ was used to build it.
@@ -77,13 +77,15 @@ Download
 and extract it to
 **C:\Program Files (x86)\mingw-w64\i686-6.4.0-posix-dwarf-rt\_v5-rev0**.
 
-Both 64-bit and 32-bit JDKs should be installed, but they do not need to be
-added to the `PATH`.  You do, however, need to create a symbolic link to the
-32-bit JRE so that the build scripts can find it.
+x64 and x86 JDKs should be installed, but they do not need to be added to the
+`PATH`.  You do, however, need to create the following symbolic links so that
+the build scripts can find the JDKs.
 
 From an Administrator Command Prompt, type:
 
-    mklink /d %ProgramData%\Oracle\Java\Java32 {directory of 32-bit JRE}
+    md %ProgramData%\Oracle\Java
+    mklink /d %ProgramData%\Oracle\Java\javapath {directory of x64 JDK}
+    mklink /d %ProgramData%\Oracle\Java32 {directory of x86 JDK}
 
 Install all other software necessary to build a 32-bit and a 64-bit version of
 libjpeg-turbo (refer to **BUILDING.md**.)
