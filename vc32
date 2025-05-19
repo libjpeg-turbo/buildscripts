@@ -1,9 +1,8 @@
-export PATH=${PATH//bin\/amd64/bin}
-export PATH=${PATH//BIN\/amd64/bin}
-export PATH=${PATH//bin\/x64/bin}
-export LIB=${LIB//lib\\amd64/lib}
-export LIB=${LIB//LIB\\amd64/lib}
-export LIB=${LIB//lib\\x64/lib}
+export PATH=${PATH//Performance\ Tools\/x64/Performance\ Tools}
+export PATH=${PATH//Llvm\/x64/Llvm}
+export PATH=${PATH//\/x64/\/x86}
+export PATH=${PATH//\/HostX64/\/HostX86}
+export LIB=${LIB//lib\\x64/lib\\x86}
 export LIB=${LIB//ucrt\\x64/ucrt\\x86}
 export LIB=${LIB//um\\x64/um\\x86}
 echo PATH = $PATH
