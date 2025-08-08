@@ -12,7 +12,7 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 7 x86-64 or later
+Recommended distro:  Red Hat Enterprise Linux 8 x86-64 (and its derivatives)
 
 
 Build Environment: macOS

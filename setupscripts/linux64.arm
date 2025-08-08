@@ -1,7 +1,8 @@
 cat <<EOF >linux64-arm-toolchain.cmake
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
-set(CMAKE_C_COMPILER /opt/gcc.arm64/bin/aarch64-none-linux-gnu-gcc)
+set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)
+set(CMAKE_SYSROOT /opt/gcc.arm64/aarch64-none-linux-gnu/libc)
 EOF
 
 `dirname $0`/linux64 ${1+"$@"} \
