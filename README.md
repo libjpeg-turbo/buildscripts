@@ -12,7 +12,7 @@ Additional build requirements for these scripts are listed below.
 Build Environment: Linux
 ------------------------
 
-Recommended distro:  Red Hat or CentOS Enterprise Linux 7 x86-64
+Recommended distro:  Red Hat Enterprise Linux 8 x86-64 (and its derivatives)
 
 Complete Linux build environment requirements are best understood by examining
 the official Docker recipe at <https://github.com/libjpeg-turbo/docker>.
