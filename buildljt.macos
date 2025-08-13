@@ -34,7 +34,7 @@ fi
 
 mkdir $SECONDARY
 pushd $SECONDARY
-$SCRIPTDIR/setupscripts/$SECONDARY -DWITH_JAVA=0
+$SCRIPTDIR/setupscripts/$SECONDARY
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
 if [ "`uname -m`" = "arm64" ]; then
