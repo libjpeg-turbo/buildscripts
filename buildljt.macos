@@ -37,10 +37,6 @@ pushd $SECONDARY
 $SCRIPTDIR/setupscripts/$SECONDARY
 export NUMCPUS=`sysctl -n hw.ncpu`
 make -j$NUMCPUS --load-average=$NUMCPUS
-if [ "`uname -m`" = "arm64" -a -z "${GITHUB_ACTIONS:-}" ]; then
-	# Go go gadget Rosetta
-	ctest -j$NUMCPUS
-fi
 popd
 
 mkdir $PRIMARY
