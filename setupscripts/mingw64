@@ -22,4 +22,4 @@ export CFLAGS="-Wall -static-libgcc -static"
 
 CC=gcc cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8' -DREQUIRE_SIMD=1 \
-	-DWITH_JAVA=1 .. ${1+"$@"}
+	-DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar .. ${1+"$@"}

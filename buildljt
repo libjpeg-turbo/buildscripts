@@ -216,8 +216,11 @@ if [ $NOSRC = 0 ]; then
 		CC=cl cmake -G"Ninja" .
 		ninja dist
 	elif [ "$PLATFORM" = "linux" ]; then
+		$SCRIPTDIR/jna.install
 		# We set these variables here in order to populate the RPM spec file
-		cmake -G"Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official -DREQUIRE_SIMD=1 -DWITH_JAVA=1 .
+		cmake -G"Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=1 \
+			-DPKGNAME=libjpeg-turbo-official -DREQUIRE_SIMD=1 \
+			-DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar .
 		make dist
 	else
 		cmake -G"Unix Makefiles" .

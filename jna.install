@@ -1,0 +1,20 @@
+set -e
+set -u
+
+VERSION=5.18.1
+URL=https://repo1.maven.org/maven2/net/java/dev/jna/jna/$VERSION/jna-$VERSION.jar
+
+JNAFILE="`basename $URL`"
+JNADIR=~/.jna/$(uname -s)-$(uname -m)
+
+mkdir -p "$JNADIR"
+pushd "$JNADIR" >/dev/null 2>&1
+if [ -f $JNAFILE ]; then
+	echo JNA $VERSION is already installed.
+else
+	wget -nv -c "$URL"
+	find . -type f ! -name "$JNAFILE" -delete
+	echo JNA installed.
+fi
+ln -fs $JNAFILE jna.jar
+popd >/dev/null 2>&1

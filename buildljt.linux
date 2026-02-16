@@ -41,6 +41,8 @@ fi
 
 exec 2>&1
 
+$SCRIPTDIR/jna.install
+
 export CTEST_OUTPUT_ON_FAILURE=1
 
 echo Creating $RPM64 binary RPM ...
@@ -64,7 +66,7 @@ unset JAVAFLAGS
 # This bit of uniqueness is necessary to ensure that the JAR file is bitwise
 # identical between the x86-64 and i386 RPM, so they can be co-installed on
 # RHEL 6.
-cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/java/turbojpeg.jar .
+cp rpmbuild/BUILD/libjpeg-turbo-$VERSION/jna/turbojpeg-jna.jar .
 rm -rf rpmbuild
 
 if [ -f $SCRIPTDIR/gpgsign ]; then
@@ -80,12 +82,12 @@ pushd linux.rpm
 $SCRIPTDIR/setupscripts/linux
 export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
 make -j$NUMCPUS --load-average=$NUMCPUS
-MD5JAR1=`md5sum ../../turbojpeg.jar | cut -f1 -d' '`
-rm java/turbojpeg.jar
-mv ../../turbojpeg.jar java/
-touch -am java/turbojpeg.jar
+MD5JAR1=`md5sum ../../turbojpeg-jna.jar | cut -f1 -d' '`
+rm jna/turbojpeg-jna.jar
+mv ../../turbojpeg-jna.jar jna/
+touch -am jna/turbojpeg-jna.jar
 make rpm
-MD5JAR2=`md5sum java/turbojpeg.jar | cut -f1 -d' '`
+MD5JAR2=`md5sum jna/turbojpeg-jna.jar | cut -f1 -d' '`
 if [ ! "$MD5JAR1" = "$MD5JAR2" ]; then
 	echo ERROR: JARs are not bitwise identical.
 	exit 1
