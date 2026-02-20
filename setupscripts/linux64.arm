@@ -9,4 +9,5 @@ EOF
 	-DJAVA_AWT_LIBRARY=/opt/openjdk.arm64/lib/aarch64/libjawt.so \
 	-DJAVA_JVM_LIBRARY=/opt/openjdk.arm64/jre/lib/aarch64/server/libjvm.so \
 	-DJAVA_INCLUDE_PATH=/opt/openjdk.arm64/include \
-	-DJAVA_INCLUDE_PATH2=/opt/openjdk.arm64/include/linux
+	-DJAVA_INCLUDE_PATH2=/opt/openjdk.arm64/include/linux \
+	-DCMAKE_PREFIX_PATH=/opt/arm64/opt/libjpeg-turbo/lib64/cmake

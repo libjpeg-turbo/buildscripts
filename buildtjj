@@ -19,9 +19,13 @@ onexit()
 {
 	cd $PREVDIR
 	if [ ! "$TMPDIR" = "" ]; then
-		RESULTS=`find $TMPDIR -uid 0 -print -quit`
-		if [ ! -z "$RESULTS" -a ! `uid` -eq 0 ]; then
-			sudo rm -rf $TMPDIR
+		if [ ! "$PLATFORM" = "windows" ]; then
+			RESULTS=`find $TMPDIR -uid 0 -print -quit`
+			if [ ! -z "$RESULTS" -a ! `uid` -eq 0 ]; then
+				sudo rm -rf $TMPDIR
+			else
+				rm -rf $TMPDIR
+			fi
 		else
 			rm -rf $TMPDIR
 		fi
@@ -50,7 +54,7 @@ usage()
 	echo
 	echo "Options:"
 	echo "-b <dir> = Specify build directory"
-	echo "           (default = ~/src/ljt.nightly/$BUILD)"
+	echo "           (default = ~/src/tjj.nightly/$BUILD)"
 	echo "-e = Use existing source tarball in the build directory"
 	echo "-f = Force new build (deletes all existing build files in the build directory)"
 	echo "-fb = Use existing source tarball in the build directory, but force new"
@@ -101,7 +105,7 @@ update_list()
 }
 
 BUILD=`date +%Y%m%d`
-export OUTDIR=$HOME/src/ljt.nightly/$BUILD
+export OUTDIR=$HOME/src/tjj.nightly/$BUILD
 LATEST=1
 
 FORCE=0
@@ -111,7 +115,7 @@ NOSRC=0
 UPDATELIST=0
 VERBOSE=0
 TAG=main
-DEFAULT_REPO=https://github.com/libjpeg-turbo/libjpeg-turbo.git
+DEFAULT_REPO=https://github.com/libjpeg-turbo/turbojpeg-java.git
 REPO=$DEFAULT_REPO
 SRCDIR=
 
@@ -187,9 +191,9 @@ if [ "$PLATFORM" = "windows" ]; then
 	# /tmp maps to a directory in c:\Documents and Settings, which causes
 	# barfage in the MinGW resource compiler because of the pathname
 	# spaces.
-	export TMPDIR=`mktemp -d /c/temp/ljtbuild.XXXXXX`
+	export TMPDIR=`mktemp -d /c/temp/tjjbuild.XXXXXX`
 else
-	export TMPDIR=`mktemp -d /tmp/ljtbuild.XXXXXX`
+	export TMPDIR=`mktemp -d /tmp/tjjbuild.XXXXXX`
 fi
 cd $TMPDIR
 if [ $NOSRC = 0 ]; then
@@ -197,14 +201,14 @@ if [ $NOSRC = 0 ]; then
 		echo Using existing source directory $SRCDIR ...
 		DIR=$SRCDIR
 	else
-		echo Checking out libjpeg-turbo from $TAG ...
-		git clone --depth=1 -b $TAG $REPO libjpeg-turbo
-		DIR=libjpeg-turbo
+		echo Checking out TurboJPEG/Java from $TAG ...
+		git clone --depth=1 -b $TAG $REPO turbojpeg-java
+		DIR=turbojpeg-java
 	fi
-	echo Creating source tarball and SRPM ...
-	cp -R $DIR libjpeg-turbo.pristine
-	pushd libjpeg-turbo.pristine
-	rm -rf .git .gitattributes .github .gitignore appveyor.yml
+	echo Creating source tarball ...
+	cp -R $DIR turbojpeg-java.pristine
+	pushd turbojpeg-java.pristine
+	rm -rf .git .gitattributes .github .gitignore
 	popd
 	pushd $DIR
 	VERSION=`grep "set(VERSION" CMakeLists.txt | sed -e s/[^0-9\.]//g`
@@ -213,53 +217,38 @@ if [ $NOSRC = 0 ]; then
 		exit 1
 	fi
 	if [ "$PLATFORM" = "windows" ]; then
-		CC=cl cmake -G"Ninja" .
+		CC=cl cmake -G"Ninja" -DCMAKE_PREFIX_PATH=c:/libjpeg-turbo64/lib/cmake .
 		ninja dist
-	elif [ "$PLATFORM" = "linux" ]; then
-		# We set these variables here in order to populate the RPM spec file
-		cmake -G"Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official -DREQUIRE_SIMD=1 -DWITH_JAVA=1 .
-		make dist
 	else
-		cmake -G"Unix Makefiles" .
+		cmake -G"Unix Makefiles" -DCMAKE_PREFIX_PATH=/opt/libjpeg-turbo/lib64/cmake .
 		make dist
 	fi
 	popd
-	mv $DIR/libjpeg-turbo-$VERSION.tar.gz $OUTDIR/files/
-	tar xfz $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
-	diff -r libjpeg-turbo.pristine libjpeg-turbo-$VERSION
-	rm -rf libjpeg-turbo.pristine
+	mv $DIR/turbojpeg-java-$VERSION.tar.gz $OUTDIR/files/
+	tar xfz $OUTDIR/files/turbojpeg-java-$VERSION.tar.gz
+	diff -r turbojpeg-java.pristine turbojpeg-java-$VERSION
+	rm -rf turbojpeg-java.pristine
 	if [ -f $SCRIPTDIR/gpgsign ]; then
 		. $SCRIPTDIR/gpgsign
-		if [ -f $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig ]; then
-			rm -f $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
+		if [ -f $OUTDIR/files/turbojpeg-java-$VERSION.tar.gz.sig ]; then
+			rm -f $OUTDIR/files/turbojpeg-java-$VERSION.tar.gz.sig
 		fi
-		gpg --pinentry-mode loopback --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz \
-			|| gpg --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz
-		gpg --verify $OUTDIR/files/libjpeg-turbo-$VERSION.tar.gz.sig
+		gpg --pinentry-mode loopback --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/turbojpeg-java-$VERSION.tar.gz \
+			|| gpg --batch --default-key "$GPG_KEY_ID" --passphrase "$GPG_KEY_PASS" --detach-sig $OUTDIR/files/turbojpeg-java-$VERSION.tar.gz
+		gpg --verify $OUTDIR/files/turbojpeg-java-$VERSION.tar.gz.sig
 	fi
-	if [ "$PLATFORM" = "linux" ]; then
-		pushd $DIR
-		make srpm
-		popd
-		mv $DIR/libjpeg-turbo-official-$VERSION.src.rpm $OUTDIR/files/
-		if [ -f $SCRIPTDIR/gpgsign ]; then
-			$SCRIPTDIR/rpmsign $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
-			rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.src.rpm
-		fi
-	fi
-	rm -rf libjpeg-turbo-$VERSION
+	rm -rf turbojpeg-java-$VERSION
 	if [ "$SRCDIR" = "" ]; then
-		rm -rf libjpeg-turbo
+		rm -rf turbojpeg-java
 	fi
 else
 	if [ "$PLATFORM" = "linux" ]; then
-		if ! ls $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz >/dev/null 2>&1
-			-o ! ls $OUTDIR/files/libjpeg-turbo-[0-9]*.src.rpm >/dev/null 2>&1; then
+		if ! ls $OUTDIR/files/turbojpeg-java-[0-9]*.tar.gz >/dev/null 2>&1 ]; then
 			echo Source files do not exist!
 			exit 1
 		fi
 	else
-		if [ ! -f $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz ]; then
+		if [ ! -f $OUTDIR/files/turbojpeg-java-[0-9]*.tar.gz ]; then
 			echo Source tarball does not exist!
 			exit 1
 		fi
@@ -270,15 +259,15 @@ if [ $SRCONLY = 1 ]; then
 	exit 0
 fi
 
-echo Untarring libjpeg-turbo ...
-tar xfz $OUTDIR/files/libjpeg-turbo-[0-9]*.tar.gz
+echo Untarring TurboJPEG/Java ...
+tar xfz $OUTDIR/files/turbojpeg-java-[0-9]*.tar.gz
 echo   done.
-echo Building libjpeg-turbo for $PLATFORM...
+echo Building TurboJPEG/Java for $PLATFORM...
 if [ $VERBOSE = 1 ]; then
 	set -o pipefail
-	$SCRIPTDIR/buildljt.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
+	$SCRIPTDIR/buildtjj.$PLATFORM | tee $OUTDIR/log-$PLATFORM.txt
 else
-	$SCRIPTDIR/buildljt.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
+	$SCRIPTDIR/buildtjj.$PLATFORM > $OUTDIR/log-$PLATFORM.txt
 fi
 echo   done.
 

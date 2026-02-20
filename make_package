@@ -1,0 +1,70 @@
+set -u
+set -e
+
+SCRIPTDIR=`dirname $0`
+
+usage() {
+	echo "USAGE: $0"
+	echo "       <Architecture> <Setup script> <Run tests (0|1)> <Package extension>"
+	echo "       [Additional CMake arguments]"
+	exit 1
+}
+
+if [ $# -lt 4 ]; then
+	usage
+fi
+
+ARCH=$1
+ARCHLC=$(echo $ARCH | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+SCRIPT=$2
+RUNTESTS=$3
+if [ "$RUNTESTS" != "1" -a "$RUNTESTS" != "0" ]; then
+	usage
+fi
+PKGEXT=$4
+if [ "$PKGEXT" != "tar.bz2" -a "$PKGEXT" != "zip" ]; then
+	usage
+fi
+
+if [ "$PLATFORM" = "windows" ]; then
+	MAKE=ninja
+	PMAKE=ninja
+elif [ "$PLATFORM" = "macos" ]; then
+	export NUMCPUS=`sysctl -n hw.ncpu`
+	MAKE=make
+	PMAKE="make -j$NUMCPUS --load-average=$NUMCPUS"
+else
+	export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
+	MAKE=make
+	PMAKE="make -j$NUMCPUS --load-average=$NUMCPUS"
+fi
+
+echo Creating $ARCH package ...
+
+mkdir $SCRIPT
+pushd $SCRIPT
+$SCRIPTDIR/setupscripts/$SCRIPT "${@:5}"
+$PMAKE
+if [ "$PKGEXT" = "tar.bz2" ]; then
+	$MAKE tarball
+elif [ "$PKGEXT" = "zip" ]; then
+	$MAKE zip
+fi
+if [ "$RUNTESTS" = "1" ]; then
+	ctest -j
+fi
+mv turbojpeg-java-*-$PLATFORM-$ARCHLC.$PKGEXT $OUTDIR/files/
+if [ -f $SCRIPTDIR/gpgsign ]; then
+	. $SCRIPTDIR/gpgsign
+	if ls $OUTDIR/files/turbojpeg-java-*-$PLATFORM-$ARCHLC.$PKGEXT.sig >/dev/null 2>&1; then
+		rm -f $OUTDIR/files/turbojpeg-java-*-$PLATFORM-$ARCHLC.$PKGEXT.sig
+	fi
+	gpg --pinentry-mode loopback --batch --default-key "$GPG_KEY_ID" \
+		--passphrase "$GPG_KEY_PASS" --detach-sig \
+		$OUTDIR/files/turbojpeg-java-*-$PLATFORM-$ARCHLC.$PKGEXT || \
+	gpg --batch --default-key "$GPG_KEY_ID" \
+		--passphrase "$GPG_KEY_PASS" --detach-sig \
+		$OUTDIR/files/turbojpeg-java-*-$PLATFORM-$ARCHLC.$PKGEXT
+	gpg --verify $OUTDIR/files/turbojpeg-java-*-$PLATFORM-$ARCHLC.$PKGEXT.sig
+fi
+popd

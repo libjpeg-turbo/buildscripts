@@ -23,7 +23,7 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-BUILDDIR=$HOME/src/ljt.nightly/$TAG/files
+BUILDDIR=$HOME/src/tjj.nightly/$TAG/files
 if [ ! -d $BUILDDIR ]; then
 	echo "Cannot find release under $BUILDDIR."
 	exit 1
@@ -31,15 +31,15 @@ fi
 
 echo Pushing release to GitHub ...
 
-gh release create -R libjpeg-turbo/libjpeg-turbo $PRARG --title "$NAME" \
+gh release create -R libjpeg-turbo/turbojpeg-java $PRARG --title "$NAME" \
 	--verify-tag --notes-file $BUILDDIR/README.md $TAG ||
-gh release edit -R libjpeg-turbo/libjpeg-turbo $PRARG --title "$NAME" \
+gh release edit -R libjpeg-turbo/turbojpeg-java $PRARG --title "$NAME" \
 	--verify-tag --notes-file $BUILDDIR/README.md $TAG
 
 find $BUILDDIR -type f -depth 1 \
 	! -name '*.txt' -a ! -name '*.md' -a ! -name '*.html' \
 	-a ! -name '.DS_Store' | while read file; do
-	gh release upload -R libjpeg-turbo/libjpeg-turbo $TAG "$file" || true
+	gh release upload -R libjpeg-turbo/turbojpeg-java $TAG "$file" || true
 done
 
 echo GREAT SUCCESS!
