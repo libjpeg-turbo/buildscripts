@@ -25,16 +25,19 @@ pushd turbojpeg-java-[0-9]*
 
 $SCRIPTDIR/make_package x86-64 linux64 1 tar.bz2 \
 	-DTURBOJPEG_VERSION=$LIBJPEG_TURBO_VERSION \
+	-DTURBOJPEG_EXACT=1 \
 	-DTURBOJPEG_PATH=/opt/libjpeg-turbo/lib64/cmake \
 	-DCMAKE_INSTALL_RPATH=/opt/libjpeg-turbo/lib64
 
 $SCRIPTDIR/make_package i386 linux 1 tar.bz2 \
 	-DTURBOJPEG_VERSION=$LIBJPEG_TURBO_VERSION \
+	-DTURBOJPEG_EXACT=1 \
 	-DTURBOJPEG_PATH=/opt/libjpeg-turbo/lib32/cmake \
 	-DCMAKE_INSTALL_RPATH=/opt/libjpeg-turbo/lib32
 
 $SCRIPTDIR/make_package AArch64 linux64.arm 0 tar.bz2 \
 	-DTURBOJPEG_VERSION=$LIBJPEG_TURBO_VERSION \
+	-DTURBOJPEG_EXACT=1 \
 	-DTURBOJPEG_PATH=/opt/arm64/opt/libjpeg-turbo/lib64/cmake \
 	-DCMAKE_INSTALL_RPATH=/opt/libjpeg-turbo/lib64
 
