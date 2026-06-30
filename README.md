@@ -69,11 +69,10 @@ containing the Visual C++ and Windows SDK header files should be listed in the
 the `vcvars64.bat` script provided by Visual C++, as described in the
 libjpeg-turbo build instructions.
 
-The official libjpeg-turbo binaries for Visual C++ are generated using
-[Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com), but
-any reasonably modern version of Visual C++ and the Windows SDK should work.
+Any reasonably modern version of Visual C++ and the Windows SDK should work.
 Note, however, that **jpegXX.dll** will depend on the C run-time DLLs from
-whichever version of Visual C++ was used to build it.
+whichever version of Visual C++ was used to build it.  (Visual Studio 2015 and
+later have compatible C run-time libraries.)
 
 The Windows native builds (both Visual C++ and MinGW) must be conducted from
 within an MSYS shell.  The easiest way to do that is to install
