@@ -6,5 +6,5 @@ SCRIPTDIR=`dirname $0`
 . $SCRIPTDIR/gpgsign
 
 rpm --define "%_gpg_name $GPG_KEY_NAME" \
-    --define "%__gpg_sign_cmd %{__gpg} gpg --digest-algo sha256 --batch --no-verbose --no-armor --passphrase $GPG_KEY_PASS --no-secmem-warning -u \"%{_gpg_name}\" -sbo %{__signature_filename} %{__plaintext_filename}" \
+    --define "%__gpg_sign_cmd %{__gpg} gpg --pinentry-mode loopback --digest-algo sha256 --batch --no-verbose --no-armor --passphrase $GPG_KEY_PASS --no-secmem-warning -u \"%{_gpg_name}\" -sbo %{__signature_filename} %{__plaintext_filename}" \
     --addsign ${1+"$@"}
