@@ -24,7 +24,7 @@ IOS_PLATFORMDIR=`xcode-select --print-path`
 
 . $SCRIPTDIR/macvars
 
-cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_C_COMPILER=$IOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
 	-DCMAKE_OSX_ARCHITECTURES=x86_64 \
 	-DCMAKE_OSX_SYSROOT=$IOS_PLATFORMDIR/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk \

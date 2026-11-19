@@ -18,7 +18,7 @@ fi
 
 . $SCRIPTDIR/macvars
 
-cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_C_COMPILER=$MACOS_PLATFORMDIR/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang \
 	-DCMAKE_OSX_ARCHITECTURES=arm64 \
 	-DCMAKE_OSX_SYSROOT=$MACOS_SYSROOT \

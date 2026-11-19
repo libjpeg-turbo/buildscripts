@@ -28,6 +28,8 @@ CMake should be installed somewhere in the `PATH`.  The version in MacPorts
 the DMG (<http://www.cmake.org>) and add
 **/Applications/CMake.app/Contents/bin** to the `PATH`.
 
+Ninja should be installed somewhere in the `PATH`.
+
 Xcode 12.0 or later (available at <https://developer.apple.com/downloads> --
 Apple ID required.)
 

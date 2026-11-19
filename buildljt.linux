@@ -80,13 +80,12 @@ pushd libjpeg-turbo-[0-9]*
 mkdir linux.rpm
 pushd linux.rpm
 $SCRIPTDIR/setupscripts/linux
-export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
-make -j$NUMCPUS --load-average=$NUMCPUS
+ninja
 MD5JAR1=`md5sum ../../turbojpeg-jna.jar | cut -f1 -d' '`
 rm jna/turbojpeg-jna.jar
 mv ../../turbojpeg-jna.jar jna/
 touch -am jna/turbojpeg-jna.jar
-make rpm
+ninja rpm
 MD5JAR2=`md5sum jna/turbojpeg-jna.jar | cut -f1 -d' '`
 if [ ! "$MD5JAR1" = "$MD5JAR2" ]; then
 	echo ERROR: JARs are not bitwise identical.
@@ -105,10 +104,10 @@ echo Creating $DEB64 binary DEB ...
 mkdir linux64
 pushd linux64
 $SCRIPTDIR/setupscripts/linux64
-make -j$NUMCPUS --load-average=$NUMCPUS
-make deb
+ninja
+ninja deb
+export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
 ctest -j$NUMCPUS
-#make tjtest
 mv libjpeg-turbo-official_[0-9]*_$DEB64.deb $OUTDIR/files/
 if [ -f $SCRIPTDIR/gpgsign ]; then
 	. $SCRIPTDIR/gpgsign
@@ -121,10 +120,9 @@ echo Creating $DEB32 binary DEB ...
 mkdir linux
 pushd linux
 $SCRIPTDIR/setupscripts/linux
-make -j$NUMCPUS --load-average=$NUMCPUS
-make deb
+ninja
+ninja deb
 ctest -j$NUMCPUS
-#make tjtest
 mv libjpeg-turbo-official_[0-9]*_$DEB32.deb $OUTDIR/files/
 if [ "$DEB64" = "amd64" ]; then
 	mv libjpeg-turbo-official32_[0-9]*_$DEB64.deb $OUTDIR/files/
@@ -144,15 +142,15 @@ if [ "$RPM64" != "$RPMA64" -a "$DEB64" != "$DEBA64" ]; then
 	mkdir linux64.arm
 	pushd linux64.arm
 	$SCRIPTDIR/setupscripts/linux64.arm
-	make -j$NUMCPUS --load-average=$NUMCPUS
-	STRIP=/opt/gcc.arm64/bin/aarch64-none-linux-gnu-strip make rpm
+	ninja
+	STRIP=/opt/gcc.arm64/bin/aarch64-none-linux-gnu-strip ninja rpm
 	VERSION=`rpm -q -p libjpeg-turbo-official-[0-9]*.$RPMA64.rpm | cut -f4 -d-`
 	mv libjpeg-turbo-official-[0-9]*.$RPMA64.rpm $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
 	if [ -f $SCRIPTDIR/gpgsign ]; then
 		$SCRIPTDIR/rpmsign $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
 		rpm --checksig -v $OUTDIR/files/libjpeg-turbo-official-$VERSION.$RPMA64.rpm
 	fi
-	make deb
+	ninja deb
 	mv libjpeg-turbo-official_[0-9]*_$DEBA64.deb $OUTDIR/files/
 	if [ -f $SCRIPTDIR/gpgsign ]; then
 		expect $SCRIPTDIR/debsign "$GPG_KEY_PASS" "$GPG_KEY_ID" $OUTDIR/files/libjpeg-turbo-official_[0-9]*_$DEBA64.deb

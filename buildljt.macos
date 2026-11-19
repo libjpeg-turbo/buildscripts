@@ -37,17 +37,16 @@ fi
 mkdir $SECONDARY
 pushd $SECONDARY
 $SCRIPTDIR/setupscripts/$SECONDARY
-export NUMCPUS=`sysctl -n hw.ncpu`
-make -j$NUMCPUS --load-average=$NUMCPUS
+ninja
 popd
 
 mkdir $PRIMARY
 pushd $PRIMARY
 $SCRIPTDIR/setupscripts/$PRIMARY
+ninja
 export NUMCPUS=`sysctl -n hw.ncpu`
-make -j$NUMCPUS --load-average=$NUMCPUS
 ctest -j$NUMCPUS
-make dmg
+ninja dmg
 if [ -n "${MACOS_NOTARIZE_ID-}" -a -n "${MACOS_NOTARIZE_TEAM_ID-}" -a \
 	-n "${MACOS_NOTARIZE_PASS-}" ]; then
 	echo libjpeg-turbo-[0-9]*.dmg ...
@@ -62,14 +61,14 @@ popd
 mkdir iosarm64
 pushd iosarm64
 $SCRIPTDIR/setupscripts/iosarm64
-make -j$NUMCPUS --load-average=$NUMCPUS
+ninja
 popd
 
 mkdir iosx8664
 pushd iosx8664
 $SCRIPTDIR/setupscripts/iosx8664
-make -j$NUMCPUS --load-average=$NUMCPUS
-make dmg
+ninja
+ninja dmg
 if [ -n "${MACOS_NOTARIZE_ID-}" -a -n "${MACOS_NOTARIZE_TEAM_ID-}" -a \
 	-n "${MACOS_NOTARIZE_PASS-}" ]; then
 	echo libjpeg-turbo-ios-[0-9]*.dmg ...
