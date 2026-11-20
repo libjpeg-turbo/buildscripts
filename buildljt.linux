@@ -53,7 +53,7 @@ mkdir -p rpmbuild/SRPMS
 mkdir -p rpmbuild/buildroot
 
 export CFLAGS=
-export JAVAFLAGS='-target 1.8 -source 1.8'
+export JAVAFLAGS='-target 1.8 -source 1.8 -Xlint:all,-serial'
 export LDFLAGS=
 rpm -i --define "_topdir $TMPDIR/rpmbuild" \
 	$OUTDIR/files/libjpeg-turbo-official-[0-9]*.src.rpm

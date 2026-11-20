@@ -35,6 +35,6 @@ cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_OSX_SYSROOT=$MACOS_SYSROOT \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DREQUIRE_SIMD=1 \
 	-DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar \
-	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8' \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8 -Xlint:all,-serial' \
 	-DSECONDARY_BUILD=../macosarm64 \
 	"${CMAKEARGS[@]}" .. ${1+"$@"}

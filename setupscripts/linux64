@@ -8,7 +8,7 @@ if [ "$1" = "-g" ]; then
 fi
 
 cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8' \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official \
 	-DREQUIRE_SIMD=1 -DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8 -Xlint:all,-serial' \
 	.. ${1+"$@"}

@@ -21,5 +21,6 @@ export PATH="$JAVA_HOME/bin:/c/Program Files/mingw-w64/x86_64-6.4.0-posix-seh-rt
 export CFLAGS="-Wall -static-libgcc -static"
 
 CC=gcc cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8' -DREQUIRE_SIMD=1 \
-	-DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar .. ${1+"$@"}
+	-DREQUIRE_SIMD=1 -DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar \
+	-DCMAKE_JAVA_COMPILE_FLAGS='-target 1.8 -source 1.8 -Xlint:all,-serial' \
+	.. ${1+"$@"}
