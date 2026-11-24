@@ -57,6 +57,7 @@ export JAVAFLAGS='-target 1.8 -source 1.8 -Xlint:all,-serial'
 export LDFLAGS=
 rpm -i --define "_topdir $TMPDIR/rpmbuild" \
 	$OUTDIR/files/libjpeg-turbo-official-[0-9]*.src.rpm
+LDFLAGS="-Wl,-z,relro -Wl,-z,now" \
 rpmbuild -ba --buildroot $TMPDIR/rpmbuild/buildroot \
 	--define "_topdir $TMPDIR/rpmbuild" rpmbuild/SPECS/libjpeg-turbo-official.spec
 VERSION=`rpm -q -p rpmbuild/RPMS/$RPM64/libjpeg-turbo-official-[0-9]*.$RPM64.rpm | cut -f4 -d-`
