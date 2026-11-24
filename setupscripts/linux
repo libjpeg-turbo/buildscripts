@@ -2,7 +2,7 @@ SCRIPTDIR=`dirname $0`
 
 export JAVA_HOME=/usr/java/default32
 
-LDFLAGS=${LDFLAGS:--m32} \
+LDFLAGS=${LDFLAGS:--m32 -Wl,-z,relro -Wl,-z,now} \
 $SCRIPTDIR/linux64 \
 	-DCMAKE_C_FLAGS='-m32 -Wall' \
 	${1+"$@"}

@@ -7,6 +7,7 @@ if [ "$1" = "-g" ]; then
 	shift
 fi
 
+LDFLAGS="-Wl,-z,relro -Wl,-z,now" \
 cmake -G"Ninja" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
 	-DCMAKE_POSITION_INDEPENDENT_CODE=1 -DPKGNAME=libjpeg-turbo-official \
 	-DREQUIRE_SIMD=1 -DWITH_JNA=~/.jna/$(uname -s)-$(uname -m)/jna.jar \
